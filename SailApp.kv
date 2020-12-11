@@ -1,0 +1,141 @@
+#:kivy 2.0.0
+#:import Button kivy.uix.button.Button
+
+SM:
+    MainMenuScreen:
+    CameraScreen:
+    SplineScreen:
+
+
+<CameraButton@Button>:
+    color: 1, 1, 1, 1
+    size_hint: 0.6, 0.3
+
+<GalleryButton@Button>:
+    color: 1, 1, 1, 1
+    size_hint: 0.6, 0.15
+
+<SmMenuButton@Button>:
+    color: 1, 1, 1, 1
+    size_hint: 0.275, 0.15
+
+<SplineButton@Button>:
+    size_hint: 0.2, 0.2
+
+<ControlPoint@Widget>:
+    canvas:
+    # color: 1, 1, 1, 1
+        Rectangle:
+            size: 10, 10
+
+<MainMenuScreen>:
+    name: "main_menu"
+    FloatLayout:
+        Label:
+            id: "Title"
+            text: "[b]Sail App[/b]"
+            markup:True
+            font_size: 30
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            size_hint: 0.6, 0.2
+            pos_hint: {"x": 0.2, "y": 0.8}
+
+        CameraButton:
+            text: "Camera"
+            pos_hint: {"x": 0.2, "y": 0.5}
+            on_release: 
+                root.manager.transition.direction = "left"
+                app.root.current = "camera_screen"
+
+        GalleryButton:
+            text: "From Gallery"
+            pos_hint: {"x": 0.2, "y": 0.3}
+            
+        SmMenuButton:
+            text: "Account"
+            pos_hint: {"x": 0.2, "y": 0.1}
+            
+        SmMenuButton:
+            text: "Settings"
+            pos_hint: {"x": 0.525, "y": 0.1}
+
+
+<CameraScreen>:
+    name: "camera_screen"
+    BoxLayout:
+        Camera:
+            id: camera
+            resolution: [-1, -1] # default
+            play: True
+
+    FloatLayout:
+        Button:
+            text: 'Capture'
+            size_hint: 0.1, 0.1
+            pos_hint: {"x": 0.45, "y": 0.1}
+            height: '48dp'
+            on_press: 
+                root.capture()
+
+        Button:
+            text: 'Main Menu'
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            on_release: 
+                root.manager.transition.direction = "right"
+                app.root.current = "main_menu"
+            size_hint: 0.1, 0.1
+            pos_hint: {"x": 0.8, "y": 0.8}
+            height: '48dp'
+
+
+<SplineScreen>:
+    name: "spline_screen"
+    BoxLayout:
+        id: scatter_container
+        orientation: "vertical"
+        Scatter:
+            id: scatter
+            do_rotation: False
+            # do_translation: False
+            size: scatter_image.size
+            size_hint: None, None
+            auto_bring_to_front: False
+            scale_min: 1
+            scale_max: 3
+            # do_collide_after_children: True
+            Image:
+                id: scatter_image
+                source: root.img_src
+                size: root.size
+
+    FloatLayout:
+        id: spline_screen_util_btns
+
+        SplineButton:
+            text: "Back"
+            pos_hint: {"x": 0.8, "y": 0.8}
+            on_release: 
+                root.manager.transition.direction = "right"
+                app.root.current = "camera_screen"
+
+        ToggleButton:
+            text: "Add"
+            size_hint: 0.2, 0.2
+            pos_hint: {"x": 0, "y": 0}
+            on_state: root.on_state(self)
+
+        SplineButton:
+            text: "ADD1"
+            pos_hint: {"x": 0.5, "y": 0}
+            on_release: root.add_chord()
+
+        SplineButton:
+            text: "RUN"
+            pos_hint: {"x": 0.8, "y": 0}
+
+        
+
