@@ -26,16 +26,31 @@ class ChordPoint(Widget):
 
     def __init__(self, **kwargs):
         super(ChordPoint, self).__init__(**kwargs)
+        with self.canvas:
+            Color(1., 1., 1.)
+            self.point = Ellipse(size=(50, 50), pos=self.pos)
+
+        self.bind(pos=self.update_point)
+        
+    def update_point(self, *args):
+        self.point.pos = self.pos
 
     def on_touch_down(self, touch):
-        print(touch.pos)
-        if self.collide_point(touch.x, touch.y):
-            print(touch)
+        if self.collide_point(*touch.pos):
+            touch.grab(self)
             return True
-        # with self.canvas:
-        #     Color(1, 1, 0)
-        #     d = 30.
-        #     Ellipse(pos=(touch.x - d / 2, touch.y - d / 2), size=(d, d))
+
+    def on_touch_move(self, touch):
+        if touch.grab_current is not self:
+            return
+        self.pos = (touch.x, touch.y)
+    
+    def on_touch_up(self, touch):
+        if touch.grab_current is not self:
+            return
+        touch.ungrab(self)
+        return True
+        
 
 class AddChord(Widget):
     def on_touch_down(self, touch):
@@ -117,8 +132,8 @@ class SplineScreen(Screen):
         win = self.get_parent_window()
         print(win, win.width / 2, win.height / 2)
         point = ChordPoint(size=(50, 50), pos=(win.width / 2, win.height / 2))#pos_hint={"x": 0.5, "y": 0.5}) #
-        point.canvas.add(Color(1., 1., 1.))
-        point.canvas.add(Ellipse(size=(50, 50), pos=point.pos))#pos=(win.width / 2, win.height / 2))) # ##pos_hint={"x": 0.5, "y": 0.5}))
+        # point.canvas.add(Color(1., 1., 1.))
+        # point.canvas.add(Ellipse(size=(50, 50), pos=point.pos))#pos=(win.width / 2, win.height / 2))) # ##pos_hint={"x": 0.5, "y": 0.5}))
         self.ids.scatter.add_widget(point)
 
 
