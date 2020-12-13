@@ -22,12 +22,6 @@ SM:
 <SplineButton@Button>:
     size_hint: 0.2, 0.2
 
-<ControlPoint@Widget>:
-    canvas:
-    # color: 1, 1, 1, 1
-        Rectangle:
-            size: 10, 10
-
 <MainMenuScreen>:
     name: "main_menu"
     FloatLayout:
@@ -97,7 +91,7 @@ SM:
     BoxLayout:
         id: scatter_container
         orientation: "vertical"
-        Scatter:
+        MainScatter:
             id: scatter
             do_rotation: False
             # do_translation: False
@@ -122,16 +116,26 @@ SM:
                 root.manager.transition.direction = "right"
                 app.root.current = "camera_screen"
 
-        ToggleButton:
-            text: "Add"
-            size_hint: 0.2, 0.2
-            pos_hint: {"x": 0, "y": 0}
-            on_state: root.on_state(self)
+        # ToggleButton:
+        #     text: "Add"
+        #     size_hint: 0.2, 0.2
+        #     pos_hint: {"x": 0, "y": 0}
+        #     on_state: root.on_state(self)
 
         SplineButton:
-            text: "ADD1"
-            pos_hint: {"x": 0.5, "y": 0}
+            text: "TOP"
+            pos_hint: {"x": 0, "y": 0}
             on_release: root.add_chord()
+
+        SplineButton:
+            text: "MID"
+            pos_hint: {"x": 0.25, "y": 0}
+            # on_release: root.add_chord()
+
+        SplineButton:
+            text: "BTM"
+            pos_hint: {"x": 0.5, "y": 0}
+            # on_release: root.add_chord()
 
         SplineButton:
             text: "RUN"

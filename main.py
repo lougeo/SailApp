@@ -13,27 +13,47 @@ from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty, ListProperty, ConfigParserProperty
 
 from kivy.graphics import Color, Rectangle, Point, Line, Ellipse
 
 import time
 
 
-class ChordPoint(Widget):
+class MainScatter(Scatter):
+    end_point_1_prop = ListProperty([])
+    end_point_2_prop = ListProperty([])
 
-    point = ObjectProperty(None)
+    def on_end_point_1_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "main_line":
+                child.update_line(1, value)
+
+    def on_end_point_2_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "main_line":
+                child.update_line(2, value)
+
+
+class ChordPoint(Widget):
+    name = StringProperty()
 
     def __init__(self, **kwargs):
+        self.size = (50, 50)
+
         super(ChordPoint, self).__init__(**kwargs)
+
         with self.canvas:
+            Color(1., 0, 0)
+            self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1., 1., 1.)
-            self.point = Ellipse(size=(50, 50), pos=self.pos)
+            self.inner = Rectangle(size=(44, 44), pos=(self.pos[0] + 3, self.pos[1] + 3))
 
         self.bind(pos=self.update_point)
         
     def update_point(self, *args):
-        self.point.pos = self.pos
+        self.outer.pos = self.pos
+        self.inner.pos = (self.pos[0] + 3, self.pos[1] + 3)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -43,42 +63,64 @@ class ChordPoint(Widget):
     def on_touch_move(self, touch):
         if touch.grab_current is not self:
             return
-        self.pos = (touch.x, touch.y)
+        self.center = (touch.x, touch.y)
+        if self.name == "end_point_1":
+            self.parent.end_point_1_prop = [touch.x, touch.y]
+        elif self.name == "end_point_2":
+            self.parent.end_point_2_prop = [touch.x, touch.y]
     
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
             return
         touch.ungrab(self)
         return True
-        
 
-class AddChord(Widget):
-    def on_touch_down(self, touch):
-        win = self.get_parent_window()
-        ud = touch.ud
-        ud['group'] = g = str(touch.uid)
-        pointsize = 5
+
+class MainLine(Widget):
+    name = StringProperty()
+    def __init__(self, points, **kwargs):
+        super(MainLine, self).__init__(**kwargs)
 
         with self.canvas:
-            Color(0, 1, 1, mode='hsv', group=g)
-            ud['lines'] = [
-                Rectangle(pos=(touch.x, 0), size=(1, win.height), group=g),
-                Rectangle(pos=(0, touch.y), size=(win.width, 1), group=g),
-                Point(points=(touch.x, touch.y), source='particle.png',
-                      pointsize=pointsize, group=g)]
+            Color(1., 0, 0)
+            self.outer = Line(points=points, width=2.0)
+            Color(1., 1., 1.)
+            self.inner = Line(points=points, width=1.0)
 
-        ud['label'] = Label(size_hint=(None, None))
-        self.update_touch_label(ud['label'], touch)
-        self.add_widget(ud['label'])
-        touch.grab(self)
-        return True
+    def update_line(self, point, value):
+        if point == 1:
+            self.outer.points = value + self.outer.points[2:]
+            self.inner.points = value + self.outer.points[2:]
+        elif point == 2:
+            self.outer.points = self.outer.points[:2] + value
+            self.inner.points = self.outer.points[:2] + value
 
-    def update_touch_label(self, label, touch):
-        label.text = 'ID: %s\nPos: (%d, %d)\nClass: %s' % (
-            touch.id, touch.x, touch.y, touch.__class__.__name__)
-        label.texture_update()
-        label.pos = touch.pos
-        label.size = label.texture_size[0] + 20, label.texture_size[1] + 20
+        
+    def collide_point(self, x, y):
+        # Have to make this custom to be in the line
+        pass
+
+    # def update_point(self, *args):
+    #     self.outer_point.pos = self.pos
+    #     self.inner_point.pos = (self.pos[0] + 3, self.pos[1] + 3)
+
+    # def on_touch_down(self, touch):
+    #     if self.collide_point(*touch.pos):
+    #         touch.grab(self)
+    #         return True
+
+    # def on_touch_move(self, touch):
+    #     if touch.grab_current is not self:
+    #         return
+    #     self.pos = (touch.x, touch.y)
+    
+    # def on_touch_up(self, touch):
+    #     if touch.grab_current is not self:
+    #         return
+    #     touch.ungrab(self)
+    #     return True
+            
+
 
 
 class MainMenuScreen(Screen):
@@ -101,42 +143,48 @@ class CameraScreen(Screen):
 
 class SplineScreen(Screen):
     img_src = StringProperty("")
-        
-    def on_state(self, togglebutton):
-        if togglebutton.state == "down":
-            self.add_chord1 = Button(
-                text="1", 
-                size_hint=(0.1, 0.1), 
-                pos_hint={"x": 0, "y": 0.225}, 
-            )
-            self.add_chord2 = Button(
-                text="2", 
-                size_hint=(0.1, 0.1), 
-                pos_hint={"x": 0.125, "y": 0.225}
-            )
-            self.add_chord3 = Button(
-                text="3", 
-                size_hint=(0.1, 0.1), 
-                pos_hint={"x": 0.25, "y": 0.225}
-            )
-            self.add_widget(self.add_chord1)
-            self.add_widget(self.add_chord2)
-            self.add_widget(self.add_chord3)
-        else:
-            self.remove_widget(self.add_chord1)
-            self.remove_widget(self.add_chord2)
-            self.remove_widget(self.add_chord3)
     
     def add_chord(self):
         print(self.ids)
         win = self.get_parent_window()
         print(win, win.width / 2, win.height / 2)
-        point = ChordPoint(size=(50, 50), pos=(win.width / 2, win.height / 2))#pos_hint={"x": 0.5, "y": 0.5}) #
-        # point.canvas.add(Color(1., 1., 1.))
-        # point.canvas.add(Ellipse(size=(50, 50), pos=point.pos))#pos=(win.width / 2, win.height / 2))) # ##pos_hint={"x": 0.5, "y": 0.5}))
-        self.ids.scatter.add_widget(point)
+        end_point_1_coords = (win.width * 0.25, win.height / 2)
+        end_point_2_coords = (win.width * 0.75, win.height / 2)
+
+        main_line = MainLine(name="main_line", points=list(end_point_1_coords+end_point_2_coords))
+        end_point_1 = ChordPoint(name="end_point_1", center=end_point_1_coords) # pos_hint={"center_x":win.width * 0.25 / win.width, "center_y": win.height / 2 / win.height})
+        end_point_2 = ChordPoint(name="end_point_2", center=end_point_2_coords) # pos_hint={"center_x":win.width * 0.25 / win.width, "center_y": win.height / 2 / win.height}) #
+
+        self.ids.scatter.add_widget(main_line)
+        self.ids.scatter.add_widget(end_point_1)
+        self.ids.scatter.add_widget(end_point_2)
 
 
+    # def on_state(self, togglebutton):
+    #     if togglebutton.state == "down":
+    #         self.add_chord1 = Button(
+    #             text="1", 
+    #             size_hint=(0.1, 0.1), 
+    #             pos_hint={"x": 0, "y": 0.225}, 
+    #         )
+    #         self.add_chord2 = Button(
+    #             text="2", 
+    #             size_hint=(0.1, 0.1), 
+    #             pos_hint={"x": 0.125, "y": 0.225}
+    #         )
+    #         self.add_chord3 = Button(
+    #             text="3", 
+    #             size_hint=(0.1, 0.1), 
+    #             pos_hint={"x": 0.25, "y": 0.225}
+    #         )
+    #         self.add_widget(self.add_chord1)
+    #         self.add_widget(self.add_chord2)
+    #         self.add_widget(self.add_chord3)
+    #     else:
+    #         self.remove_widget(self.add_chord1)
+    #         self.remove_widget(self.add_chord2)
+    #         self.remove_widget(self.add_chord3)
+    
 class SM(ScreenManager):
     pass
 
