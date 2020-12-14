@@ -94,22 +94,37 @@ class ChordPoint(Widget):
     def on_touch_move(self, touch):
         if touch.grab_current is not self:
             return
+            
+        p_x, p_y = self.parent.size
+        if touch.x < 0:
+            x = 0
+        elif touch.x > p_x:
+            x = p_x
+        else:
+            x = touch.x
+        
+        if touch.y < 0:
+            y = 0
+        elif touch.y > p_y:
+            y = p_y
+        else:
+            y = touch.y
 
-        self.center = (touch.x, touch.y)
+        self.center = (x, y)
 
         # Try and rethink this - boil it down to a one liner.
         if self.name == "end_point_1_top":
-            self.parent.end_point_1_top_prop = [touch.x, touch.y]
+            self.parent.end_point_1_top_prop = [x, y]
         elif self.name == "end_point_2_top":
-            self.parent.end_point_2_top_prop = [touch.x, touch.y]
+            self.parent.end_point_2_top_prop = [x, y]
         elif self.name == "end_point_1_mid":
-            self.parent.end_point_1_mid_prop = [touch.x, touch.y]
+            self.parent.end_point_1_mid_prop = [x, y]
         elif self.name == "end_point_2_mid":
-            self.parent.end_point_2_mid_prop = [touch.x, touch.y]
+            self.parent.end_point_2_mid_prop = [x, y]
         elif self.name == "end_point_1_btm":
-            self.parent.end_point_1_btm_prop = [touch.x, touch.y]
+            self.parent.end_point_1_btm_prop = [x, y]
         elif self.name == "end_point_2_btm":
-            self.parent.end_point_2_btm_prop = [touch.x, touch.y]
+            self.parent.end_point_2_btm_prop = [x, y]
     
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
@@ -166,6 +181,64 @@ class MainLine(Widget):
     #         return
     #     touch.ungrab(self)
     #     return True
+
+class DepthPoint(Widget):
+    name = StringProperty()
+
+    def __init__(self, **kwargs):
+        self.size = (50, 50)
+
+        super(ChordPoint, self).__init__(**kwargs)
+
+        with self.canvas:
+            if "top" in self.name:
+                Color(1., 0, 0)
+            elif "mid" in self.name:
+                Color(0, 1., 0)
+            elif "btm" in self.name:
+                Color(0, 0, 1.)
+                
+            self.outer = Rectangle(size=self.size, pos=self.pos)
+            Color(1., 1., 1.)
+            self.inner = Rectangle(size=(44, 44), pos=(self.pos[0] + 3, self.pos[1] + 3))
+
+        self.bind(pos=self.update_point)
+        
+    def update_point(self, *args):
+        self.outer.pos = self.pos
+        self.inner.pos = (self.pos[0] + 3, self.pos[1] + 3)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            touch.grab(self)
+            return True
+
+    def on_touch_move(self, touch):
+        if touch.grab_current is not self:
+            return
+
+        self.center = (touch.x, touch.y)
+
+        # Try and rethink this - boil it down to a one liner.
+        if self.name == "end_point_1_top":
+            self.parent.end_point_1_top_prop = [touch.x, touch.y]
+        elif self.name == "end_point_2_top":
+            self.parent.end_point_2_top_prop = [touch.x, touch.y]
+        elif self.name == "end_point_1_mid":
+            self.parent.end_point_1_mid_prop = [touch.x, touch.y]
+        elif self.name == "end_point_2_mid":
+            self.parent.end_point_2_mid_prop = [touch.x, touch.y]
+        elif self.name == "end_point_1_btm":
+            self.parent.end_point_1_btm_prop = [touch.x, touch.y]
+        elif self.name == "end_point_2_btm":
+            self.parent.end_point_2_btm_prop = [touch.x, touch.y]
+    
+    def on_touch_up(self, touch):
+        if touch.grab_current is not self:
+            return
+        touch.ungrab(self)
+        return True
+
 
 
 class MainMenuScreen(Screen):
