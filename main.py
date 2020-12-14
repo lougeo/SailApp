@@ -21,19 +21,44 @@ import time
 
 
 class MainScatter(Scatter):
-    end_point_1_prop = ListProperty([])
-    end_point_2_prop = ListProperty([])
+    end_point_1_top_prop = ListProperty([])
+    end_point_2_top_prop = ListProperty([])
 
-    def on_end_point_1_prop(self, instance, value):
+    end_point_1_mid_prop = ListProperty([])
+    end_point_2_mid_prop = ListProperty([])
+
+    end_point_1_btm_prop = ListProperty([])
+    end_point_2_btm_prop = ListProperty([])
+
+    def on_end_point_1_top_prop(self, instance, value):
         for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line":
+            if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(1, value)
 
-    def on_end_point_2_prop(self, instance, value):
+    def on_end_point_2_top_prop(self, instance, value):
         for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line":
+            if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(2, value)
 
+    def on_end_point_1_mid_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "main_line_mid":
+                child.update_line(1, value)
+
+    def on_end_point_2_mid_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "main_line_mid":
+                child.update_line(2, value)
+                
+    def on_end_point_1_btm_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "main_line_btm":
+                child.update_line(1, value)
+
+    def on_end_point_2_btm_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "main_line_btm":
+                child.update_line(2, value)
 
 class ChordPoint(Widget):
     name = StringProperty()
@@ -44,7 +69,13 @@ class ChordPoint(Widget):
         super(ChordPoint, self).__init__(**kwargs)
 
         with self.canvas:
-            Color(1., 0, 0)
+            if "top" in self.name:
+                Color(1., 0, 0)
+            elif "mid" in self.name:
+                Color(0, 1., 0)
+            elif "btm" in self.name:
+                Color(0, 0, 1.)
+                
             self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1., 1., 1.)
             self.inner = Rectangle(size=(44, 44), pos=(self.pos[0] + 3, self.pos[1] + 3))
@@ -63,11 +94,22 @@ class ChordPoint(Widget):
     def on_touch_move(self, touch):
         if touch.grab_current is not self:
             return
+
         self.center = (touch.x, touch.y)
-        if self.name == "end_point_1":
-            self.parent.end_point_1_prop = [touch.x, touch.y]
-        elif self.name == "end_point_2":
-            self.parent.end_point_2_prop = [touch.x, touch.y]
+
+        # Try and rethink this - boil it down to a one liner.
+        if self.name == "end_point_1_top":
+            self.parent.end_point_1_top_prop = [touch.x, touch.y]
+        elif self.name == "end_point_2_top":
+            self.parent.end_point_2_top_prop = [touch.x, touch.y]
+        elif self.name == "end_point_1_mid":
+            self.parent.end_point_1_mid_prop = [touch.x, touch.y]
+        elif self.name == "end_point_2_mid":
+            self.parent.end_point_2_mid_prop = [touch.x, touch.y]
+        elif self.name == "end_point_1_btm":
+            self.parent.end_point_1_btm_prop = [touch.x, touch.y]
+        elif self.name == "end_point_2_btm":
+            self.parent.end_point_2_btm_prop = [touch.x, touch.y]
     
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
@@ -82,7 +124,12 @@ class MainLine(Widget):
         super(MainLine, self).__init__(**kwargs)
 
         with self.canvas:
-            Color(1., 0, 0)
+            if "top" in self.name:
+                Color(1., 0, 0)
+            elif "mid" in self.name:
+                Color(0, 1., 0)
+            elif "btm" in self.name:
+                Color(0, 0, 1.)
             self.outer = Line(points=points, width=2.0)
             Color(1., 1., 1.)
             self.inner = Line(points=points, width=1.0)
@@ -119,8 +166,6 @@ class MainLine(Widget):
     #         return
     #     touch.ungrab(self)
     #     return True
-            
-
 
 
 class MainMenuScreen(Screen):
@@ -144,47 +189,33 @@ class CameraScreen(Screen):
 class SplineScreen(Screen):
     img_src = StringProperty("")
     
-    def add_chord(self):
-        print(self.ids)
-        win = self.get_parent_window()
-        print(win, win.width / 2, win.height / 2)
-        end_point_1_coords = (win.width * 0.25, win.height / 2)
-        end_point_2_coords = (win.width * 0.75, win.height / 2)
+    def add_chord(self, btn_name):
+        print(self.children[1].children[0].children)
+        print(btn_name)
 
-        main_line = MainLine(name="main_line", points=list(end_point_1_coords+end_point_2_coords))
-        end_point_1 = ChordPoint(name="end_point_1", center=end_point_1_coords) # pos_hint={"center_x":win.width * 0.25 / win.width, "center_y": win.height / 2 / win.height})
-        end_point_2 = ChordPoint(name="end_point_2", center=end_point_2_coords) # pos_hint={"center_x":win.width * 0.25 / win.width, "center_y": win.height / 2 / win.height}) #
+        garbage = []
 
-        self.ids.scatter.add_widget(main_line)
-        self.ids.scatter.add_widget(end_point_1)
-        self.ids.scatter.add_widget(end_point_2)
+        for child in self.children[1].children[0].children:
+            if hasattr(child, "name") and btn_name in child.name:
+                garbage.append(child)
+
+        if len(garbage) > 0:
+            for widget in garbage:
+                self.ids.scatter.remove_widget(widget)
+        else:                
+            win = self.get_parent_window()
+            end_point_1_coords = (win.width * 0.25, win.height / 2)
+            end_point_2_coords = (win.width * 0.75, win.height / 2)
+
+            main_line = MainLine(name=f"main_line_{btn_name}", points=list(end_point_1_coords+end_point_2_coords))
+            end_point_1 = ChordPoint(name=f"end_point_1_{btn_name}", center=end_point_1_coords) # pos_hint={"center_x":win.width * 0.25 / win.width, "center_y": win.height / 2 / win.height})
+            end_point_2 = ChordPoint(name=f"end_point_2_{btn_name}", center=end_point_2_coords) # pos_hint={"center_x":win.width * 0.25 / win.width, "center_y": win.height / 2 / win.height}) #
+
+            self.ids.scatter.add_widget(main_line)
+            self.ids.scatter.add_widget(end_point_1)
+            self.ids.scatter.add_widget(end_point_2)
 
 
-    # def on_state(self, togglebutton):
-    #     if togglebutton.state == "down":
-    #         self.add_chord1 = Button(
-    #             text="1", 
-    #             size_hint=(0.1, 0.1), 
-    #             pos_hint={"x": 0, "y": 0.225}, 
-    #         )
-    #         self.add_chord2 = Button(
-    #             text="2", 
-    #             size_hint=(0.1, 0.1), 
-    #             pos_hint={"x": 0.125, "y": 0.225}
-    #         )
-    #         self.add_chord3 = Button(
-    #             text="3", 
-    #             size_hint=(0.1, 0.1), 
-    #             pos_hint={"x": 0.25, "y": 0.225}
-    #         )
-    #         self.add_widget(self.add_chord1)
-    #         self.add_widget(self.add_chord2)
-    #         self.add_widget(self.add_chord3)
-    #     else:
-    #         self.remove_widget(self.add_chord1)
-    #         self.remove_widget(self.add_chord2)
-    #         self.remove_widget(self.add_chord3)
-    
 class SM(ScreenManager):
     pass
 

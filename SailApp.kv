@@ -123,19 +123,22 @@ SM:
         #     on_state: root.on_state(self)
 
         SplineButton:
+            name: "top"
             text: "TOP"
             pos_hint: {"x": 0, "y": 0}
-            on_release: root.add_chord()
+            on_release: root.add_chord(self.name)
 
         SplineButton:
+            name: "mid"
             text: "MID"
             pos_hint: {"x": 0.25, "y": 0}
-            # on_release: root.add_chord()
+            on_release: root.add_chord(self.name)
 
         SplineButton:
+            name: "btm"
             text: "BTM"
             pos_hint: {"x": 0.5, "y": 0}
-            # on_release: root.add_chord()
+            on_release: root.add_chord(self.name)
 
         SplineButton:
             text: "RUN"
