@@ -24,14 +24,17 @@ class MainScatter(Scatter):
     end_point_1_top_prop = ListProperty([])
     end_point_2_top_prop = ListProperty([])
     depth_point_top_prop = ListProperty([])
+    intercept_point_top_prop = ListProperty([])
 
     end_point_1_mid_prop = ListProperty([])
     end_point_2_mid_prop = ListProperty([])
     depth_point_mid_prop = ListProperty([])
+    intercept_point_mid_prop = ListProperty([])
 
     end_point_1_btm_prop = ListProperty([])
     end_point_2_btm_prop = ListProperty([])
     depth_point_btm_prop = ListProperty([])
+    intercept_point_btm_prop = ListProperty([])
 
     def on_end_point_1_top_prop(self, instance, value):
         for child in self.children:
@@ -199,34 +202,71 @@ class DepthPoint(Widget):
         elif self.name == "depth_point_btm":
             A = self.parent.end_point_1_btm_prop
             B = self.parent.end_point_2_btm_prop
-        
-        print(A)
-        print(B)
 
-        slope = (B[1] - A[1]) / (B[0] - A[0])
-        print(slope)
-        l1 = A[1] - slope * A[0]
-        l2 = touch.y + touch.x / slope
-
-        D = []
-        D.append(slope * (l2 - l1) / (slope ** 2 + 1))
-        D.append(slope * D[0] + l1)
-        print(D)
-
-        if D[0] < min(A[0], B[0]) or D[0] > max(A[0], B[0]):
-            x = (touch.y - D[1]) / slope + D[0]
+        # Vertical Case
+        if A[0] == B[0]:
+            D = [A[0], touch.y]
+            if touch.y < min(A[1], B[1]):
+                x = touch.x
+                y = min(A[1], B[1])
+            elif touch.y > max(A[1], B[1]):
+                x = touch.x
+                y = max(A[1], b[1])
+            else:
+                x = touch.x
+                y = touch.y
+        # Horizontal Case
+        elif A[1] == B[1]:
+            D = [touch.x, A[1]]
+            if touch.x < min(A[0], B[0]):
+                x = min(A[0], B[0])
+                y = touch.y
+            elif touch.x > max(A[0], B[0]):
+                x = max(A[0], B[0])
+                y = touch.y
+            else:
+                x = touch.x
+                y = touch.y
+        # Normal Case
         else:
-            x = touch.x
+            print("NORMAL CASE")
+            slope = (B[1] - A[1]) / (B[0] - A[0])
+            l1 = A[1] - slope * A[0]
+            l2 = touch.y + touch.x / slope
+            D = []
+            D.append(slope * (l2 - l1) / (slope ** 2 + 1))
+            D.append(slope * D[0] + l1)
 
-        self.center = (x, touch.y)
+            if D[0] < min(A[0], B[0]):
+                min_x = min(A[0], B[0])
+                if min_x in A:
+                    min_y = A[1]
+                else:
+                    min_y = B[1]
+                x = ((touch.y - min_y) / (-1/slope)) + min_x
+                y = touch.y
+            elif D[0] > max(A[0], B[0]):
+                max_x = max(A[0], B[0])
+                if max_x in A:
+                    max_y = A[1]
+                else:
+                    max_y = B[1]
+                x = ((touch.y - max_y) / (-1/slope)) + max_x
+                y = touch.y
+            else:
+                x = touch.x
+                y = touch.y
 
+        # Set widget position
+        self.center = (x, y)
+        # Set related depth point scatter property
         # Try and rethink this - boil it down to a one liner.
         if self.name == "depth_point_top":
-            self.parent.depth_point_top_prop = [x, touch.y]
+            self.parent.depth_point_top_prop = [x, y]
         elif self.name == "depth_point_mid":
-            self.parent.depth_point_mid_prop = [x, touch.y]
+            self.parent.depth_point_mid_prop = [x, y]
         elif self.name == "depth_point_btm":
-            self.parent.depth_point_btm_prop = [x, touch.y]
+            self.parent.depth_point_btm_prop = [x, y]
     
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
