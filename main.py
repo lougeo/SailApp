@@ -133,8 +133,10 @@ class EndPoint(Widget):
             y = p_y
         else:
             y = touch.y
+
         # Set widget position
         self.center = (x, y)
+
         # Sets and propogates changed coords
         # Try and rethink this - boil it down to a one liner.
         if self.name == "end_point_1_top":
@@ -205,38 +207,69 @@ class DepthPoint(Widget):
 
         # Vertical Case
         if A[0] == B[0]:
+            # Intercept point
             D = [A[0], touch.y]
+            # End bounds
+            if A[1] <= B[1]:
+                if touch.x <= D[0]:
+                    x = D[0]
+                elif touch.x >= D[0] + (B[1] - A[1]):
+                    x = D[0] + (B[1] - A[1])
+                else:
+                    x = touch.x
+            elif A[1] > B[1]:
+                if touch.x >= D[0]:
+                    x = D[0]
+                elif touch.x <= D[0] - (A[1] - B[1]):
+                    D[0] - (A[1] - B[1])
+                else:
+                    x = touch.x
+            # Side bounds
             if touch.y < min(A[1], B[1]):
-                x = touch.x
                 y = min(A[1], B[1])
             elif touch.y > max(A[1], B[1]):
-                x = touch.x
                 y = max(A[1], b[1])
             else:
-                x = touch.x
                 y = touch.y
+
         # Horizontal Case
         elif A[1] == B[1]:
+            # Intercept point
             D = [touch.x, A[1]]
-            if touch.x < min(A[0], B[0]):
+            # Side bounds
+            if touch.x <= min(A[0], B[0]):
                 x = min(A[0], B[0])
-                y = touch.y
-            elif touch.x > max(A[0], B[0]):
+            elif touch.x >= max(A[0], B[0]):
                 x = max(A[0], B[0])
-                y = touch.y
             else:
                 x = touch.x
-                y = touch.y
+            # End bounds
+            if A[0] <= B[0]:
+                if touch.y >= D[1]:
+                    y = D[1]
+                elif touch.y <= D[1] - (B[0] - A[0]):
+                    y = D[1] - (B[0] - A[0])
+                else:
+                    y = touch.y
+            elif A[0] > B[0]:
+                if touch.y <= D[1]:
+                    y = D[1]
+                elif touch.y >= D[1] + (A[0] - B[0]):
+                    y = D[1] + (A[0] - B[0])
+                else:
+                    y = touch.y
+                
         # Normal Case
         else:
-            print("NORMAL CASE")
+            # Calculating perpendicular intercept
             slope = (B[1] - A[1]) / (B[0] - A[0])
             l1 = A[1] - slope * A[0]
             l2 = touch.y + touch.x / slope
             D = []
             D.append(slope * (l2 - l1) / (slope ** 2 + 1))
             D.append(slope * D[0] + l1)
-
+            length = ((B[0] - A[0]) ** 2 + (B[1] - A[1]) ** 2) ** (1/2)
+            # Side Bounds
             if D[0] < min(A[0], B[0]):
                 min_x = min(A[0], B[0])
                 if min_x in A:
@@ -244,7 +277,6 @@ class DepthPoint(Widget):
                 else:
                     min_y = B[1]
                 x = ((touch.y - min_y) / (-1/slope)) + min_x
-                y = touch.y
             elif D[0] > max(A[0], B[0]):
                 max_x = max(A[0], B[0])
                 if max_x in A:
@@ -252,10 +284,45 @@ class DepthPoint(Widget):
                 else:
                     max_y = B[1]
                 x = ((touch.y - max_y) / (-1/slope)) + max_x
-                y = touch.y
             else:
                 x = touch.x
-                y = touch.y
+            # End Bounds
+            if A[0] <= B[0]:
+                print("here")
+                print(D[1])
+                print(touch.y)
+                if touch.y >= D[1]:
+                    print("BIG")
+
+                    x, y = D
+                # elif touch.y <= D[1] - length:
+                #     y = D[1] - length
+                else:
+                    y = touch.y
+            elif A[0] > B[0]:
+                if touch.y <= D[1]:
+                    y = D[1]
+                elif touch.y >= D[1] + length:
+                    y = D[1] + length
+                else:
+                    y = touch.y
+
+
+        # Keeps coords within the scatter image bounds
+        p_x, p_y = self.parent.size
+        if x < 0:
+            x = 0
+        elif x > p_x:
+            x = p_x
+        else:
+            x = x
+        
+        if y < 0:
+            y = 0
+        elif y > p_y:
+            y = p_y
+        else:
+            y = y
 
         # Set widget position
         self.center = (x, y)
