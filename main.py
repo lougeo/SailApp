@@ -269,6 +269,10 @@ class DepthPoint(Widget):
             D.append(slope * (l2 - l1) / (slope ** 2 + 1))
             D.append(slope * D[0] + l1)
             length = ((B[0] - A[0]) ** 2 + (B[1] - A[1]) ** 2) ** (1/2)
+            print(f"A: {A}")
+            print(f"B: {B}")
+            print(f"TOUCH: ({touch.x}, {touch.y})")
+            print(f"D: {D}")
             # Side Bounds
             if D[0] < min(A[0], B[0]):
                 min_x = min(A[0], B[0])
@@ -288,18 +292,28 @@ class DepthPoint(Widget):
                 x = touch.x
             # End Bounds
             if A[0] <= B[0]:
-                print("here")
-                print(D[1])
-                print(touch.y)
-                if touch.y >= D[1]:
+                # if  <= A[1]:
+                #     y = slope * ( )
+                # elif D[1] >= B[1]:
+                #     x, y = B
+                # else:
+                if touch.y > D[1] and D[1] >= A[1] and D[1] <= B[1]:
                     print("BIG")
-
-                    x, y = D
-                # elif touch.y <= D[1] - length:
-                #     y = D[1] - length
+                    # y = D[1]
+                    y = (slope * (touch.x - B[0])) + B[1]
+                    # if touch.x < B[0] and touch.x > A[0]:
+                    #     x = ((y - B[1]) / slope) + B[0]
+                    # else:
+                elif touch.y <= D[1] - length:
+                    y = D[1] - length
                 else:
                     y = touch.y
             elif A[0] > B[0]:
+                # if D[1] <= B[1]:
+                #     x, y = B
+                # elif D[1] >= A[1]:
+                #     x, y = A
+                # else:
                 if touch.y <= D[1]:
                     y = D[1]
                 elif touch.y >= D[1] + length:
