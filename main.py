@@ -261,66 +261,71 @@ class DepthPoint(Widget):
                 
         # Normal Case
         else:
-            # Calculating perpendicular intercept
+            # Length of chord - use to set up other end bound
+            # length = ((B[0] - A[0]) ** 2 + (B[1] - A[1]) ** 2) ** (1/2)
+            # Calculating perpendicular intercept to main line
             slope = (B[1] - A[1]) / (B[0] - A[0])
+            inv_slope = -1 / slope
             l1 = A[1] - slope * A[0]
             l2 = touch.y + touch.x / slope
             D = []
             D.append(slope * (l2 - l1) / (slope ** 2 + 1))
             D.append(slope * D[0] + l1)
-            length = ((B[0] - A[0]) ** 2 + (B[1] - A[1]) ** 2) ** (1/2)
-            print(f"A: {A}")
-            print(f"B: {B}")
-            print(f"TOUCH: ({touch.x}, {touch.y})")
-            print(f"D: {D}")
+            # Variables
+            min_x = min(A[0], B[0])
+            min_y = min(A[1], B[1])
+            max_x = max(A[0], B[0])
+
+            
             # Side Bounds
-            if D[0] < min(A[0], B[0]):
-                min_x = min(A[0], B[0])
+            if D[0] <= min_x:
                 if min_x in A:
                     min_y = A[1]
                 else:
                     min_y = B[1]
-                x = ((touch.y - min_y) / (-1/slope)) + min_x
-            elif D[0] > max(A[0], B[0]):
-                max_x = max(A[0], B[0])
+                # Calculating perpendicular intercept to inverse bottom line
+                inv_bottom_1 = min_y - inv_slope * min_x
+                inv_bottom_2 = touch.y + touch.x / inv_slope
+                D_MIN_INV = []
+                D_MIN_INV.append(inv_slope * (inv_bottom_2 - inv_bottom_1) / (inv_slope ** 2 + 1))
+                D_MIN_INV.append(inv_slope * D_MIN_INV[0] + inv_bottom_1)
+
+                if D_MIN_INV[0] <= min_x:
+                    x = min_x
+                    y = min_y
+                else:
+                    x, y = D_MIN_INV
+
+            elif D[0] >= max_x:
                 if max_x in A:
                     max_y = A[1]
                 else:
                     max_y = B[1]
-                x = ((touch.y - max_y) / (-1/slope)) + max_x
-            else:
-                x = touch.x
-            # End Bounds
-            if A[0] <= B[0]:
-                # if  <= A[1]:
-                #     y = slope * ( )
-                # elif D[1] >= B[1]:
-                #     x, y = B
-                # else:
-                if touch.y > D[1] and D[1] >= A[1] and D[1] <= B[1]:
-                    print("BIG")
-                    # y = D[1]
-                    y = (slope * (touch.x - B[0])) + B[1]
-                    # if touch.x < B[0] and touch.x > A[0]:
-                    #     x = ((y - B[1]) / slope) + B[0]
-                    # else:
-                elif touch.y <= D[1] - length:
-                    y = D[1] - length
-                else:
-                    y = touch.y
-            elif A[0] > B[0]:
-                # if D[1] <= B[1]:
-                #     x, y = B
-                # elif D[1] >= A[1]:
-                #     x, y = A
-                # else:
-                if touch.y <= D[1]:
-                    y = D[1]
-                elif touch.y >= D[1] + length:
-                    y = D[1] + length
-                else:
-                    y = touch.y
+                # Calculating perpendicular intercept to inverse top line
+                inv_top_1 = max_y - inv_slope * max_x
+                inv_top_2 = touch.y + touch.x / inv_slope
+                D_MAX_INV = []
+                D_MAX_INV.append(inv_slope * (inv_top_2 - inv_top_1) / (inv_slope ** 2 + 1))
+                D_MAX_INV.append(inv_slope * D_MAX_INV[0] + inv_top_1)
 
+                if D_MAX_INV[0] <= max_x:
+                    x = max_x
+                    y = max_y
+                else:
+                    x, y = D_MAX_INV
+
+            else:
+                # End Bounds
+                if touch.y > D[1]:
+                    if min_y in A:
+                        min_x = A[0]
+                    else:
+                        min_x = B[0]
+                    x, y = D
+                # Inside of the bounds
+                else:
+                    x = touch.x
+                    y = touch.y
 
         # Keeps coords within the scatter image bounds
         p_x, p_y = self.parent.size
