@@ -40,51 +40,58 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(1, value)
-            elif hasattr(child, "name") and child.name == "depth_point_top":
+            if hasattr(child, "name") and child.name == "depth_point_top":
                 child.translate_point(1, value)
 
     def on_end_point_2_top_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(2, value)
-            elif hasattr(child, "name") and child.name == "depth_point_top":
+            if hasattr(child, "name") and child.name == "depth_point_top":
                 child.translate_point(2, value)
 
-    def depth_point_top_prop(self, instance, value):
+    def on_depth_point_top_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "depth_line_top":
-                pass
-                # child.update_line(2, value)
+                child.update_line(self.depth_point_intercept_top_prop, value)
 
     def on_end_point_1_mid_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(1, value)
+            if hasattr(child, "name") and child.name == "depth_point_mid":
+                child.translate_point(1, value)
 
     def on_end_point_2_mid_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(2, value)
+            if hasattr(child, "name") and child.name == "depth_point_mid":
+                child.translate_point(2, value)
 
-    # def depth_point_mid_prop(self, instance, value):
-    #     for child in self.children:
-    #         if hasattr(child, "name") and child.name == "depth_line_mid":
-    #             child.update_line(2, value)
+    def on_depth_point_mid_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "depth_line_mid":
+                child.update_line(self.depth_point_intercept_mid_prop, value)
                 
     def on_end_point_1_btm_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(1, value)
+            if hasattr(child, "name") and child.name == "depth_point_btm":
+                child.translate_point(1, value)
 
     def on_end_point_2_btm_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(2, value)
+            if hasattr(child, "name") and child.name == "depth_point_btm":
+                child.translate_point(2, value)
 
-    # def depth_point_btm_prop(self, instance, value):
-    #     for child in self.children:
-    #         if hasattr(child, "name") and child.name == "depth_line_btm":
-    #             child.update_line(2, value)
+    def on_depth_point_btm_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "depth_line_btm":
+                child.update_line(self.depth_point_intercept_btm_prop, value)
 
 
 class EndPoint(Widget):
@@ -191,7 +198,7 @@ class DepthPoint(Widget):
         self.inner.pos = (self.pos[0] + 3, self.pos[1] + 3)
 
     def translate_point(self, *args):
-
+        print('in translate')
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -217,6 +224,7 @@ class DepthPoint(Widget):
         if A[0] == B[0]:
             # Intercept point
             D = [A[0], touch.y]
+            int_x = A[0]
             # End bounds
             if A[1] <= B[1]:
                 if touch.x <= D[0]:
@@ -234,23 +242,24 @@ class DepthPoint(Widget):
                     x = touch.x
             # Side bounds
             if touch.y < min(A[1], B[1]):
-                y = min(A[1], B[1])
+                y = int_y = min(A[1], B[1])
             elif touch.y > max(A[1], B[1]):
-                y = max(A[1], b[1])
+                y = int_y = max(A[1], b[1])
             else:
-                y = touch.y
+                y = int_y = touch.y
 
         # Horizontal Case
         elif A[1] == B[1]:
             # Intercept point
             D = [touch.x, A[1]]
+            int_y = A[1]
             # Side bounds
             if touch.x <= min(A[0], B[0]):
-                x = min(A[0], B[0])
+                x = int_x = min(A[0], B[0])
             elif touch.x >= max(A[0], B[0]):
-                x = max(A[0], B[0])
+                x = int_x = max(A[0], B[0])
             else:
-                x = touch.x
+                x = int_x = touch.x
             # End bounds
             if A[0] <= B[0]:
                 if touch.y >= D[1]:
@@ -283,14 +292,17 @@ class DepthPoint(Widget):
             min_x = min(A[0], B[0])
             min_y = min(A[1], B[1])
             max_x = max(A[0], B[0])
+            max_y = max(A[1], B[1])
 
             
             # Side Bounds
             if D[0] <= min_x:
+                print("MIN SIDE")
                 if min_x in A:
                     min_y = A[1]
                 else:
                     min_y = B[1]
+                int_x, int_y = min_x, min_y
                 # Calculating perpendicular intercept to inverse bottom line
                 inv_bottom_1 = min_y - inv_slope * min_x
                 inv_bottom_2 = touch.y + touch.x / inv_slope
@@ -298,7 +310,7 @@ class DepthPoint(Widget):
                 D_MIN_INV.append(inv_slope * (inv_bottom_2 - inv_bottom_1) / (inv_slope ** 2 + 1))
                 D_MIN_INV.append(inv_slope * D_MIN_INV[0] + inv_bottom_1)
 
-                if D_MIN_INV[0] <= min_x:
+                if D_MIN_INV[1] >= min_y:
                     x = min_x
                     y = min_y
                 else:
@@ -309,6 +321,7 @@ class DepthPoint(Widget):
                     max_y = A[1]
                 else:
                     max_y = B[1]
+                int_x, int_y = max_x, max_y
                 # Calculating perpendicular intercept to inverse top line
                 inv_top_1 = max_y - inv_slope * max_x
                 inv_top_2 = touch.y + touch.x / inv_slope
@@ -316,7 +329,7 @@ class DepthPoint(Widget):
                 D_MAX_INV.append(inv_slope * (inv_top_2 - inv_top_1) / (inv_slope ** 2 + 1))
                 D_MAX_INV.append(inv_slope * D_MAX_INV[0] + inv_top_1)
 
-                if D_MAX_INV[0] <= max_x:
+                if D_MAX_INV[1] >= max_y:
                     x = max_x
                     y = max_y
                 else:
@@ -324,6 +337,7 @@ class DepthPoint(Widget):
 
             else:
                 # End Bounds
+                int_x, int_y = D
                 if touch.y > D[1]:
                     if min_y in A:
                         min_x = A[0]
@@ -351,16 +365,20 @@ class DepthPoint(Widget):
         else:
             y = y
 
-        # Set widget position
-        self.center = (x, y)
         # Set related depth point scatter property
         # Try and rethink this - boil it down to a one liner.
         if self.name == "depth_point_top":
+            self.parent.depth_point_intercept_top_prop = [int_x, int_y]
             self.parent.depth_point_top_prop = [x, y]
         elif self.name == "depth_point_mid":
+            self.parent.depth_point_intercept_mid_prop = [int_x, int_y]
             self.parent.depth_point_mid_prop = [x, y]
         elif self.name == "depth_point_btm":
+            self.parent.depth_point_intercept_btm_prop = [int_x, int_y]
             self.parent.depth_point_btm_prop = [x, y]
+            
+        # Set widget position
+        self.center = (x, y)
     
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
@@ -398,34 +416,22 @@ class MainLine(Widget):
         # Have to make this custom to be in the line
         pass
 
-    # def update_point(self, *args):
-    #     self.outer_point.pos = self.pos
-    #     self.inner_point.pos = (self.pos[0] + 3, self.pos[1] + 3)
-
     # def on_touch_down(self, touch):
-    #     if self.collide_point(*touch.pos):
-    #         touch.grab(self)
-    #         return True
 
     # def on_touch_move(self, touch):
-    #     if touch.grab_current is not self:
-    #         return
-    #     self.pos = (touch.x, touch.y)
     
     # def on_touch_up(self, touch):
-    #     if touch.grab_current is not self:
-    #         return
-    #     touch.ungrab(self)
-    #     return True
 
 class DepthLine(MainLine):
-    def update_line(self, point, value):
-        if point == 1:
-            self.outer.points = value + self.outer.points[2:]
-            self.inner.points = value + self.outer.points[2:]
-        elif point == 2:
-            self.outer.points = self.outer.points[:2] + value
-            self.inner.points = self.outer.points[:2] + value
+    def update_line(self, intercept, value):
+        self.inner.points = intercept + value
+        self.outer.points = intercept + value
+
+
+######################################################################################################
+#                                              Screens                                               #
+######################################################################################################
+
 
 class MainMenuScreen(Screen):
     pass
