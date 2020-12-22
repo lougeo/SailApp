@@ -297,7 +297,6 @@ class DepthPoint(Widget):
             
             # Side Bounds
             if D[0] <= min_x:
-                print("MIN SIDE")
                 if min_x in A:
                     min_y = A[1]
                 else:
