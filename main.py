@@ -40,15 +40,15 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(1, value)
-            if hasattr(child, "name") and child.name == "depth_point_top":
-                child.translate_point(1, value)
+            # if hasattr(child, "name") and child.name == "depth_point_top":
+            #     child.translate_point(1,  value)
 
     def on_end_point_2_top_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(2, value)
-            if hasattr(child, "name") and child.name == "depth_point_top":
-                child.translate_point(2, value)
+            # if hasattr(child, "name") and child.name == "depth_point_top":
+            #     child.translate_point(2, value)
 
     def on_depth_point_top_prop(self, instance, value):
         for child in self.children:
@@ -59,15 +59,15 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(1, value)
-            if hasattr(child, "name") and child.name == "depth_point_mid":
-                child.translate_point(1, value)
+            # if hasattr(child, "name") and child.name == "depth_point_mid":
+            #     child.translate_point(1, value)
 
     def on_end_point_2_mid_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(2, value)
-            if hasattr(child, "name") and child.name == "depth_point_mid":
-                child.translate_point(2, value)
+            # if hasattr(child, "name") and child.name == "depth_point_mid":
+            #     child.translate_point(2, value)
 
     def on_depth_point_mid_prop(self, instance, value):
         for child in self.children:
@@ -78,15 +78,15 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(1, value)
-            if hasattr(child, "name") and child.name == "depth_point_btm":
-                child.translate_point(1, value)
+            # if hasattr(child, "name") and child.name == "depth_point_btm":
+            #     child.translate_point(1, value)
 
     def on_end_point_2_btm_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(2, value)
-            if hasattr(child, "name") and child.name == "depth_point_btm":
-                child.translate_point(2, value)
+            # if hasattr(child, "name") and child.name == "depth_point_btm":
+            #     child.translate_point(2, value)
 
     def on_depth_point_btm_prop(self, instance, value):
         for child in self.children:
@@ -146,8 +146,31 @@ class EndPoint(Widget):
         else:
             y = touch.y
 
-        # Set widget position
-        self.center = (x, y)
+        # TRANSLATING DEPTH POINT
+        # Retrieve necessary current point data
+        if "top" in self.name:
+            ep_1 = self.parent.end_point_1_top_prop
+            ep_2 = self.parent.end_point_2_top_prop
+            intercept = self.parent.depth_point_intercept_top_prop
+        elif "mid" in self.name:
+            ep_1 = self.parent.end_point_1_mid_prop
+            ep_2 = self.parent.end_point_2_mid_prop
+            intercept = self.parent.depth_point_intercept_mid_prop
+        elif "btm" in self.name:
+            ep_1 = self.parent.end_point_1_btm_prop
+            ep_2 = self.parent.end_point_2_btm_prop
+            intercept = self.parent.depth_point_intercept_btm_prop
+        # Distance from the intercept to each end point
+        df_ep_1 =  abs(((ep_1[0] - intercept[0]) ** 2 + (ep_1[1] - intercept[1]) ** 2) ** (1/2))
+        df_ep_2 =  abs(((ep_2[0] - intercept[0]) ** 2 + (ep_2[1] - intercept[1]) ** 2) ** (1/2))
+        # Calculate new intercept point from non moving end point
+        if "1" in self.name:
+            new_slope = (ep_2[1] - y) / (ep_2[0] - x)
+        elif "2" in self.name:
+            new_slope = (y - ep_1[1]) / (x - ep_1[0])
+        else:
+            print("Name error")
+        
 
         # Sets and propogates changed coords
         # Try and rethink this - boil it down to a one liner.
@@ -163,6 +186,9 @@ class EndPoint(Widget):
             self.parent.end_point_1_btm_prop = [x, y]
         elif self.name == "end_point_2_btm":
             self.parent.end_point_2_btm_prop = [x, y]
+
+        # Set widget position
+        self.center = (x, y)
     
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
@@ -197,8 +223,8 @@ class DepthPoint(Widget):
         self.outer.pos = self.pos
         self.inner.pos = (self.pos[0] + 3, self.pos[1] + 3)
 
-    def translate_point(self, *args):
-        print('in translate')
+    # def translate_point(self, *args):
+    #     print('in translate')
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
