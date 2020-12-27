@@ -166,6 +166,7 @@ class EndPoint(Widget):
         # Calculate new intercept point from non moving end point
         if "1" in self.name:
             new_slope = (ep_2[1] - y) / (ep_2[0] - x)
+            #Continue here
         elif "2" in self.name:
             new_slope = (y - ep_1[1]) / (x - ep_1[0])
         else:
@@ -301,7 +302,7 @@ class DepthPoint(Widget):
                     y = D[1] + (A[0] - B[0])
                 else:
                     y = touch.y
-                
+        
         # Normal Case
         else:
             # Length of chord - use to set up other end bound
@@ -335,11 +336,7 @@ class DepthPoint(Widget):
                 D_MIN_INV.append(inv_slope * (inv_bottom_2 - inv_bottom_1) / (inv_slope ** 2 + 1))
                 D_MIN_INV.append(inv_slope * D_MIN_INV[0] + inv_bottom_1)
 
-                if D_MIN_INV[1] >= min_y:
-                    x = min_x
-                    y = min_y
-                else:
-                    x, y = D_MIN_INV
+                x, y = D_MIN_INV
 
             elif D[0] >= max_x:
                 if max_x in A:
@@ -354,25 +351,13 @@ class DepthPoint(Widget):
                 D_MAX_INV.append(inv_slope * (inv_top_2 - inv_top_1) / (inv_slope ** 2 + 1))
                 D_MAX_INV.append(inv_slope * D_MAX_INV[0] + inv_top_1)
 
-                if D_MAX_INV[1] >= max_y:
-                    x = max_x
-                    y = max_y
-                else:
-                    x, y = D_MAX_INV
+                x, y = D_MAX_INV
 
             else:
                 # End Bounds
                 int_x, int_y = D
-                if touch.y > D[1]:
-                    if min_y in A:
-                        min_x = A[0]
-                    else:
-                        min_x = B[0]
-                    x, y = D
-                # Inside of the bounds
-                else:
-                    x = touch.x
-                    y = touch.y
+                x = touch.x
+                y = touch.y
 
         # Keeps coords within the scatter image bounds
         p_x, p_y = self.parent.size
