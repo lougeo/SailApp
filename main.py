@@ -27,18 +27,21 @@ class MainScatter(Scatter):
     depth_point_top_prop = ListProperty([])
     depth_point_intercept_top_prop = ListProperty([])
     bezier_point_1_top_prop = ListProperty([])
+    bezier_point_2_top_prop = ListProperty([])
 
     end_point_1_mid_prop = ListProperty([])
     end_point_2_mid_prop = ListProperty([])
     depth_point_mid_prop = ListProperty([])
     depth_point_intercept_mid_prop = ListProperty([])
     bezier_point_1_mid_prop = ListProperty([])
+    bezier_point_2_mid_prop = ListProperty([])
 
     end_point_1_btm_prop = ListProperty([])
     end_point_2_btm_prop = ListProperty([])
     depth_point_btm_prop = ListProperty([])
     depth_point_intercept_btm_prop = ListProperty([])
     bezier_point_1_btm_prop = ListProperty([])
+    bezier_point_2_btm_prop = ListProperty([])
 
     ###########################    TOP    ###########################
     def on_end_point_1_top_prop(self, instance, value):
@@ -52,6 +55,8 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(2, value)
+            if hasattr(child, "name") and child.name == "bezier_line_2_top":
+                child.update_line(2, "ep", value)
 
     def on_depth_point_top_prop(self, instance, value):
         for child in self.children:
@@ -61,11 +66,22 @@ class MainScatter(Scatter):
                 child.update_line(self.depth_point_intercept_top_prop, value)
             if hasattr(child, "name") and child.name == "bezier_line_1_top":
                 child.update_line(1, "dp", value)
+            if hasattr(child, "name") and child.name == "bezier_line_2_top":
+                child.update_line(2, "dp", value)
     
     def on_bezier_point_1_top_prop(self, instance, value):
         for child in self.children:
+            if hasattr(child, "name") and child.name == "bezier_point_1_top":
+                child.center = value
             if hasattr(child, "name") and child.name == "bezier_line_1_top":
-                child.update_line(1, "cp", value)
+                child.update_line(1, "bp", value)
+                
+    def on_bezier_point_2_top_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "bezier_point_2_top":
+                child.center = value
+            if hasattr(child, "name") and child.name == "bezier_line_2_top":
+                child.update_line(2, "bp", value)
 
 
     ###########################    MID    ###########################
@@ -74,12 +90,14 @@ class MainScatter(Scatter):
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(1, value)
             if hasattr(child, "name") and child.name == "bezier_line_1_mid":
-                child.update_line(1, value)
+                child.update_line(1, "ep", value)
 
     def on_end_point_2_mid_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(2, value)
+            if hasattr(child, "name") and child.name == "bezier_line_2_mid":
+                child.update_line(2, "ep", value)
 
     def on_depth_point_mid_prop(self, instance, value):
         for child in self.children:
@@ -88,12 +106,23 @@ class MainScatter(Scatter):
             if hasattr(child, "name") and child.name == "depth_line_mid":
                 child.update_line(self.depth_point_intercept_mid_prop, value)
             if hasattr(child, "name") and child.name == "bezier_line_1_mid":
-                child.update_line(1, value)
+                child.update_line(1, "dp", value)
+            if hasattr(child, "name") and child.name == "bezier_line_2_mid":
+                child.update_line(2, "dp", value)
                 
     def on_bezier_point_1_mid_prop(self, instance, value):
         for child in self.children:
+            if hasattr(child, "name") and child.name == "bezier_point_1_mid":
+                child.center = value
             if hasattr(child, "name") and child.name == "bezier_line_1_mid":
-                child.update_line(1, value)
+                child.update_line(1, "bp", value)
+                
+    def on_bezier_point_2_mid_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "bezier_point_2_mid":
+                child.center = value
+            if hasattr(child, "name") and child.name == "bezier_line_2_mid":
+                child.update_line(2, "bp", value)
     
     ###########################    BTM    ###########################
     def on_end_point_1_btm_prop(self, instance, value):
@@ -101,12 +130,14 @@ class MainScatter(Scatter):
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(1, value)
             if hasattr(child, "name") and child.name == "bezier_line_1_btm":
-                child.update_line(1, value)
+                child.update_line(1, "ep", value)
 
     def on_end_point_2_btm_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(2, value)
+            if hasattr(child, "name") and child.name == "bezier_line_2_btm":
+                child.update_line(2, "ep", value)
 
     def on_depth_point_btm_prop(self, instance, value):
         for child in self.children:
@@ -115,12 +146,23 @@ class MainScatter(Scatter):
             if hasattr(child, "name") and child.name == "depth_line_btm":
                 child.update_line(self.depth_point_intercept_btm_prop, value)
             if hasattr(child, "name") and child.name == "bezier_line_1_btm":
-                child.update_line(1, value)
+                child.update_line(1, "dp", value)
+            if hasattr(child, "name") and child.name == "bezier_line_2_btm":
+                child.update_line(2, "dp", value)
                 
     def on_bezier_point_1_btm_prop(self, instance, value):
         for child in self.children:
+            if hasattr(child, "name") and child.name == "bezier_point_1_btm":
+                child.center = value
             if hasattr(child, "name") and child.name == "bezier_line_1_btm":
-                child.update_line(1, value)
+                child.update_line(1, "bp", value)
+                
+    def on_bezier_point_2_btm_prop(self, instance, value):
+        for child in self.children:
+            if hasattr(child, "name") and child.name == "bezier_point_2_btm":
+                child.center = value
+            if hasattr(child, "name") and child.name == "bezier_line_2_btm":
+                child.update_line(2, "bp", value)
 
 
 ###########################################################################################################
@@ -185,47 +227,104 @@ class EndPoint(Widget):
             ep_1 = self.parent.end_point_1_top_prop
             ep_2 = self.parent.end_point_2_top_prop
             dp = self.parent.depth_point_top_prop
+            bp_1 = self.parent.bezier_point_1_top_prop
+            bp_2 = self.parent.bezier_point_2_top_prop
         elif "mid" in self.name:
             ep_1 = self.parent.end_point_1_mid_prop
             ep_2 = self.parent.end_point_2_mid_prop
             dp = self.parent.depth_point_mid_prop
+            bp_1 = self.parent.bezier_point_1_mid_prop
+            bp_2 = self.parent.bezier_point_2_mid_prop
         elif "btm" in self.name:
             ep_1 = self.parent.end_point_1_btm_prop
             ep_2 = self.parent.end_point_2_btm_prop
             dp = self.parent.depth_point_btm_prop
+            bp_1 = self.parent.bezier_point_1_btm_prop
+            bp_2 = self.parent.bezier_point_2_btm_prop
         # Caluclate original slope
-        slope = (ep_2[1] - ep_1[1]) / (ep_2[0] - ep_1[0])
+        if ep_2[0] == ep_1[0]:
+            slope = math.pi / 2
+        else:
+            slope = (ep_2[1] - ep_1[1]) / (ep_2[0] - ep_1[0])
         # Calculate new intercept point from non moving end point
         if "1" in self.name:
-            # Calculate new slope and angle between that and original slope
-            new_slope = (ep_2[1] - y) / (ep_2[0] - x)
-            delta = math.atan(abs((slope - new_slope) / (1 + (slope * new_slope))))
+            # Calculate new slope
+            if ep_2[0] == x:
+                new_slope = math.pi / 2
+            else:
+                new_slope = (ep_2[1] - y) / (ep_2[0] - x)
+            # Calculate delta
+            if ep_2[0] == ep_1[0]:
+                delta = slope - math.atan(abs(new_slope))
+            elif ep_2[0] == x:
+                delta = new_slope - math.atan(abs(slope))
+            else:
+                delta = math.atan(abs((slope - new_slope) / (1 + (slope * new_slope))))
             # Determine sign of delta
-            if y < ep_1[1]:
+            if new_slope < slope:
                 delta = - delta
             # Calculate new depth point coords
             new_dp_x = (((dp[0] - ep_2[0]) * math.cos(delta)) - ((dp[1] - ep_2[1]) * math.sin(delta)) + ep_2[0])
             new_dp_y = (((dp[0] - ep_2[0]) * math.sin(delta)) + ((dp[1] - ep_2[1]) * math.cos(delta)) + ep_2[1])
+            # Calculate new bezier point coords
+            new_bp_1_x = (((bp_1[0] - ep_2[0]) * math.cos(delta)) - ((bp_1[1] - ep_2[1]) * math.sin(delta)) + ep_2[0])
+            new_bp_1_y = (((bp_1[0] - ep_2[0]) * math.sin(delta)) + ((bp_1[1] - ep_2[1]) * math.cos(delta)) + ep_2[1])
+            # Calculate new bezier point coords
+            new_bp_2_x = (((bp_2[0] - ep_2[0]) * math.cos(delta)) - ((bp_2[1] - ep_2[1]) * math.sin(delta)) + ep_2[0])
+            new_bp_2_y = (((bp_2[0] - ep_2[0]) * math.sin(delta)) + ((bp_2[1] - ep_2[1]) * math.cos(delta)) + ep_2[1])
             # Calculate new depth point intercept coords
-            l1 = ep_2[1] - new_slope * ep_2[0]
-            l2 = new_dp_y + new_dp_x / new_slope
-            new_dp_int_x = new_slope * (l2 - l1) / (new_slope ** 2 + 1)
-            new_dp_int_y = new_slope * new_dp_int_x + l1
+            # Vertical case
+            if ep_2[0] == ep_1[0]:
+                new_dp_int_x = x
+                new_dp_int_y = new_dp_y
+            # Horizontal case
+            elif new_slope == 0:
+                new_dp_int_x = new_dp_x
+                new_dp_int_y = y
+            else:
+                l1 = ep_2[1] - new_slope * ep_2[0]
+                l2 = new_dp_y + new_dp_x / new_slope
+                new_dp_int_x = new_slope * (l2 - l1) / (new_slope ** 2 + 1)
+                new_dp_int_y = new_slope * new_dp_int_x + l1
         elif "2" in self.name:
-            # Calculate new slope and angle between that and original slope
-            new_slope = (y - ep_1[1]) / (x - ep_1[0])
-            delta = math.atan(abs((slope - new_slope) / (1 + (slope * new_slope))))
+            # Calculate new slope
+            if ep_1[0] == x:
+                new_slope = math.pi / 2
+            else:
+                new_slope = (y - ep_1[1]) / (x - ep_1[0])
+            # Calculate delta
+            if ep_2[0] == ep_1[0]:
+                delta = slope - math.atan(abs(new_slope))
+            elif ep_1[0] == x:
+                delta = new_slope - math.atan(abs(slope))
+            else:
+                delta = math.atan(abs((slope - new_slope) / (1 + (slope * new_slope))))
             # Determine sign of delta
-            if y < ep_2[1]:
+            if new_slope < slope:
                 delta = - delta
             # Calculate new depth point coords
             new_dp_x = (((dp[0] - ep_1[0]) * math.cos(delta)) - ((dp[1] - ep_1[1]) * math.sin(delta)) + ep_1[0])
             new_dp_y = (((dp[0] - ep_1[0]) * math.sin(delta)) + ((dp[1] - ep_1[1]) * math.cos(delta)) + ep_1[1])
+            # Calculate new bezier point 1 coords
+            new_bp_1_x = (((bp_1[0] - ep_1[0]) * math.cos(delta)) - ((bp_1[1] - ep_1[1]) * math.sin(delta)) + ep_1[0])
+            new_bp_1_y = (((bp_1[0] - ep_1[0]) * math.sin(delta)) + ((bp_1[1] - ep_1[1]) * math.cos(delta)) + ep_1[1])
+            # Calculate new bezier point 2 coords
+            new_bp_2_x = (((bp_2[0] - ep_1[0]) * math.cos(delta)) - ((bp_2[1] - ep_1[1]) * math.sin(delta)) + ep_1[0])
+            new_bp_2_y = (((bp_2[0] - ep_1[0]) * math.sin(delta)) + ((bp_2[1] - ep_1[1]) * math.cos(delta)) + ep_1[1])
             # Calculate new depth point intercept coords
-            l1 = ep_1[1] - new_slope * ep_1[0]
-            l2 = new_dp_y + new_dp_x / new_slope
-            new_dp_int_x = new_slope * (l2 - l1) / (new_slope ** 2 + 1)
-            new_dp_int_y = new_slope * new_dp_int_x + l1
+            # Vertical case
+            if ep_2[0] == ep_1[0]:
+                new_dp_int_x = x
+                new_dp_int_y = new_dp_y
+            # Horizontal case
+            elif new_slope == 0:
+                new_dp_int_x = new_dp_x
+                new_dp_int_y = y
+            else:
+                l1 = ep_1[1] - new_slope * ep_1[0]
+                l2 = new_dp_y + new_dp_x / new_slope
+                new_dp_int_x = new_slope * (l2 - l1) / (new_slope ** 2 + 1)
+                new_dp_int_y = new_slope * new_dp_int_x + l1
         else:
             print("Name error")
         
@@ -233,13 +332,18 @@ class EndPoint(Widget):
         if "top" in self.name:
             self.parent.depth_point_intercept_top_prop = [new_dp_int_x, new_dp_int_y]
             self.parent.depth_point_top_prop = [new_dp_x, new_dp_y]
-            dp = self.parent.depth_point_top_prop
+            self.parent.bezier_point_1_top_prop = [new_bp_1_x, new_bp_1_y]
+            self.parent.bezier_point_2_top_prop = [new_bp_2_x, new_bp_2_y]
         elif "mid" in self.name:
             self.parent.depth_point_intercept_mid_prop = [new_dp_int_x, new_dp_int_y]
             self.parent.depth_point_mid_prop = [new_dp_x, new_dp_y]
+            self.parent.bezier_point_1_mid_prop = [new_bp_1_x, new_bp_1_y]
+            self.parent.bezier_point_2_mid_prop = [new_bp_2_x, new_bp_2_y]
         elif "btm" in self.name:
             self.parent.depth_point_intercept_btm_prop = [new_dp_int_x, new_dp_int_y]
             self.parent.depth_point_btm_prop = [new_dp_x, new_dp_y]
+            self.parent.bezier_point_1_btm_prop = [new_bp_1_x, new_bp_1_y]
+            self.parent.bezier_point_2_btm_prop = [new_bp_2_x, new_bp_2_y]
 
         # Sets and propogates changed coords
         # Try and rethink this - boil it down to a one liner.
@@ -490,12 +594,22 @@ class BezierPoint(Widget):
 
         # Set related depth point scatter property
         # Try and rethink this - boil it down to a one liner.
-        if self.name == "bezier_point_1_top":
-            self.parent.bezier_point_1_top_prop = [x, y]
-        elif self.name == "bezier_point_1_mid":
-            self.parent.bezier_point_1_mid_prop = [x, y]
-        elif self.name == "bezier_point_1_btm":
-            self.parent.bezier_point_1_btm_prop = [x, y]
+        if "1" in self.name:
+            if "top" in self.name:
+                self.parent.bezier_point_1_top_prop = [x, y]
+            elif "mid" in self.name:
+                self.parent.bezier_point_1_mid_prop = [x, y]
+            elif "btm" in self.name:
+                self.parent.bezier_point_1_btm_prop = [x, y]
+        elif "2" in self.name:
+            if "top" in self.name:
+                self.parent.bezier_point_2_top_prop = [x, y]
+            elif "mid" in self.name:
+                self.parent.bezier_point_2_mid_prop = [x, y]
+            elif "btm" in self.name:
+                self.parent.bezier_point_2_btm_prop = [x, y]
+        else:
+            print("Name Error")
             
         # Set widget position
         self.center = (x, y)
@@ -539,17 +653,10 @@ class MainLine(Widget):
         # Have to make this custom to be in the line
         pass
 
-    # def on_touch_down(self, touch):
-
-    # def on_touch_move(self, touch):
-    
-    # def on_touch_up(self, touch):
-
 class DepthLine(MainLine):
     def update_line(self, intercept, value):
         self.inner.points = intercept + value
         self.outer.points = intercept + value
-
 
 class BezierLine(Widget):
     name = StringProperty()
@@ -567,14 +674,19 @@ class BezierLine(Widget):
             
     def update_line(self, point, control, value):
         if point == 1:
-            if control == "cp":
+            if control == "bp":
                 self.bline.points = self.bline.points[:2] + value + self.bline.points[4:]
             elif control == "ep":
                 self.bline.points = value + self.bline.points[2:]
             elif control == "dp":
                 self.bline.points = self.bline.points[:4] + value
-        # elif point == 2:
-        #     self.bline.points = self.outer.points[:2] + value
+        elif point == 2:
+            if control == "bp":
+                self.bline.points = self.bline.points[:2] + value + self.bline.points[4:]
+            elif control == "ep":
+                self.bline.points = self.bline.points[:4] + value
+            elif control == "dp":
+                self.bline.points = value + self.bline.points[2:]
 
 
 ######################################################################################################
@@ -621,6 +733,7 @@ class SplineScreen(Screen):
             depth_point_coords = (win.width * 0.50, win.height * 0.25)
             depth_point_intercept_coords = (win.width * 0.50, win.height * 0.50)
             bezier_point_1_coords = (win.width * 0.25, win.height * 0.25)
+            bezier_point_2_coords = (win.width * 0.75, win.height * 0.25)
             # Instantiating the chord elements
             main_line = MainLine(name=f"main_line_{btn_name}", points=list(end_point_1_coords + end_point_2_coords))
             end_point_1 = EndPoint(name=f"end_point_1_{btn_name}", center=end_point_1_coords)
@@ -628,7 +741,9 @@ class SplineScreen(Screen):
             depth_point = DepthPoint(name=f"depth_point_{btn_name}", center=depth_point_coords)
             depth_line = DepthLine(name=f"depth_line_{btn_name}", points=list(depth_point_intercept_coords + depth_point_coords))
             bezier_point_1 = BezierPoint(name=f"bezier_point_1_{btn_name}", center=bezier_point_1_coords)
+            bezier_point_2 = BezierPoint(name=f"bezier_point_2_{btn_name}", center=bezier_point_2_coords)
             bezier_line_1 = BezierLine(name=f"bezier_line_1_{btn_name}", points=list(end_point_1_coords + bezier_point_1_coords + depth_point_coords))
+            bezier_line_2 = BezierLine(name=f"bezier_line_2_{btn_name}", points=list(end_point_2_coords + bezier_point_2_coords + depth_point_coords))
             # Adding chord elements to scatter
             self.ids.scatter.add_widget(depth_line)
             self.ids.scatter.add_widget(main_line)
@@ -636,23 +751,31 @@ class SplineScreen(Screen):
             self.ids.scatter.add_widget(end_point_2)
             self.ids.scatter.add_widget(depth_point)
             self.ids.scatter.add_widget(bezier_point_1)
+            self.ids.scatter.add_widget(bezier_point_2)
             self.ids.scatter.add_widget(bezier_line_1)
+            self.ids.scatter.add_widget(bezier_line_2)
             # Setting the related scatter properties to initial element position
             if btn_name == "top":
                 self.ids.scatter.end_point_1_top_prop = end_point_1_coords
                 self.ids.scatter.end_point_2_top_prop = end_point_2_coords
                 self.ids.scatter.depth_point_top_prop = depth_point_coords
                 self.ids.scatter.depth_point_intercept_top_prop = depth_point_coords
+                self.ids.scatter.bezier_point_1_top_prop = bezier_point_1_coords
+                self.ids.scatter.bezier_point_2_top_prop = bezier_point_2_coords
             elif btn_name == "mid":
                 self.ids.scatter.end_point_1_mid_prop = end_point_1_coords
                 self.ids.scatter.end_point_2_mid_prop = end_point_2_coords
                 self.ids.scatter.depth_point_mid_prop = depth_point_coords
                 self.ids.scatter.depth_point_intercept_mid_prop = depth_point_coords
+                self.ids.scatter.bezier_point_1_mid_prop = bezier_point_1_coords
+                self.ids.scatter.bezier_point_2_mid_prop = bezier_point_2_coords
             elif btn_name == "btm":
                 self.ids.scatter.end_point_1_btm_prop = end_point_1_coords
                 self.ids.scatter.end_point_2_btm_prop = end_point_2_coords
                 self.ids.scatter.depth_point_btm_prop = depth_point_coords
                 self.ids.scatter.depth_point_intercept_btm_prop = depth_point_coords
+                self.ids.scatter.bezier_point_1_btm_prop = bezier_point_1_coords
+                self.ids.scatter.bezier_point_2_btm_prop = bezier_point_2_coords
 
 
 class SM(ScreenManager):
