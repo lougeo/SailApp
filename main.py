@@ -18,6 +18,7 @@ from kivy.properties import ObjectProperty, StringProperty, ListProperty, Config
 from kivy.graphics import Color, Rectangle, Point, Line, Ellipse
 
 import time
+import math
 
 
 class MainScatter(Scatter):
@@ -40,18 +41,16 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(1, value)
-            # if hasattr(child, "name") and child.name == "depth_point_top":
-            #     child.translate_point(1,  value)
 
     def on_end_point_2_top_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(2, value)
-            # if hasattr(child, "name") and child.name == "depth_point_top":
-            #     child.translate_point(2, value)
 
     def on_depth_point_top_prop(self, instance, value):
         for child in self.children:
+            if hasattr(child, "name") and child.name == "depth_point_top":
+                child.center = value
             if hasattr(child, "name") and child.name == "depth_line_top":
                 child.update_line(self.depth_point_intercept_top_prop, value)
 
@@ -59,18 +58,16 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(1, value)
-            # if hasattr(child, "name") and child.name == "depth_point_mid":
-            #     child.translate_point(1, value)
 
     def on_end_point_2_mid_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(2, value)
-            # if hasattr(child, "name") and child.name == "depth_point_mid":
-            #     child.translate_point(2, value)
 
     def on_depth_point_mid_prop(self, instance, value):
         for child in self.children:
+            if hasattr(child, "name") and child.name == "depth_point_mid":
+                child.center = value
             if hasattr(child, "name") and child.name == "depth_line_mid":
                 child.update_line(self.depth_point_intercept_mid_prop, value)
                 
@@ -78,18 +75,16 @@ class MainScatter(Scatter):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(1, value)
-            # if hasattr(child, "name") and child.name == "depth_point_btm":
-            #     child.translate_point(1, value)
 
     def on_end_point_2_btm_prop(self, instance, value):
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(2, value)
-            # if hasattr(child, "name") and child.name == "depth_point_btm":
-            #     child.translate_point(2, value)
 
     def on_depth_point_btm_prop(self, instance, value):
         for child in self.children:
+            if hasattr(child, "name") and child.name == "depth_point_mid":
+                child.center = value
             if hasattr(child, "name") and child.name == "depth_line_btm":
                 child.update_line(self.depth_point_intercept_btm_prop, value)
 
@@ -147,31 +142,89 @@ class EndPoint(Widget):
             y = touch.y
 
         # TRANSLATING DEPTH POINT
-        # Retrieve necessary current point data
+        # Retrieve necessary original point data
         if "top" in self.name:
             ep_1 = self.parent.end_point_1_top_prop
             ep_2 = self.parent.end_point_2_top_prop
-            intercept = self.parent.depth_point_intercept_top_prop
+            dp = self.parent.depth_point_top_prop
         elif "mid" in self.name:
             ep_1 = self.parent.end_point_1_mid_prop
             ep_2 = self.parent.end_point_2_mid_prop
-            intercept = self.parent.depth_point_intercept_mid_prop
+            dp = self.parent.depth_point_mid_prop
         elif "btm" in self.name:
             ep_1 = self.parent.end_point_1_btm_prop
             ep_2 = self.parent.end_point_2_btm_prop
-            intercept = self.parent.depth_point_intercept_btm_prop
-        # Distance from the intercept to each end point
-        df_ep_1 =  abs(((ep_1[0] - intercept[0]) ** 2 + (ep_1[1] - intercept[1]) ** 2) ** (1/2))
-        df_ep_2 =  abs(((ep_2[0] - intercept[0]) ** 2 + (ep_2[1] - intercept[1]) ** 2) ** (1/2))
+            dp = self.parent.depth_point_btm_prop
+        # Caluclate original slope
+        slope = (ep_2[1] - ep_1[1]) / (ep_2[0] - ep_1[0])
         # Calculate new intercept point from non moving end point
         if "1" in self.name:
-            new_slope = (ep_2[1] - y) / (ep_2[0] - x)
-            #Continue here
+            # # Calculate new slope and angle between that and original slope
+            # if ep_2[0] == x or ep_2[1] == y:
+            #     new_slope = 0.001
+            # else:
+            #     new_slope = (ep_2[1] - y) / (ep_2[0] - x)
+            # delta = math.atan(abs((slope - new_slope) / (1 + (slope * new_slope))))
+            # # Determine sign of delta
+            # if y < ep_1[1]:
+            #     delta = - delta
+            # # Calculate new depth point coords
+            # new_dp_x = (((dp[0] - ep_2[0]) * math.cos(delta)) - ((dp[1] - ep_2[1]) * math.sin(delta)) + ep_2[0])
+            # new_dp_y = (((dp[0] - ep_2[0]) * math.sin(delta)) + ((dp[1] - ep_2[1]) * math.cos(delta)) + ep_2[1])
+            # # Calculate new depth point intercept coords
+            # l1 = ep_2[1] - new_slope * ep_2[0]
+            # l2 = new_dp_y + new_dp_x / new_slope
+            # new_dp_int_x = new_slope * (l2 - l1) / (new_slope ** 2 + 1)
+            # new_dp_int_y = new_slope * new_dp_int_x + l1
+            # Calculate new slope and angle between that and original slope
+            if x == ep_2[0] or ep_2[1] == y:
+                new_slope = 0.001
+            else:
+                new_slope = (y - ep_2[1]) / (x - ep_2[0])
+            delta = math.atan(abs((slope - new_slope) / (1 + (slope * new_slope))))
+            # Determine sign of delta
+            if y < ep_2[1]:
+                delta = - delta
+            # Calculate new depth point coords
+            new_dp_x = (((dp[0] - ep_2[0]) * math.cos(delta)) - ((dp[1] - ep_2[1]) * math.sin(delta)) + ep_2[0])
+            new_dp_y = (((dp[0] - ep_2[0]) * math.sin(delta)) + ((dp[1] - ep_2[1]) * math.cos(delta)) + ep_2[1])
+            # Calculate new depth point intercept coords
+            l1 = ep_2[1] - new_slope * ep_2[0]
+            l2 = new_dp_y + new_dp_x / new_slope
+            new_dp_int_x = new_slope * (l2 - l1) / (new_slope ** 2 + 1)
+            new_dp_int_y = new_slope * new_dp_int_x + l1
         elif "2" in self.name:
-            new_slope = (y - ep_1[1]) / (x - ep_1[0])
+            # Calculate new slope and angle between that and original slope
+            if x == ep_1[0] or y == ep_1[1]:
+                new_slope = 0.001
+            else:
+                new_slope = (y - ep_1[1]) / (x - ep_1[0])
+            delta = math.atan(abs((slope - new_slope) / (1 + (slope * new_slope))))
+            # Determine sign of delta
+            if y < ep_2[1]:
+                delta = - delta
+            # Calculate new depth point coords
+            new_dp_x = (((dp[0] - ep_1[0]) * math.cos(delta)) - ((dp[1] - ep_1[1]) * math.sin(delta)) + ep_1[0])
+            new_dp_y = (((dp[0] - ep_1[0]) * math.sin(delta)) + ((dp[1] - ep_1[1]) * math.cos(delta)) + ep_1[1])
+            # Calculate new depth point intercept coords
+            l1 = ep_1[1] - new_slope * ep_1[0]
+            l2 = new_dp_y + new_dp_x / new_slope
+            new_dp_int_x = new_slope * (l2 - l1) / (new_slope ** 2 + 1)
+            new_dp_int_y = new_slope * new_dp_int_x + l1
         else:
             print("Name error")
         
+        # Set and propogate new depth point and depth point intercept coords
+        if "top" in self.name:
+            self.parent.depth_point_intercept_top_prop = [new_dp_int_x, new_dp_int_y]
+            self.parent.depth_point_top_prop = [new_dp_x, new_dp_y]
+            dp = self.parent.depth_point_top_prop
+        elif "mid" in self.name:
+            self.parent.depth_point_intercept_mid_prop = [new_dp_int_x, new_dp_int_y]
+            self.parent.depth_point_mid_prop = [new_dp_x, new_dp_y]
+        elif "btm" in self.name:
+            self.parent.depth_point_intercept_btm_prop = [new_dp_int_x, new_dp_int_y]
+            self.parent.depth_point_btm_prop = [new_dp_x, new_dp_y]
 
         # Sets and propogates changed coords
         # Try and rethink this - boil it down to a one liner.
