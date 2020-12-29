@@ -22,6 +22,14 @@ SM:
 <SplineButton@Button>:
     size_hint: 0.2, 0.2
 
+<ResultsCard>
+    canvas.before:
+        Color:
+            rgba: 1., 1., 1., 0.8
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
 <MainMenuScreen>:
     name: "main_menu"
     FloatLayout:
@@ -109,18 +117,17 @@ SM:
     FloatLayout:
         id: spline_screen_util_btns
 
+        # FloatLayout:
+        #     id: results_layout
+        #     pos_hint: {"x": 0.5, "y": 0.5}
+        #     size_hint: (0.3, 0.5)
+
         SplineButton:
             text: "Back"
             pos_hint: {"x": 0.8, "y": 0.8}
             on_release: 
                 root.manager.transition.direction = "right"
                 app.root.current = "camera_screen"
-
-        # ToggleButton:
-        #     text: "Add"
-        #     size_hint: 0.2, 0.2
-        #     pos_hint: {"x": 0, "y": 0}
-        #     on_state: root.on_state(self)
 
         SplineButton:
             name: "top"
@@ -141,8 +148,10 @@ SM:
             on_release: root.add_chord(self.name)
 
         SplineButton:
+            name: "run"
             text: "RUN"
             pos_hint: {"x": 0.8, "y": 0}
+            on_release: root.show_results()
 
         
 

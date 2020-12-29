@@ -3,6 +3,7 @@ kivy.require('2.0.0')
 
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.uix.layout import Layout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -13,15 +14,38 @@ from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.properties import ObjectProperty, StringProperty, ListProperty, ConfigParserProperty
+from kivy.properties import ObjectProperty, StringProperty, ListProperty
 
 from kivy.graphics import Color, Rectangle, Point, Line, Ellipse, Bezier
 
 import time
 import math
 
+def calculate_thickness(EP1, EP2, DP, INT):
+    if len(EP1) > 0 and len(EP2) > 0 and len(DP) > 0 and len(INT) > 0:
+        depth_len = math.sqrt((DP[0] - INT[0]) ** 2 + (DP[1] - INT[1]) ** 2)
+        chord_len = math.sqrt((EP1[0] - EP2[0]) ** 2 + (EP1[1] - EP2[1]) ** 2)
+        thickness = round(depth_len / chord_len, 3)
+        return str(thickness)
+    else:
+        return "N/A"
+    
+def calculate_camber(EP1, EP2, DP, INT):
+    if len(EP1) > 0 and len(EP2) > 0 and len(DP) > 0 and len(INT) > 0:
+        ep1_len = math.sqrt((EP1[0] - INT[0]) ** 2 + (EP1[1] - INT[1]) ** 2)
+        ep2_len = math.sqrt((EP2[0] - INT[0]) ** 2 + (EP2[1] - INT[1]) ** 2)
+        chord_len = math.sqrt((EP1[0] - EP2[0]) ** 2 + (EP1[1] - EP2[1]) ** 2)
+        if ep1_len <= ep2_len:
+            camber = round(ep1_len / chord_len, 3)
+        else:
+            camber = round(ep2_len / chord_len, 3)
+        return str(camber)
+    else:
+        return "N/A"
 
 class MainScatter(Scatter):
+
+    ###########################    CHORD PIECES    ###########################
     end_point_1_top_prop = ListProperty([])
     end_point_2_top_prop = ListProperty([])
     depth_point_top_prop = ListProperty([])
@@ -43,8 +67,24 @@ class MainScatter(Scatter):
     bezier_point_1_btm_prop = ListProperty([])
     bezier_point_2_btm_prop = ListProperty([])
 
+    
+    ###########################    RESULTS    ###########################
+    top_thickness_prop = StringProperty()
+    mid_thickness_prop = StringProperty()
+    btm_thickness_prop = StringProperty()
+
+    top_camber_prop = StringProperty()
+    mid_camber_prop = StringProperty()
+    btm_camber_prop = StringProperty()
+
     ###########################    TOP    ###########################
     def on_end_point_1_top_prop(self, instance, value):
+        self.top_thickness_prop = calculate_thickness(
+            value, self.end_point_2_top_prop, self.depth_point_top_prop, self.depth_point_intercept_top_prop
+        )
+        self.top_camber_prop = calculate_camber(
+            value, self.end_point_2_top_prop, self.depth_point_top_prop, self.depth_point_intercept_top_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(1, value)
@@ -52,6 +92,12 @@ class MainScatter(Scatter):
                 child.update_line(1, "ep", value)
 
     def on_end_point_2_top_prop(self, instance, value):
+        self.top_thickness_prop = calculate_thickness(
+            self.end_point_1_top_prop, value, self.depth_point_top_prop, self.depth_point_intercept_top_prop
+        )
+        self.top_camber_prop = calculate_camber(
+            self.end_point_1_top_prop, value, self.depth_point_top_prop, self.depth_point_intercept_top_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_top":
                 child.update_line(2, value)
@@ -59,6 +105,12 @@ class MainScatter(Scatter):
                 child.update_line(2, "ep", value)
 
     def on_depth_point_top_prop(self, instance, value):
+        self.top_thickness_prop = calculate_thickness(
+            self.end_point_1_top_prop, self.end_point_2_top_prop, value, self.depth_point_intercept_top_prop
+        )
+        self.top_camber_prop = calculate_camber(
+            self.end_point_1_top_prop, self.end_point_2_top_prop, value, self.depth_point_intercept_top_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "depth_point_top":
                 child.center = value
@@ -86,6 +138,12 @@ class MainScatter(Scatter):
 
     ###########################    MID    ###########################
     def on_end_point_1_mid_prop(self, instance, value):
+        self.mid_thickness_prop = calculate_thickness(
+            value, self.end_point_2_mid_prop, self.depth_point_mid_prop, self.depth_point_intercept_mid_prop
+        )
+        self.mid_camber_prop = calculate_camber(
+            value, self.end_point_2_mid_prop, self.depth_point_mid_prop, self.depth_point_intercept_mid_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(1, value)
@@ -93,6 +151,12 @@ class MainScatter(Scatter):
                 child.update_line(1, "ep", value)
 
     def on_end_point_2_mid_prop(self, instance, value):
+        self.mid_thickness_prop = calculate_thickness(
+            self.end_point_1_mid_prop, value, self.depth_point_mid_prop, self.depth_point_intercept_mid_prop
+        )
+        self.mid_camber_prop = calculate_camber(
+            self.end_point_1_mid_prop, value, self.depth_point_mid_prop, self.depth_point_intercept_mid_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_mid":
                 child.update_line(2, value)
@@ -100,6 +164,12 @@ class MainScatter(Scatter):
                 child.update_line(2, "ep", value)
 
     def on_depth_point_mid_prop(self, instance, value):
+        self.mid_thickness_prop = calculate_thickness(
+            self.end_point_1_mid_prop, self.end_point_2_mid_prop, value, self.depth_point_intercept_mid_prop
+        )
+        self.mid_camber_prop = calculate_camber(
+            self.end_point_1_mid_prop, self.end_point_2_mid_prop, value, self.depth_point_intercept_mid_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "depth_point_mid":
                 child.center = value
@@ -126,6 +196,12 @@ class MainScatter(Scatter):
     
     ###########################    BTM    ###########################
     def on_end_point_1_btm_prop(self, instance, value):
+        self.btm_thickness_prop = calculate_thickness(
+            value, self.end_point_2_btm_prop, self.depth_point_btm_prop, self.depth_point_intercept_btm_prop
+        )
+        self.btm_camber_prop = calculate_camber(
+            value, self.end_point_2_btm_prop, self.depth_point_btm_prop, self.depth_point_intercept_btm_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(1, value)
@@ -133,6 +209,12 @@ class MainScatter(Scatter):
                 child.update_line(1, "ep", value)
 
     def on_end_point_2_btm_prop(self, instance, value):
+        self.btm_thickness_prop = calculate_thickness(
+            self.end_point_1_btm_prop, value, self.depth_point_btm_prop, self.depth_point_intercept_btm_prop
+        )
+        self.btm_camber_prop = calculate_camber(
+            self.end_point_1_btm_prop, value, self.depth_point_btm_prop, self.depth_point_intercept_btm_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "main_line_btm":
                 child.update_line(2, value)
@@ -140,6 +222,12 @@ class MainScatter(Scatter):
                 child.update_line(2, "ep", value)
 
     def on_depth_point_btm_prop(self, instance, value):
+        self.btm_thickness_prop = calculate_thickness(
+            self.end_point_1_btm_prop, self.end_point_2_btm_prop, value, self.depth_point_intercept_btm_prop
+        )
+        self.btm_camber_prop = calculate_camber(
+            self.end_point_1_btm_prop, self.end_point_2_btm_prop, value, self.depth_point_intercept_btm_prop
+        )
         for child in self.children:
             if hasattr(child, "name") and child.name == "depth_point_btm":
                 child.center = value
@@ -163,7 +251,38 @@ class MainScatter(Scatter):
                 child.center = value
             if hasattr(child, "name") and child.name == "bezier_line_2_btm":
                 child.update_line(2, "bp", value)
+                
+    ###########################    RESULTS    ###########################
 
+    def on_top_thickness_prop(self, instance, value):
+        for child in self.parent.parent.children[0].children:
+            if hasattr(child, "name") and "results_card" in child.name:
+                child.children[2].children[1].children[0].text = value
+                
+    def on_mid_thickness_prop(self, instance, value):
+        for child in self.parent.parent.children[0].children:
+            if hasattr(child, "name") and "results_card" in child.name:
+                child.children[1].children[1].children[0].text = value
+                
+    def on_btm_thickness_prop(self, instance, value):
+        for child in self.parent.parent.children[0].children:
+            if hasattr(child, "name") and "results_card" in child.name:
+                child.children[0].children[1].children[0].text = value
+
+    def on_top_camber_prop(self, instance, value):
+        for child in self.parent.parent.children[0].children:
+            if hasattr(child, "name") and "results_card" in child.name:
+                child.children[2].children[0].children[0].text = value
+                
+    def on_mid_camber_prop(self, instance, value):
+        for child in self.parent.parent.children[0].children:
+            if hasattr(child, "name") and "results_card" in child.name:
+                child.children[1].children[0].children[0].text = value
+                
+    def on_btm_camber_prop(self, instance, value):
+        for child in self.parent.parent.children[0].children:
+            if hasattr(child, "name") and "results_card" in child.name:
+                child.children[0].children[0].children[0].text = value
 
 ###########################################################################################################
 #                                              POINTS                                                     #
@@ -688,9 +807,16 @@ class BezierLine(Widget):
             elif control == "dp":
                 self.bline.points = value + self.bline.points[2:]
 
+######################################################################################################
+#                                             RESULTS WIDGET                                         #
+######################################################################################################
+
+class ResultsCard(GridLayout):
+    name = StringProperty()
+    
 
 ######################################################################################################
-#                                              Screens                                               #
+#                                              SCREENS                                               #
 ######################################################################################################
 
 
@@ -726,7 +852,7 @@ class SplineScreen(Screen):
             for widget in garbage:
                 self.ids.scatter.remove_widget(widget)
         else:
-            # Getting arbitrary starting point for coord
+            # Getting arbitrary starting points for coord
             win = self.get_parent_window()
             end_point_1_coords = (win.width * 0.25, win.height * 0.50)
             end_point_2_coords = (win.width * 0.75, win.height * 0.50)
@@ -776,14 +902,77 @@ class SplineScreen(Screen):
                 self.ids.scatter.depth_point_intercept_btm_prop = depth_point_coords
                 self.ids.scatter.bezier_point_1_btm_prop = bezier_point_1_coords
                 self.ids.scatter.bezier_point_2_btm_prop = bezier_point_2_coords
+    
+    def show_results(self):
+        garbage = []
+        for child in self.children[0].children:
+            if hasattr(child, "name") and child.name == "results_card":
+                garbage.append(child)
+        if len(garbage) > 0:
+            for widget in garbage:
+                self.ids.spline_screen_util_btns.remove_widget(widget)
+        else:
+            # Instantiate and add results widget
+            win = self.get_parent_window()
+            # results_card = ResultsCard(name="results_card", pos=(0, win.height - 400), size=(200, 400))
+            results_card = ResultsCard(name="results_card", pos_hint={"x":0, "y":0.5}, size_hint=(0.3, 0.5), rows=3)
+            top_layout = GridLayout(rows=3)
+            mid_layout = GridLayout(rows=3)
+            btm_layout = GridLayout(rows=3)
+            top_label = Label(text="TOP", color=(1.,0,0))
+            mid_label = Label(text="MID", color=(0,1.,0))
+            btm_label = Label(text="BTM", color=(0,0,1.))
+            top_thickness = GridLayout(cols=2)
+            mid_thickness = GridLayout(cols=2)
+            btm_thickness = GridLayout(cols=2)
+            top_camber = GridLayout(cols=2)
+            mid_camber = GridLayout(cols=2)
+            btm_camber = GridLayout(cols=2)
+            top_thickness_label = Label(text="Thickness", color=(1.,0,0))
+            mid_thickness_label = Label(text="Thickness", color=(0,1.,0))
+            btm_thickness_label = Label(text="Thickness", color=(0,0,1.))
+            top_thickness_value = Label(text=self.ids.scatter.top_thickness_prop, color=(1.,0,0))
+            mid_thickness_value = Label(text=self.ids.scatter.mid_thickness_prop, color=(0,1.,0))
+            btm_thickness_value = Label(text=self.ids.scatter.btm_thickness_prop, color=(0,0,1.))
+            top_camber_label = Label(text="Camber", color=(1.,0,0))
+            mid_camber_label = Label(text="Camber", color=(0,1.,0))
+            btm_camber_label = Label(text="Camber", color=(0,0,1.))
+            top_camber_value = Label(text=self.ids.scatter.top_camber_prop, color=(1.,0,0))
+            mid_camber_value = Label(text=self.ids.scatter.mid_camber_prop, color=(0,1.,0))
+            btm_camber_value = Label(text=self.ids.scatter.btm_camber_prop, color=(0,0,1.))
+            results_card.add_widget(top_layout)
+            results_card.add_widget(mid_layout)
+            results_card.add_widget(btm_layout)
+            top_layout.add_widget(top_label)
+            top_layout.add_widget(top_thickness)
+            top_layout.add_widget(top_camber)
+            mid_layout.add_widget(mid_label)
+            mid_layout.add_widget(mid_thickness)
+            mid_layout.add_widget(mid_camber)
+            btm_layout.add_widget(btm_label)
+            btm_layout.add_widget(btm_thickness)
+            btm_layout.add_widget(btm_camber)
+            top_thickness.add_widget(top_thickness_label)
+            top_thickness.add_widget(top_thickness_value)
+            mid_thickness.add_widget(mid_thickness_label)
+            mid_thickness.add_widget(mid_thickness_value)
+            btm_thickness.add_widget(btm_thickness_label)
+            btm_thickness.add_widget(btm_thickness_value)
+            top_camber.add_widget(top_camber_label)
+            top_camber.add_widget(top_camber_value)
+            mid_camber.add_widget(mid_camber_label)
+            mid_camber.add_widget(mid_camber_value)
+            btm_camber.add_widget(btm_camber_label)
+            btm_camber.add_widget(btm_camber_value)
+
+            self.ids.spline_screen_util_btns.add_widget(results_card)
+    
 
 
 class SM(ScreenManager):
     pass
 
-
 kv = Builder.load_file("SailApp.kv")
-
 
 class MainApp(App):
     Title = "Sail App"
@@ -791,7 +980,6 @@ class MainApp(App):
 
     def build(self):
         return kv
-
 
 if __name__ == '__main__':
     MainApp().run()
