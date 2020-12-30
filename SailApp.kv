@@ -4,6 +4,7 @@
 SM:
     MainMenuScreen:
     CameraScreen:
+    FileChooserScreen:
     SplineScreen:
 
 
@@ -51,9 +52,12 @@ SM:
                 root.manager.transition.direction = "left"
                 app.root.current = "camera_screen"
 
-        GalleryButton:
+        GalleryButton: 
             text: "From Gallery"
             pos_hint: {"x": 0.2, "y": 0.3}
+            on_release:
+                root.manager.transition.direction = "left"
+                app.root.current = "file_chooser"
             
         SmMenuButton:
             text: "Account"
@@ -93,6 +97,27 @@ SM:
             pos_hint: {"x": 0.8, "y": 0.8}
             height: '48dp'
 
+<FileChooserScreen>:
+    name: "file_chooser"
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: 
+                    root.manager.transition.direction = "right"
+                    app.root.current = "main_menu"
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
 
 <SplineScreen>:
     name: "spline_screen"

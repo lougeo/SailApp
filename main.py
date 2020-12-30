@@ -14,6 +14,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.uix.filechooser import FileChooserIconView
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 
 from kivy.graphics import Color, Rectangle, Point, Line, Ellipse, Bezier
@@ -837,6 +838,13 @@ class CameraScreen(Screen):
         self.manager.current = "spline_screen"
         self.manager.get_screen('spline_screen').img_src = file_name
 
+class FileChooserScreen(Screen):
+    
+    def load(self, path, selection):
+        file_name = selection[0]
+        self.manager.transition.direction = "left"
+        self.manager.current = "spline_screen"
+        self.manager.get_screen('spline_screen').img_src = file_name
 
 class SplineScreen(Screen):
     img_src = StringProperty("")
