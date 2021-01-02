@@ -22,6 +22,13 @@ from kivy.graphics import Color, Rectangle, Point, Line, Ellipse, Bezier
 import time
 import math
 
+from android.permissions import request_permissions, Permission
+request_permissions([
+    Permission.CAMERA,
+    Permission.READ_EXTERNAL_STORAGE, 
+    Permission.WRITE_EXTERNAL_STORAGE,
+])
+
 def calculate_thickness(EP1, EP2, DP, INT):
     if len(EP1) > 0 and len(EP2) > 0 and len(DP) > 0 and len(INT) > 0:
         depth_len = math.sqrt((DP[0] - INT[0]) ** 2 + (DP[1] - INT[1]) ** 2)
@@ -984,7 +991,7 @@ kv = Builder.load_file("SailApp.kv")
 
 class MainApp(App):
     Title = "Sail App"
-    icon = "SMlogo.jpg"
+    # icon = "SMlogo.jpg"
 
     def build(self):
         return kv
