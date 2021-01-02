@@ -1,6 +1,6 @@
 #:kivy 2.0.0
 #:import Button kivy.uix.button.Button
-#:import platform kivy.utils
+#:import platform kivy.utils.platform
 
 SM:
     MainMenuScreen:
@@ -108,7 +108,7 @@ SM:
         orientation: "vertical"
         FileChooserListView:
             id: filechooser
-            rootpath: '/storage/emulated/0/' if platform == 'android' else '/'
+            # rootpath: '/storage/emulated/0/' if platform == 'android' else '/Documents/'
 
         BoxLayout:
             size_hint_y: None
