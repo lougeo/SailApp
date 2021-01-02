@@ -15,6 +15,7 @@ from kivy.uix.scatter import Scatter
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.uix.filechooser import FileChooserIconView
+from kivy.utils import platform
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 
 from kivy.graphics import Color, Rectangle, Point, Line, Ellipse, Bezier
@@ -22,12 +23,13 @@ from kivy.graphics import Color, Rectangle, Point, Line, Ellipse, Bezier
 import time
 import math
 
-from android.permissions import request_permissions, Permission
-request_permissions([
-    Permission.CAMERA,
-    Permission.READ_EXTERNAL_STORAGE, 
-    Permission.WRITE_EXTERNAL_STORAGE,
-])
+if platform == "android":
+    from android.permissions import request_permissions, Permission
+    request_permissions([
+        Permission.CAMERA,
+        Permission.READ_EXTERNAL_STORAGE, 
+        Permission.WRITE_EXTERNAL_STORAGE,
+    ])
 
 def calculate_thickness(EP1, EP2, DP, INT):
     if len(EP1) > 0 and len(EP2) > 0 and len(DP) > 0 and len(INT) > 0:

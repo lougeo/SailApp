@@ -1,5 +1,6 @@
 #:kivy 2.0.0
 #:import Button kivy.uix.button.Button
+#:import platform kivy.utils
 
 SM:
     MainMenuScreen:
@@ -70,13 +71,15 @@ SM:
 
 <CameraScreen>:
     name: "camera_screen"
-    BoxLayout:
+    FloatLayout:
+        # BoxLayout:
         Camera:
             id: camera
+            # size: (root.width, root.height)
             resolution: [-1, -1] # default
             play: True
 
-    FloatLayout:
+        # FloatLayout:
         Button:
             text: 'Capture'
             size_hint: 0.1, 0.1
@@ -105,6 +108,7 @@ SM:
         orientation: "vertical"
         FileChooserListView:
             id: filechooser
+            rootpath: '/storage/emulated/0/' if platform == 'android' else '/'
 
         BoxLayout:
             size_hint_y: None
