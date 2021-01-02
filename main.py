@@ -855,7 +855,7 @@ class CameraScreen(Screen):
 
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
-        self.manager.get_screen('spline_screen').img_src = file_name
+        self.manager.get_screen('spline_screen').img_src = full_path
 
 class FileChooserScreen(Screen):
     
