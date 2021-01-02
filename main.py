@@ -843,8 +843,10 @@ class CameraScreen(Screen):
         timestr = time.strftime("%Y%m%d_%H%M%S")
         file_name = "IMG_{}.png".format(timestr)
         if platform == "android":
+            print("HERE")
             from android.storage import primary_external_storage_path
             primary_dir = primary_external_storage_path()
+            print(f"PRIMARY DIR: {primary_dir}")
             full_path = primary_dir + file_name
         else:
             full_path = file_name
