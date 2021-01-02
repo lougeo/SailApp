@@ -850,6 +850,7 @@ class CameraScreen(Screen):
             full_path = primary_dir + file_name
         else:
             full_path = file_name
+        print(f"FULL DIR: {full_path}")
         camera.export_to_png(full_path)
 
         self.manager.transition.direction = "left"
