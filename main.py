@@ -841,7 +841,7 @@ class CameraScreen(Screen):
 
         camera = self.ids['camera']
         timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = "IMG_{}.png".format(timestr)
+        file_name = "/IMG_{}.png".format(timestr)
         if platform == "android":
             print("HERE")
             from android.storage import primary_external_storage_path
