@@ -72,15 +72,14 @@ SM:
 <CameraScreen>:
     name: "camera_screen"
     FloatLayout:
-        # BoxLayout:
-        #     orientation: "vertical"
-        Camera:
-            orientation: "vertical"
-            id: camera
-            # size: (root.width, root.height)
-            allow_stretch: True
-            resolution: [-1, -1] # default
-            play: True
+        ScatterLayout:
+            # orientation: "vertical"
+            Camera:
+                id: camera
+                # size: (root.width, root.height)
+                allow_stretch: True
+                resolution: [-1, -1] # default
+                play: True
 
         # FloatLayout:
         Button:
