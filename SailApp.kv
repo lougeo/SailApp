@@ -71,8 +71,9 @@ SM:
 
 <CameraScreen>:
     name: "camera_screen"
-    FloatLayout:
+    # FloatLayout:
     # ScatterLayout:
+    BoxLayout:
             # orientation: "vertical"
         Camera:
             id: camera
@@ -80,15 +81,15 @@ SM:
             allow_stretch: True
             resolution: [-1, -1] # default
             play: True
-            canvas.before:
-                PushMatrix
-                Rotate:
-                    angle: -90
-                    origin: self.center
-            canvas.after:
-                PopMatrix
+            # canvas.before:
+            #     PushMatrix
+            #     Rotate:
+            #         angle: -90
+            #         origin: self.center
+            # canvas.after:
+            #     PopMatrix
 
-        # FloatLayout:
+    FloatLayout:
         Button:
             text: 'Capture'
             size_hint: 0.1, 0.1
