@@ -1014,8 +1014,8 @@ class MainApp(App):
         if key == 27:
             self.manager.transition.direction = "left"
             self.manager.current = "main_menu"
-        #   else:
-        #      return False
+          else:
+             return False
     
     def on_pause(self):
         return True
