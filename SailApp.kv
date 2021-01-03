@@ -71,8 +71,8 @@ SM:
 
 <CameraScreen>:
     name: "camera_screen"
-    # FloatLayout:
-    ScatterLayout:
+    FloatLayout:
+    # ScatterLayout:
             # orientation: "vertical"
         Camera:
             id: camera
@@ -80,6 +80,13 @@ SM:
             allow_stretch: True
             resolution: [-1, -1] # default
             play: True
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: -90
+                    origin: self.center
+            canvas.after:
+                PopMatrix
 
         # FloatLayout:
         Button:
