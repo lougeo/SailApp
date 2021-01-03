@@ -842,16 +842,13 @@ class CameraScreen(Screen):
 
         camera = self.ids['camera']
         timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = "/IMG_{}.png".format(timestr)
+        file_name = "IMG_{}.png".format(timestr)
         if platform == "android":
-            print("HERE")
             from android.storage import primary_external_storage_path
             primary_dir = primary_external_storage_path()
-            print(f"PRIMARY DIR: {primary_dir}")
-            full_path = primary_dir + file_name
+            full_path = primary_dir + "/" + file_name
         else:
             full_path = file_name
-        print(f"FULL DIR: {full_path}")
         camera.export_to_png(full_path)
 
         self.manager.transition.direction = "left"
@@ -1000,20 +997,20 @@ class SplineScreen(Screen):
 class SM(ScreenManager):
     pass
 
-kv = Builder.load_file("SailApp.kv")
 
 class MainApp(App):
     Title = "Sail App"
     # icon = "SMlogo.jpg"
 
     def build(self):
+        kv = Builder.load_file("SailApp.kv")
         Window.bind(on_keyboard=self.key_input)
         return kv
 
     def key_input(self, window, key, scancode, codepoint, modifier):
         if key == 27:
-            self.manager.transition.direction = "left"
-            self.manager.current = "main_menu"
+            # Makes it so it doesn't crash, but need to figure out how to change screen
+            return True
         else:
             return False
     
