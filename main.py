@@ -2,6 +2,7 @@ import kivy
 kivy.require('2.0.0')
 
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.layout import Layout
 from kivy.uix.floatlayout import FloatLayout
@@ -1006,7 +1007,18 @@ class MainApp(App):
     # icon = "SMlogo.jpg"
 
     def build(self):
+        Window.bind(on_keyboard=self.key_input)
         return kv
+
+    def key_input(self, window, key, scancode, codepoint, modifier):
+        if key == 27:
+            self.manager.transition.direction = "left"
+            self.manager.current = "main_menu"
+        #   else:
+        #      return False
+    
+    def on_pause(self):
+        return True
 
 if __name__ == '__main__':
     MainApp().run()
