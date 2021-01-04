@@ -75,6 +75,12 @@ SM:
     # ScatterLayout:
     BoxLayout:
         id:camera_parent
+        canvas.before:
+            Color: 
+                rgba: 1., 0, 0, 0
+            Rectangle:
+                pos: self.pos
+                size: self.size
             # orientation: "vertical"
         Camera:
             id: camera
@@ -82,13 +88,13 @@ SM:
             allow_stretch: True
             resolution: [-1, -1] # default
             play: True
-            canvas.before:
-                PushMatrix
-                Rotate:
-                    angle: -90
-                    origin: self.center
-            canvas.after:
-                PopMatrix
+            # canvas.before:
+            #     PushMatrix
+            #     Rotate:
+            #         angle: -90
+            #         origin: self.center
+            # canvas.after:
+            #     PopMatrix
 
     FloatLayout:
         Button:
