@@ -16,6 +16,7 @@ from kivy.uix.scatter import Scatter
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.uix.filechooser import FileChooserIconView
+from kivy.uix.camera import Camera
 from kivy.utils import platform
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 
@@ -826,6 +827,13 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
     
+
+class XCamera(Camera):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.swidth = Window.size[1]
+        self.sheight = Window.size[0]
+        self.window_sizes = (self.swidth, self.sheight)
 
 ######################################################################################################
 #                                              SCREENS                                               #
