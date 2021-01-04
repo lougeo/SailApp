@@ -82,19 +82,23 @@ SM:
         #         pos: self.pos
         #         size: self.size
             # orientation: "vertical"
-        XCamera:
+        Camera:
             id: camera
             # size: (root.width, root.height)
             allow_stretch: True
             resolution: [-1, -1] # default
             play: True
-            canvas.before:
-                PushMatrix:
-                Rotate:
-                    angle: -90
-                    origin: self.center
-            canvas.after:
-                PopMatrix
+            # canvas.before:
+            #     PushMatrix:
+            #     Rotate:
+            #         angle: -90
+            #         origin: self.center
+            # canvas.after:
+            #     Color:
+            #         rgba: 1,1,1,1
+            #     Rectangle:
+            #         size: self.window_sizes
+            #     PopMatrix
 
     FloatLayout:
         Button:

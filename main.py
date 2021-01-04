@@ -828,12 +828,12 @@ class ResultsCard(GridLayout):
     name = StringProperty()
     
 
-class XCamera(Camera):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.swidth = Window.size[1]
-        self.sheight = Window.size[0]
-        self.window_sizes = (self.swidth, self.sheight)
+# class XCamera(Camera):
+#     def __init__(self, **kwargs):
+#         super().__init__(**kwargs)
+#         self.swidth = Window.size[1]
+#         self.sheight = Window.size[0]
+#         self.window_sizes = (self.swidth, self.sheight)
 
 ######################################################################################################
 #                                              SCREENS                                               #
