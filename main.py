@@ -827,7 +827,7 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
     
-from plyer.platforms.android import camera
+from plyer.platforms.android.camera import AndroidCamera
 # class XCamera(Camera):
 #     def __init__(self, **kwargs):
 #         super().__init__(**kwargs)
