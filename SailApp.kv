@@ -1,7 +1,7 @@
 #:kivy 2.0.0
 #:import Button kivy.uix.button.Button
 #:import platform kivy.utils.platform
-#:import PlyerCamera plyer.platforms.android.camera.AndroidCamera
+##:import PlyerCamera plyer.platforms.android.camera.AndroidCamera
 
 SM:
     MainMenuScreen:
@@ -76,7 +76,7 @@ SM:
     # ScatterLayout:
     BoxLayout:
         id:camera_parent
-        PlyerCamera:
+        XCamera:
         # Camera:
         #     id: camera
         #     allow_stretch: True
