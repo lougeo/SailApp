@@ -827,43 +827,43 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
     
-from plyer.platforms.android.camera import AndroidCamera
-# class XCamera(Camera):
-#     def __init__(self, **kwargs):
-#         super().__init__(**kwargs)
-#         self.swidth = Window.size[1]
-#         self.sheight = Window.size[0]
-#         self.window_sizes = (self.swidth, self.sheight)
+class XCamera(Camera):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.swidth = Window.size[1]
+        self.sheight = Window.size[0]
+        self.window_sizes = (self.swidth, self.sheight)
 
-class XCamera(FloatLayout):
-    def __init__(self):
-        super().__init__()
-        self.cwd = getcwd() + "/"
-        self.ids.path_label.text = self.cwd
+# from plyer.platforms.android.camera import AndroidCamera
+# class XCamera(FloatLayout):
+#     def __init__(self):
+#         super().__init__()
+#         self.cwd = getcwd() + "/"
+#         self.ids.path_label.text = self.cwd
 
-    def do_capture(self):
-        filepath = self.cwd + self.ids.filename_text.text
+#     def do_capture(self):
+#         filepath = self.cwd + self.ids.filename_text.text
 
-        if(exists(filepath)):
-            popup = MsgPopup("Picture with this name already exists!")
-            popup.open()
-            return False
+#         if(exists(filepath)):
+#             popup = MsgPopup("Picture with this name already exists!")
+#             popup.open()
+#             return False
 
-        try:
-            camera.take_picture(filename=filepath,
-                                on_complete=self.camera_callback)
-        except NotImplementedError:
-            popup = MsgPopup(
-                "This feature has not yet been implemented for this platform.")
-            popup.open()
+#         try:
+#             camera.take_picture(filename=filepath,
+#                                 on_complete=self.camera_callback)
+#         except NotImplementedError:
+#             popup = MsgPopup(
+#                 "This feature has not yet been implemented for this platform.")
+#             popup.open()
 
-    def camera_callback(self, filepath):
-        if(exists(filepath)):
-            popup = MsgPopup("Picture saved!")
-            popup.open()
-        else:
-            popup = MsgPopup("Could not save your picture!")
-            popup.open()
+#     def camera_callback(self, filepath):
+#         if(exists(filepath)):
+#             popup = MsgPopup("Picture saved!")
+#             popup.open()
+#         else:
+#             popup = MsgPopup("Could not save your picture!")
+#             popup.open()
 
 ######################################################################################################
 #                                              SCREENS                                               #
