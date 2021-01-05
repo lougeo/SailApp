@@ -1,6 +1,7 @@
 #:kivy 2.0.0
 #:import Button kivy.uix.button.Button
 #:import platform kivy.utils.platform
+#:import PlyerCamera plyer.facades.Camera
 
 SM:
     MainMenuScreen:
@@ -75,19 +76,12 @@ SM:
     # ScatterLayout:
     BoxLayout:
         id:camera_parent
-        # canvas.after:
-        #     Color: 
-        #         rgba: 1., 0, 0, 0
-        #     Rectangle:
-        #         pos: self.pos
-        #         size: self.size
-            # orientation: "vertical"
-        Camera:
-            id: camera
-            # size: (root.width, root.height)
-            allow_stretch: True
-            resolution: [-1, -1] # default
-            play: True
+        PlyerCamera:
+        # Camera:
+        #     id: camera
+        #     allow_stretch: True
+        #     resolution: [-1, -1]
+        #     play: True
             # canvas.before:
             #     PushMatrix:
             #     Rotate:
@@ -99,6 +93,7 @@ SM:
             #     Rectangle:
             #         size: self.window_sizes
             #     PopMatrix
+            # size: (root.width, root.height)
 
     FloatLayout:
         Button:
