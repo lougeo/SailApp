@@ -74,32 +74,32 @@ SM:
     name: "camera_screen"
     # FloatLayout:
     # ScatterLayout:
-    # BoxLayout:
-    #     id:camera_parent
-    XCamera:
-    # Camera:
-        id: camera
-        # allow_stretch: True
-        # resolution: self.window_sizes
-        # play: True
-        # size: self.window_sizes
-        # canvas.before:
-        #     PushMatrix
-        #     Rotate:
-        #         angle: -90
-        #         origin: self.center
-        # canvas.after:
-        #     PopMatrix
-        # size: (root.width, root.height)
+    BoxLayout:
+        id:camera_parent
+        Camera:
+            id: camera
+        # XCamera:
+            allow_stretch: True
+            resolution: [-1,-1]
+            play: True
+            size: camera_parent.size
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: -90
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+            size: (root.width, root.height)
 
-    # FloatLayout:
+    FloatLayout:
         Button:
             text: 'Capture'
             size_hint: 0.1, 0.1
             pos_hint: {"x": 0.45, "y": 0.1}
             height: '48dp'
             on_press: 
-                self.parent.do_capture()
+                root.capture()
 
         Button:
             text: 'Main Menu'
