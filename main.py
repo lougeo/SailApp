@@ -847,28 +847,36 @@ class XCamera(FloatLayout):
     def do_capture(self):
         print("capture")
         # filepath = self.cwd + self.ids.filename_text.text
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        file_name = "IMG_{}.png".format(timestr)
+        if platform == "android":
+            from android.storage import primary_external_storage_path
+            primary_dir = primary_external_storage_path()
+            full_path = primary_dir + "/" + file_name
+        else:
+            full_path = file_name
 
-        # if(exists(filepath)):
-        #     popup = MsgPopup("Picture with this name already exists!")
-        #     popup.open()
-        #     return False
+        if(exists(file_name)):
+            popup = Popup("Picture with this name already exists!")
+            popup.open()
+            return False
 
         # try:
-        #     camera.take_picture(filename=filepath,
-        #                         on_complete=self.camera_callback)
+        camera = Camera()
+        camera.take_picture(filename=file_name,
+                            on_complete=self.camera_callback)
         # except NotImplementedError:
-        #     popup = MsgPopup(
-        #         "This feature has not yet been implemented for this platform.")
+        #     popup = Popup(
+        #         content=Label(text="This feature has not yet been implemented for this platform."))
         #     popup.open()
 
     def camera_callback(self, filepath):
-        print("camera callback")
-        # if(exists(filepath)):
-        #     popup = MsgPopup("Picture saved!")
-        #     popup.open()
-        # else:
-        #     popup = MsgPopup("Could not save your picture!")
-        #     popup.open()
+        if(exists(filepath)):
+            popup = Popup(content=Label(text="Picture saved!"))
+            popup.open()
+        else:
+            popup = Popup(content=Label(text="Could not save your picture!"))
+            popup.open()
 
 ######################################################################################################
 #                                              SCREENS                                               #
@@ -883,16 +891,16 @@ class CameraScreen(Screen):
 
     def capture(self):
 
-        camera = self.ids['camera']
-        timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = "IMG_{}.png".format(timestr)
-        if platform == "android":
-            from android.storage import primary_external_storage_path
-            primary_dir = primary_external_storage_path()
-            full_path = primary_dir + "/" + file_name
-        else:
-            full_path = file_name
-        camera.export_to_png(full_path)
+        # camera = self.ids['camera']
+        # timestr = time.strftime("%Y%m%d_%H%M%S")
+        # file_name = "IMG_{}.png".format(timestr)
+        # if platform == "android":
+        #     from android.storage import primary_external_storage_path
+        #     primary_dir = primary_external_storage_path()
+        #     full_path = primary_dir + "/" + file_name
+        # else:
+        #     full_path = file_name
+        # camera.export_to_png(full_path)
 
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
