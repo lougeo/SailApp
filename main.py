@@ -891,16 +891,16 @@ class CameraScreen(Screen):
 
     def capture(self):
 
-        # camera = self.ids['camera']
-        # timestr = time.strftime("%Y%m%d_%H%M%S")
-        # file_name = "IMG_{}.png".format(timestr)
-        # if platform == "android":
-        #     from android.storage import primary_external_storage_path
-        #     primary_dir = primary_external_storage_path()
-        #     full_path = primary_dir + "/" + file_name
-        # else:
-        #     full_path = file_name
-        # camera.export_to_png(full_path)
+        camera = self.ids['camera']
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        file_name = "IMG_{}.png".format(timestr)
+        if platform == "android":
+            from android.storage import primary_external_storage_path
+            primary_dir = primary_external_storage_path()
+            full_path = primary_dir + "/" + file_name
+        else:
+            full_path = file_name
+        camera.export_to_png(full_path)
 
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
