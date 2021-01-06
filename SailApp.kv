@@ -79,18 +79,18 @@ SM:
         Camera:
             id: camera
         # XCamera:
-            # allow_stretch: True
+            allow_stretch: True
             play: True
             # size: camera_parent.size
             # resolution: (camera_parent.width, camera_parent.height)
-            canvas.before:
-                PushMatrix
-                Rotate:
-                    angle: -90
-                    origin: self.center
-            canvas.after:
-                PopMatrix
-            size: (root.width, root.height)
+            # canvas.before:
+            #     PushMatrix
+            #     Rotate:
+            #         angle: -90
+            #         origin: self.center
+            # canvas.after:
+            #     PopMatrix
+            # size: (root.width, root.height)
 
     FloatLayout:
         Button:
