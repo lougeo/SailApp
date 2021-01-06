@@ -80,9 +80,9 @@ SM:
             id: camera
         # XCamera:
             allow_stretch: True
-            resolution: [-1,-1]
+            resolution: camera_parent.size
             play: True
-            size: camera_parent.size
+            # size: camera_parent.size
             canvas.before:
                 PushMatrix
                 Rotate:
