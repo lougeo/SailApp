@@ -83,13 +83,13 @@ SM:
             play: True
             # size: camera_parent.size
             # resolution: (camera_parent.width, camera_parent.height)
-            # canvas.before:
-            #     PushMatrix
-            #     Rotate:
-            #         angle: -90
-            #         origin: self.center
-            # canvas.after:
-            #     PopMatrix
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: -90
+                    origin: self.center
+            canvas.after:
+                PopMatrix
             # size: (root.width, root.height)
 
     FloatLayout:
