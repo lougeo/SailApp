@@ -92,15 +92,15 @@ SM:
                 Rotate:
                     angle: -90
                     origin: self.center
+            canvas.after:
+                PopMatrix
             canvas:
                 Color:
                     rgb: (1, 1, 1)
                 Rectangle:
                     texture: self.texture
-                    size: self.parent.size
+                    size: (self.parent.height, self.parent.width)
 
-            canvas.after:
-                PopMatrix
             # size: (root.width, root.height)
 
     FloatLayout:
