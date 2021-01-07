@@ -91,16 +91,14 @@ SM:
                 PushMatrix
                 Rotate:
                     angle: -90
-                    origin: self.center
-            canvas.after:
-                PopMatrix
+                    origin: self.parent.center
             canvas:
-                Color:
-                    rgb: (1, 1, 1)
                 Rectangle:
                     texture: self.texture
                     size: (self.parent.height, self.parent.width)
-                    pos: self.parent.pos
+                    # center: self.parent.center
+            canvas.after:
+                PopMatrix
 
             # size: (root.width, root.height)
 
