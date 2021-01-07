@@ -94,13 +94,13 @@ SM:
                     texture: self.texture
                     size: (self.parent.width, self.parent.height)
                     # center: self.parent.center
-            # canvas.before:
-            #     PushMatrix
-            #     Rotate:
-            #         angle: -90
-            #         origin: self.parent.center
-            # canvas.after:
-            #     PopMatrix
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: -90
+                    origin: self.parent.center
+            canvas.after:
+                PopMatrix
 
             # size: (root.width, root.height)
 
