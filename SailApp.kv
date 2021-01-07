@@ -107,10 +107,10 @@ SM:
         #             size: (self.height, self.width)
         XCamera:
             id: camera
-            resolution: (640, 480) # 1920, 1080
+            resolution: [-1,-1]# (640, 480) # 1920, 1080
             allow_stretch: True
             play: True
-            size_hint: 0, 0
+            # size_hint: 0, 0
             pos: self.parent.pos
             canvas.before:
                 PushMatrix:

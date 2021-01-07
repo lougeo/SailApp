@@ -890,7 +890,7 @@ class MainMenuScreen(Screen):
 class CameraScreen(Screen):
 
     def capture(self):
-
+        print("CAPTURE")
         camera = self.ids['camera']
         timestr = time.strftime("%Y%m%d_%H%M%S")
         file_name = "IMG_{}.png".format(timestr)
