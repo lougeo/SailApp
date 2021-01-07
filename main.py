@@ -827,56 +827,56 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
     
-# class XCamera(Camera):
-#     def __init__(self, **kwargs):
-#         super().__init__(**kwargs)
-#         self.swidth = Window.size[1]
-#         self.sheight = Window.size[0]
-#         self.window_sizes = (self.swidth, self.sheight)
-
-from plyer.facades.camera import Camera
-from os import getcwd
-from os.path import exists
-from kivy.uix.popup import Popup
-class XCamera(FloatLayout):
+class XCamera(Camera):
     def __init__(self, **kwargs):
-        super(XCamera, self).__init__(**kwargs)
-        # self.cwd = getcwd() + "/"
-        # self.ids.path_label.text = self.cwd
+        super().__init__(**kwargs)
+        self.swidth = Window.size[1]
+        self.sheight = Window.size[0]
+        self.window_sizes = (self.swidth, self.sheight)
 
-    def do_capture(self):
-        print("capture")
-        # filepath = self.cwd + self.ids.filename_text.text
-        timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = "IMG_{}.png".format(timestr)
-        if platform == "android":
-            from android.storage import primary_external_storage_path
-            primary_dir = primary_external_storage_path()
-            full_path = primary_dir + "/" + file_name
-        else:
-            full_path = file_name
+# from plyer.facades.camera import Camera
+# from os import getcwd
+# from os.path import exists
+# from kivy.uix.popup import Popup
+# class XCamera(FloatLayout):
+#     def __init__(self, **kwargs):
+#         super(XCamera, self).__init__(**kwargs)
+#         # self.cwd = getcwd() + "/"
+#         # self.ids.path_label.text = self.cwd
 
-        if(exists(file_name)):
-            popup = Popup("Picture with this name already exists!")
-            popup.open()
-            return False
+#     def do_capture(self):
+#         print("capture")
+#         # filepath = self.cwd + self.ids.filename_text.text
+#         timestr = time.strftime("%Y%m%d_%H%M%S")
+#         file_name = "IMG_{}.png".format(timestr)
+#         if platform == "android":
+#             from android.storage import primary_external_storage_path
+#             primary_dir = primary_external_storage_path()
+#             full_path = primary_dir + "/" + file_name
+#         else:
+#             full_path = file_name
 
-        # try:
-        camera = Camera()
-        camera.take_picture(filename=file_name,
-                            on_complete=self.camera_callback)
-        # except NotImplementedError:
-        #     popup = Popup(
-        #         content=Label(text="This feature has not yet been implemented for this platform."))
-        #     popup.open()
+#         if(exists(file_name)):
+#             popup = Popup("Picture with this name already exists!")
+#             popup.open()
+#             return False
 
-    def camera_callback(self, filepath):
-        if(exists(filepath)):
-            popup = Popup(content=Label(text="Picture saved!"))
-            popup.open()
-        else:
-            popup = Popup(content=Label(text="Could not save your picture!"))
-            popup.open()
+#         # try:
+#         camera = Camera()
+#         camera.take_picture(filename=file_name,
+#                             on_complete=self.camera_callback)
+#         # except NotImplementedError:
+#         #     popup = Popup(
+#         #         content=Label(text="This feature has not yet been implemented for this platform."))
+#         #     popup.open()
+
+#     def camera_callback(self, filepath):
+#         if(exists(filepath)):
+#             popup = Popup(content=Label(text="Picture saved!"))
+#             popup.open()
+#         else:
+#             popup = Popup(content=Label(text="Could not save your picture!"))
+#             popup.open()
 
 ######################################################################################################
 #                                              SCREENS                                               #
