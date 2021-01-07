@@ -76,29 +76,31 @@ SM:
     # ScatterLayout:
     BoxLayout:
         id:camera_parent
-        canvas.before:
-            Color:
-                rgba: 1., 1., 1., 1.
-            Rectangle:
-                size: (self.width, self.height)
+        # canvas.before:
+        #     Color:
+        #         rgba: 1., 1., 1., 1.
+        #     Rectangle:
+        #         size: (self.width, self.height)
         Camera:
             id: camera
         # XCamera:
             # allow_stretch: True
             # play: True
             # size: (200,200)
-            canvas.before:
-                PushMatrix
-                Rotate:
-                    angle: -90
-                    origin: self.parent.center
             canvas:
+                Color:
+                    rgba: 1., 1., 1., 1.
                 Rectangle:
-                    texture: self.texture
-                    size: (self.parent.height, self.parent.width)
+                    # texture: self.texture
+                    size: (self.parent.width, self.parent.height)
                     # center: self.parent.center
-            canvas.after:
-                PopMatrix
+            # canvas.before:
+            #     PushMatrix
+            #     Rotate:
+            #         angle: -90
+            #         origin: self.parent.center
+            # canvas.after:
+            #     PopMatrix
 
             # size: (root.width, root.height)
 
