@@ -81,8 +81,8 @@ SM:
         #         rgba: 1., 1., 1., 1.
         #     Rectangle:
         #         size: (self.width, self.height)
-        # XCamera:
-        #     id: camera
+        XCamera:
+            id: camera
         # # XCamera:
         # #     id: camera
         #     # allow_stretch: True
@@ -105,27 +105,27 @@ SM:
         #         Rectangle:
         #             texture: self.texture
         #             size: (self.height, self.width)
-        XCamera:
-            id: camera
-            resolution: [-1,-1]# (640, 480) # 1920, 1080
-            allow_stretch: True
-            play: True
-            # size_hint: 0, 0
-            pos: self.parent.pos
-            canvas.before:
-                PushMatrix:
-                Rotate:
-                    axis: 0, 0, 1
-                    angle: -90
-                    origin: self.parent.center
-            canvas.after:
-                Color:
-                    rgba: 1,1,1,1
-                Rectangle:
-                    pos: (-self.sheight / 2 + 80, self.swidth / 4 -40)
-                    size: self.window_sizes
-                    texture: camera.texture
-                PopMatrix
+        # XCamera:
+        #     id: camera
+        #     resolution: [-1,-1]# (640, 480) # 1920, 1080
+        #     allow_stretch: True
+        #     play: True
+        #     # size_hint: 0, 0
+        #     pos: self.parent.pos
+        #     canvas.before:
+        #         PushMatrix:
+        #         Rotate:
+        #             axis: 0, 0, 1
+        #             angle: -90
+        #             origin: self.parent.center
+        #     canvas.after:
+        #         Color:
+        #             rgba: 1,1,1,1
+        #         Rectangle:
+        #             pos: (-self.sheight / 2 + 80, self.swidth / 4 -40)
+        #             size: self.window_sizes
+        #             texture: camera.texture
+        #         PopMatrix
 
     FloatLayout:
         Button:

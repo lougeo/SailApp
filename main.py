@@ -826,13 +826,18 @@ class BezierLine(Widget):
 
 class ResultsCard(GridLayout):
     name = StringProperty()
-    
+
+from android import mActivity
 class XCamera(Camera):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.swidth = Window.size[1]
-        self.sheight = Window.size[0]
-        self.window_sizes = (self.swidth, self.sheight)
+        # self.swidth = Window.size[1]
+        # self.sheight = Window.size[0]
+        # self.window_sizes = (self.swidth, self.sheight)
+        self._camera.bind(on_load=self.loaded)
+    
+    def loaded(self, platform_camera):
+        mActivity.setRequestedOrientation(LANDSCAPE)
 
 # from plyer.facades.camera import Camera
 # from os import getcwd
