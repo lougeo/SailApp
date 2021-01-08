@@ -840,6 +840,7 @@ class ResultsCard(GridLayout):
 #         mActivity.setRequestedOrientation(LANDSCAPE)
 
 from plyer import camera as plyercamera
+from plyer.platforms.android.camera import AndroidCamera
 from os import getcwd
 from os.path import exists
 from kivy.uix.popup import Popup
@@ -852,6 +853,7 @@ class XCamera(FloatLayout):
     def do_capture(self):
         print("capture")
         # filepath = self.cwd + self.ids.filename_text.text
+        camera = self.ids['camera']
         timestr = time.strftime("%Y%m%d_%H%M%S")
         file_name = "IMG_{}.png".format(timestr)
         if platform == "android":
@@ -867,7 +869,7 @@ class XCamera(FloatLayout):
             return False
 
         # try:
-        plyercamera.take_picture(filename=file_name,
+        camera.take_picture(filename=file_name,
                             on_complete=self.camera_callback)
         # except NotImplementedError:
         #     popup = Popup(

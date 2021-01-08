@@ -1,7 +1,8 @@
 #:kivy 2.0.0
 #:import Button kivy.uix.button.Button
 #:import platform kivy.utils.platform
-##:import PlyerCamera plyer.platforms.android.camera.AndroidCamera
+#:import AndroidCamera plyer.platform.android.camera.AndroidCamera
+    
 
 SM:
     MainMenuScreen:
@@ -82,29 +83,28 @@ SM:
         #     Rectangle:
         #         size: (self.width, self.height)
     XCamera:
-        id: camera
-    # # XCamera:
-    # #     id: camera
-    #     # allow_stretch: True
-        play: True
-    #     # size: (200,200)
-    #     canvas.before:
-    #         PushMatrix
-    #         Rotate:
-    #             angle: -90
-    #             origin: self.parent.center
-    #     canvas:
-    #         Color:
-    #             rgba: 1., 1., 1., 1.
-    #         Rectangle:
-    #             texture: self.texture
-    #             size: (self.height, self.width)
-    #             pos: self.parent.pos
-    #     canvas.after:
-    #         PopMatrix
-    #         Rectangle:
-    #             texture: self.texture
-    #             size: (self.height, self.width)
+        AndroidCamera:
+            id: camera
+        #     allow_stretch: True
+            play: True
+        #     # size: (200,200)
+        #     canvas.before:
+        #         PushMatrix
+        #         Rotate:
+        #             angle: -90
+        #             origin: self.parent.center
+        #     canvas:
+        #         Color:
+        #             rgba: 1., 1., 1., 1.
+        #         Rectangle:
+        #             texture: self.texture
+        #             size: (self.height, self.width)
+        #             pos: self.parent.pos
+        #     canvas.after:
+        #         PopMatrix
+        #         Rectangle:
+        #             texture: self.texture
+        #             size: (self.height, self.width)
     # XCamera:
     #     id: camera
     #     resolution: [-1,-1]# (640, 480) # 1920, 1080
