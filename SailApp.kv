@@ -1,7 +1,7 @@
-#:kivy 2.0.0
+##:kivy 2.0.0
 #:import Button kivy.uix.button.Button
 #:import platform kivy.utils.platform
-#:import AndroidCamera plyer.platform.android.camera.AndroidCamera
+##:import AndroidCamera plyer.platform.android.camera.AndroidCamera
     
 
 SM:
@@ -73,68 +73,21 @@ SM:
 
 <CameraScreen>:
     name: "camera_screen"
-    # FloatLayout:
-    # ScatterLayout:
-    # BoxLayout:
-    #     id:camera_parent
-        # canvas.before:
-        #     Color:
-        #         rgba: 1., 1., 1., 1.
-        #     Rectangle:
-        #         size: (self.width, self.height)
-    XCamera:
-        AndroidCamera:
+    BoxLayout:
+        id:camera_parent
+        Camera:
             id: camera
-        #     allow_stretch: True
-            play: True
-        #     # size: (200,200)
-        #     canvas.before:
-        #         PushMatrix
-        #         Rotate:
-        #             angle: -90
-        #             origin: self.parent.center
-        #     canvas:
-        #         Color:
-        #             rgba: 1., 1., 1., 1.
-        #         Rectangle:
-        #             texture: self.texture
-        #             size: (self.height, self.width)
-        #             pos: self.parent.pos
-        #     canvas.after:
-        #         PopMatrix
-        #         Rectangle:
-        #             texture: self.texture
-        #             size: (self.height, self.width)
-    # XCamera:
-    #     id: camera
-    #     resolution: [-1,-1]# (640, 480) # 1920, 1080
-    #     allow_stretch: True
-    #     play: True
-    #     # size_hint: 0, 0
-    #     pos: self.parent.pos
-    #     canvas.before:
-    #         PushMatrix:
-    #         Rotate:
-    #             axis: 0, 0, 1
-    #             angle: -90
-    #             origin: self.parent.center
-    #     canvas.after:
-    #         Color:
-    #             rgba: 1,1,1,1
-    #         Rectangle:
-    #             pos: (-self.sheight / 2 + 80, self.swidth / 4 -40)
-    #             size: self.window_sizes
-    #             texture: camera.texture
-    #         PopMatrix
+            allow_stretch: True
+            keep_ratio: True
 
-# FloatLayout:
+    FloatLayout:
         Button:
             text: 'Capture'
             size_hint: 0.1, 0.1
             pos_hint: {"x": 0.45, "y": 0.1}
             height: '48dp'
             on_press: 
-                self.parent.do_capture()
+                self.parent.parent.capture()
 
         Button:
             text: 'Main Menu'

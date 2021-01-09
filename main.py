@@ -1,5 +1,5 @@
 import kivy
-kivy.require('2.0.0')
+#kivy.require('2.0.0')
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -839,50 +839,51 @@ class ResultsCard(GridLayout):
 #     def loaded(self, platform_camera):
 #         mActivity.setRequestedOrientation(LANDSCAPE)
 
-from plyer import camera as plyercamera
-from plyer.platforms.android.camera import AndroidCamera
-from os import getcwd
-from os.path import exists
-from kivy.uix.popup import Popup
-class XCamera(FloatLayout):
-    def __init__(self, **kwargs):
-        super(XCamera, self).__init__(**kwargs)
-        # self.cwd = getcwd() + "/"
-        # self.ids.path_label.text = self.cwd
+# from plyer import camera as plyercamera
+# from plyer.platforms.android.camera import AndroidCamera
+# from os import getcwd
+# from os.path import exists
+# from kivy.uix.popup import Popup
+# class XCamera(FloatLayout):
+#     def __init__(self, **kwargs):
+#         super(XCamera, self).__init__(**kwargs)
+#         self.add_widget(plyercamera())
+#         # self.cwd = getcwd() + "/"
+#         # self.ids.path_label.text = self.cwd
 
-    def do_capture(self):
-        print("capture")
-        # filepath = self.cwd + self.ids.filename_text.text
-        camera = self.ids['camera']
-        timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = "IMG_{}.png".format(timestr)
-        if platform == "android":
-            from android.storage import primary_external_storage_path
-            primary_dir = primary_external_storage_path()
-            full_path = primary_dir + "/" + file_name
-        else:
-            full_path = file_name
+#     def do_capture(self):
+#         print("capture")
+#         # filepath = self.cwd + self.ids.filename_text.text
+#         camera = self.ids['camera']
+#         timestr = time.strftime("%Y%m%d_%H%M%S")
+#         file_name = "IMG_{}.png".format(timestr)
+#         if platform == "android":
+#             from android.storage import primary_external_storage_path
+#             primary_dir = primary_external_storage_path()
+#             full_path = primary_dir + "/" + file_name
+#         else:
+#             full_path = file_name
 
-        if(exists(file_name)):
-            popup = Popup("Picture with this name already exists!")
-            popup.open()
-            return False
+#         if(exists(file_name)):
+#             popup = Popup("Picture with this name already exists!")
+#             popup.open()
+#             return False
 
-        # try:
-        camera.take_picture(filename=file_name,
-                            on_complete=self.camera_callback)
-        # except NotImplementedError:
-        #     popup = Popup(
-        #         content=Label(text="This feature has not yet been implemented for this platform."))
-        #     popup.open()
+#         # try:
+#         camera.take_picture(filename=file_name,
+#                             on_complete=self.camera_callback)
+#         # except NotImplementedError:
+#         #     popup = Popup(
+#         #         content=Label(text="This feature has not yet been implemented for this platform."))
+#         #     popup.open()
 
-    def camera_callback(self, filepath):
-        if(exists(filepath)):
-            popup = Popup(content=Label(text="Picture saved!"))
-            popup.open()
-        else:
-            popup = Popup(content=Label(text="Could not save your picture!"))
-            popup.open()
+#     def camera_callback(self, filepath):
+#         if(exists(filepath)):
+#             popup = Popup(content=Label(text="Picture saved!"))
+#             popup.open()
+#         else:
+#             popup = Popup(content=Label(text="Could not save your picture!"))
+#             popup.open()
 
 ######################################################################################################
 #                                              SCREENS                                               #
@@ -906,8 +907,8 @@ class CameraScreen(Screen):
             full_path = primary_dir + "/" + file_name
         else:
             full_path = file_name
-        # camera.export_to_png(full_path)
-        camera.do_capture(filename=file_name)
+        camera.export_to_png(full_path)
+        #camera.do_capture(filename=file_name)
 
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
