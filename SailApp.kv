@@ -1,6 +1,7 @@
 ##:kivy 2.0.0
 #:import Button kivy.uix.button.Button
 #:import platform kivy.utils.platform
+#:import xcamera kivy_garden.xcamera.xcamera
     
 
 SM:
@@ -72,33 +73,33 @@ SM:
 
 <CameraScreen>:
     name: "camera_screen"
-    BoxLayout:
-        id:camera_parent
-        Camera:
-            id: camera
-            allow_stretch: True
-            keep_ratio: True
+    # BoxLayout:
+    #     id:camera_parent
+    XCamera:
+        id: camera
+        allow_stretch: True
+        keep_ratio: True
 
-    FloatLayout:
-        Button:
-            text: 'Capture'
-            size_hint: 0.1, 0.1
-            pos_hint: {"x": 0.45, "y": 0.1}
-            height: '48dp'
-            on_press: 
-                self.parent.parent.capture()
+    # FloatLayout:
+    #     Button:
+    #         text: 'Capture'
+    #         size_hint: 0.1, 0.1
+    #         pos_hint: {"x": 0.45, "y": 0.1}
+    #         height: '48dp'
+    #         on_press: 
+    #             self.parent.parent.capture()
 
-        Button:
-            text: 'Main Menu'
-            text_size: self.size
-            halign: "center"
-            valign: "middle"
-            on_release: 
-                root.manager.transition.direction = "right"
-                app.root.current = "main_menu"
-            size_hint: 0.1, 0.1
-            pos_hint: {"x": 0.8, "y": 0.8}
-            height: '48dp'
+    #     Button:
+    #         text: 'Main Menu'
+    #         text_size: self.size
+    #         halign: "center"
+    #         valign: "middle"
+    #         on_release: 
+    #             root.manager.transition.direction = "right"
+    #             app.root.current = "main_menu"
+    #         size_hint: 0.1, 0.1
+    #         pos_hint: {"x": 0.8, "y": 0.8}
+    #         height: '48dp'
 
 <FileChooserScreen>:
     name: "file_chooser"
