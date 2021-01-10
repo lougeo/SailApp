@@ -1020,7 +1020,9 @@ from kivy_garden.xcamera import XCamera
 class CameraScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.add_widget(XCamera(force_landscape=True))
+        camera = XCamera()
+        camera.force_landscape = True
+        self.add_widget(camera)
 
     def capture(self):
         print("CAPTURE")
