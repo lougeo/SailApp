@@ -940,6 +940,7 @@ class XCamera(Camera):
         self._previous_orientation = set_orientation(LANDSCAPE)
 
     def force_portrait(self):
+        print("IN FORCE PORTRAIT")
         self._previous_orientation = set_orientation(PORTRAIT)
 
     def restore_orientation(self):
