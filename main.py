@@ -895,6 +895,7 @@ class XCamera(Camera):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        print("IN INIT")
         self._previous_orientation = PORTRAIT
 
     def _on_index(self, *largs):
