@@ -894,8 +894,6 @@ class XCamera(Camera):
     __events__ = ('on_picture_taken', 'on_camera_ready')
 
     def __init__(self, **kwargs):
-        if is_android():
-            set_orientation(get_orientation())
         super().__init__(**kwargs)
 
     def _on_index(self, *largs):
