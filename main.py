@@ -840,7 +840,7 @@ from kivy.uix.camera import Camera
 from kivy.uix.label import Label
 from kivy.utils import platform
 
-from platform_api import LANDSCAPE, set_orientation, take_picture
+from platform_api import LANDSCAPE, set_orientation, take_picture, get_orientation
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 resource_add_path(ROOT)
@@ -894,6 +894,8 @@ class XCamera(Camera):
     __events__ = ('on_picture_taken', 'on_camera_ready')
 
     def __init__(self, **kwargs):
+        if is_android():
+            set_orientation(get_orientation())
         super().__init__(**kwargs)
 
     def _on_index(self, *largs):
