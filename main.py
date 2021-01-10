@@ -827,6 +827,26 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
 
+class YCamera(BoxLayout):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        camera = Camera()
+        # if platform == "android":
+        #     print("IN ANDROID INIT")
+        tex_coords = [
+            self.pos[0],
+            self.pos[1],
+            self.pos[0] + self.size[0],
+            self.pos[1],
+            self.pos[0] + self.size[0],
+            self.pos[1] + self.size[1],
+            self.pos[0],
+            self.pos[1] + self.size[1],
+        ]
+        print(tex_coords)
+        camera.tex_coords = tex_coords
+        self.add_widget(camera)
+
 
 # import datetime
 # import os
@@ -1016,13 +1036,12 @@ class ResultsCard(GridLayout):
 class MainMenuScreen(Screen):
     pass
 
-from kivy_garden.xcamera import XCamera
+# from kivy_garden.xcamera import XCamera
 class CameraScreen(Screen):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        camera = XCamera()
-        camera.force_landscape = True
-        self.add_widget(camera)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     camera = YCamera()
+    #     self.add_widget(camera)
 
     def capture(self):
         print("CAPTURE")
