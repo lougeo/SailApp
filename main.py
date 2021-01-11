@@ -844,8 +844,8 @@ class YCamera(BoxLayout):
             # self.pos[0],
             # self.pos[1] + self.size[1],
         ]
-        print(tex_coords)
-        camera.tex_coords = tex_coords
+        # print(tex_coords)
+        # camera.tex_coords = tex_coords
         self.add_widget(camera)
 
 
