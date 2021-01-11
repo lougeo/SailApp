@@ -837,7 +837,6 @@ class YCamera(BoxLayout):
         if platform == "android":
             print("IN ANDROID INIT")
             from jnius import JavaException, PythonJavaClass, autoclass, java_method
-            camera = autoclass('android.hardware.Camera')
             AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
             AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             PORTRAIT = AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -845,7 +844,7 @@ class YCamera(BoxLayout):
             AndroidPythonActivity.mActivity.getRequestedOrientation()
         else:
             print("REGULAR INIT")
-            camera = Camera()
+        camera = Camera()
 
         self.tex_coords = [
             0,0,1.,0,1.,1.,0,1.
@@ -861,6 +860,11 @@ class YCamera(BoxLayout):
     #         self.cam_can = Rectangle(pos=self.pos, size=self.size)
 
     #     self.bind(size=self.update_canvas)
+    def on_size(self, *args):
+        print("ON SIZE")
+        if platform == "android":
+            print(AndroidPythonActivity.mActivity.getRequestedOrientation())
+        
     
     # def update_canvas(self, *args):
     #     self.cam_can.size = self.ids.camera.size
