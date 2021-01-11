@@ -1095,6 +1095,7 @@ class CameraScreen(Screen):
             print("IN CAPTURE")
             AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             # 0 = landscape, 1=portrait, 4=rotate
+            print(AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR)
             AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
