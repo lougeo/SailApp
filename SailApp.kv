@@ -86,14 +86,15 @@ SM:
             id:camera
             allow_stretch: True
             keep_ratio: True
-            # canvas:
-                # Color:
-                #     rgb: 1,1,1
-                # Rectangle:
-                #     pos: root.pos
-                #     size: self.size
-                #     texture: self.texture
-                #     tex_coords: self.parent.tex_coords
+            canvas:
+                Color:
+                    rgb: 1,1,1
+                Rectangle:
+                    pos: self.pos
+                    # size: (200,200)
+                    size: self.size
+                    texture: self.texture
+                    tex_coords: self.parent.tex_coords
         
     #     Camera:
     #         id: camera
