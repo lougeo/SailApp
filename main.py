@@ -831,9 +831,21 @@ class ResultsCard(GridLayout):
 class YCamera(BoxLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
         # camera = Camera()
-        # if platform == "android":
-        #     print("IN ANDROID INIT")
+        if platform == "android":
+            print("IN ANDROID INIT")
+            from jnius import JavaException, PythonJavaClass, autoclass, java_method
+            camera = autoclass('android.hardware.Camera')
+            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            PORTRAIT = AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            LANDSCAPE = AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            AndroidPythonActivity.mActivity.getRequestedOrientation()
+        else:
+            print("REGULAR INIT")
+            camera = Camera()
+
         self.tex_coords = [
             0,0,1.,0,1.,1.,0,1.
             # 0.,-0.1,-0.6,1.,0.7,-1.,-0.1,0.35435,
@@ -841,7 +853,7 @@ class YCamera(BoxLayout):
 
         # print(tex_coords)
         # # camera.tex_coords = tex_coords
-        # self.add_widget(camera)
+        self.add_widget(camera)
 
     #     with self.canvas:
     #         Color(1., 1., 1.)
