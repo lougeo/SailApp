@@ -865,7 +865,7 @@ class YCamera(BoxLayout):
         print("ON SIZE")
         if platform == "android":
             print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
-            self.AndroidPythonActivity.mActivity.setRequestedOrientation(0)
+            self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         
     
     # def update_canvas(self, *args):
