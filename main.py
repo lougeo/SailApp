@@ -841,11 +841,13 @@ class YCamera(BoxLayout):
             self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             LANDSCAPE = self.AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            SENSOR = self.AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR
             print(f"PORTRAIT: {PORTRAIT}")
             print(f"LANDSCAPE: {LANDSCAPE}")
+            print(f"SENSOR: {SENSOR}")
         else:
             print("REGULAR INIT")
-        camera = Camera()
+        # camera = Camera()
 
         self.tex_coords = [
             0,0,1.,0,1.,1.,0,1.
@@ -854,7 +856,7 @@ class YCamera(BoxLayout):
 
         # print(tex_coords)
         # # camera.tex_coords = tex_coords
-        self.add_widget(camera)
+        # self.add_widget(camera)
 
     #     with self.canvas:
     #         Color(1., 1., 1.)
@@ -865,7 +867,8 @@ class YCamera(BoxLayout):
         print("ON SIZE")
         if platform == "android":
             print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
-            self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
+            # 0 = landscape, 1=portrait, 4=rotate
+            # self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         
     
     # def update_canvas(self, *args):
@@ -1059,7 +1062,13 @@ class YCamera(BoxLayout):
 
 
 class MainMenuScreen(Screen):
-    pass
+    def set_orientation(self, *args):
+        if platform == "android":
+            print("IN SET ORIENTATION")
+            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            # 0 = landscape, 1=portrait, 4=rotate
+            AndroidPythonActivity.mActivity.setRequestedOrientation(0)
+
 
 # from kivy_garden.xcamera import XCamera
 class CameraScreen(Screen):

@@ -82,8 +82,8 @@ SM:
         #         origin: self.center
         # canvas.after:
         #     PopMatrix
-        # Camera:
-        #     id:camera
+        Camera:
+            id:camera
         #     allow_stretch: True
         #     keep_ratio: True
         #     canvas:
@@ -102,26 +102,26 @@ SM:
     #         keep_ratio: True
     #         texture_coords: [self.parent.x, self.parent.y, ]
 
-    # FloatLayout:
-    #     Button:
-    #         text: 'Capture'
-    #         size_hint: 0.1, 0.1
-    #         pos_hint: {"x": 0.45, "y": 0.1}
-    #         height: '48dp'
-    #         on_press: 
-    #             self.parent.parent.capture()
+    FloatLayout:
+        Button:
+            text: 'Capture'
+            size_hint: 0.1, 0.1
+            pos_hint: {"x": 0.45, "y": 0.1}
+            height: '48dp'
+            on_press: 
+                root.capture()
 
-    #     Button:
-    #         text: 'Main Menu'
-    #         text_size: self.size
-    #         halign: "center"
-    #         valign: "middle"
-    #         on_release: 
-    #             root.manager.transition.direction = "right"
-    #             app.root.current = "main_menu"
-    #         size_hint: 0.1, 0.1
-    #         pos_hint: {"x": 0.8, "y": 0.8}
-    #         height: '48dp'
+        Button:
+            text: 'Main Menu'
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            on_release: 
+                root.manager.transition.direction = "right"
+                app.root.current = "main_menu"
+            size_hint: 0.1, 0.1
+            pos_hint: {"x": 0.8, "y": 0.8}
+            height: '48dp'
 
 <FileChooserScreen>:
     name: "file_chooser"
