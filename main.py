@@ -838,6 +838,7 @@ class YCamera(BoxLayout):
             print("IN ANDROID INIT")
             from jnius import JavaException, PythonJavaClass, autoclass, java_method
             camera = autoclass('android.hardware.Camera')
+            AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
             AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             PORTRAIT = AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             LANDSCAPE = AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
