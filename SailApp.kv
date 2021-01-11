@@ -73,17 +73,16 @@ SM:
 
 <CameraScreen>:
     name: "camera_screen"
+
     YCamera:
-        canvas.before:
-            PushMatrix
-            Rotate:
-                angle: -90
-                origin: self.center
-        canvas.after:
-            PopMatrix
+        # canvas.before:
+        #     PushMatrix
+        #     Rotate:
+        #         angle: -90
+        #         origin: self.center
+        # canvas.after:
+        #     PopMatrix
         
-    # BoxLayout:
-    #     id:camera_parent
     #     Camera:
     #         id: camera
     #         allow_stretch: True

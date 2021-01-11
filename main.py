@@ -834,7 +834,8 @@ class YCamera(BoxLayout):
         # if platform == "android":
         #     print("IN ANDROID INIT")
         tex_coords = [
-            0.2,0.2,0.3,0.2,0.3,0.3,0.2,0.3
+            # 0,0,1.,0,1.,1.,0,1.
+            1.,0,1.,1.,0,1.0,0,
             # self.pos[0],
             # self.pos[1],
             # self.pos[0] + self.size[0],
@@ -844,8 +845,9 @@ class YCamera(BoxLayout):
             # self.pos[0],
             # self.pos[1] + self.size[1],
         ]
-        # print(tex_coords)
-        # camera.tex_coords = tex_coords
+
+        print(tex_coords)
+        camera.tex_coords = tex_coords
         self.add_widget(camera)
 
 
