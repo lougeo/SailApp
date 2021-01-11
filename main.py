@@ -841,6 +841,8 @@ class YCamera(BoxLayout):
             self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             LANDSCAPE = self.AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            print(f"PORTRAIT: {PORTRAIT}")
+            print(f"LANDSCAPE: {LANDSCAPE}")
         else:
             print("REGULAR INIT")
         camera = Camera()
