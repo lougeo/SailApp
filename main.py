@@ -1091,6 +1091,11 @@ class CameraScreen(Screen):
         camera.export_to_png(full_path)
         #camera.do_capture()
 
+        if platform == "android":
+            print("IN CAPTURE")
+            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            # 0 = landscape, 1=portrait, 4=rotate
+            AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
         self.manager.get_screen('spline_screen').img_src = full_path
