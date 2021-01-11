@@ -1093,6 +1093,7 @@ class CameraScreen(Screen):
 
         if platform == "android":
             print("IN CAPTURE")
+            AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
             AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             # 0 = landscape, 1=portrait, 4=rotate
             print(AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR)
