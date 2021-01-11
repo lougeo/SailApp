@@ -29,6 +29,7 @@ import math
 if platform == "android":
     # from android.storage import primary_external_storage_path
     from android.permissions import request_permissions, Permission
+    from jnius import JavaException, PythonJavaClass, autoclass, java_method
     request_permissions([
         Permission.CAMERA,
         Permission.READ_EXTERNAL_STORAGE, 
@@ -836,7 +837,6 @@ class YCamera(BoxLayout):
         # camera = Camera()
         if platform == "android":
             print("IN ANDROID INIT")
-            from jnius import JavaException, PythonJavaClass, autoclass, java_method
             self.AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
             self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
