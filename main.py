@@ -1067,7 +1067,9 @@ class MainMenuScreen(Screen):
             print("IN SET ORIENTATION")
             AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             # 0 = landscape, 1=portrait, 4=rotate
-            AndroidPythonActivity.mActivity.setRequestedOrientation(0)
+            print(f"IDS: {self.ids}")
+            self.ids.camera.setRequestedOrientation(0)
+            # AndroidPythonActivity.mActivity.setRequestedOrientation(0)
 
 
 # from kivy_garden.xcamera import XCamera
