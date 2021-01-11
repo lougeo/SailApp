@@ -75,6 +75,15 @@ SM:
     name: "camera_screen"
 
     YCamera:
+        Camera:
+            canvas:
+                Color:
+                    rgb: 1,1,1
+                Rectangle:
+                    pos: root.pos
+                    size: root.size
+                    texture: self.texture
+                    tex_coords: self.parent.tex_coords
         # canvas.before:
         #     PushMatrix
         #     Rotate:

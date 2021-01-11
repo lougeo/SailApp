@@ -828,15 +828,15 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
 
-class YCamera(ScatterLayout):
+class YCamera(BoxLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        camera = Camera()
+        # camera = Camera()
         # if platform == "android":
         #     print("IN ANDROID INIT")
-        tex_coords = [
-            # 0,0,1.,0,1.,1.,0,1.
-            1.,0,1.,1.,0,1.0,0,
+        self.tex_coords = [
+            0,0,1.,0,1.,1.,0,1.
+            # 1.,0,1.,1.,0,1.0,0,
             # self.pos[0],
             # self.pos[1],
             # self.pos[0] + self.size[0],
@@ -849,7 +849,12 @@ class YCamera(ScatterLayout):
 
         # print(tex_coords)
         # camera.tex_coords = tex_coords
-        self.add_widget(camera)
+        # self.add_widget(camera)
+
+        # with self.canvas:
+        #     Color(1., 1., 1.)
+        #     Rectangle(pos=self.pos, size=self.size, texture=camera.texture, tex_coords=tex_coords)
+
 
 
 # import datetime
