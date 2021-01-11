@@ -75,17 +75,17 @@ SM:
     name: "camera_screen"
 
     YCamera:
+        canvas.before:
+            PushMatrix
+            Rotate:
+                angle: -90
+                origin: self.center
+        canvas.after:
+            PopMatrix
         Camera:
             id:camera
             allow_stretch: True
             keep_ratio: True
-            canvas.before:
-                PushMatrix
-                Rotate:
-                    angle: -90
-                    origin: self.center
-            canvas.after:
-                PopMatrix
             # canvas:
                 # Color:
                 #     rgb: 1,1,1
