@@ -834,7 +834,7 @@ class YCamera(BoxLayout):
         # if platform == "android":
         #     print("IN ANDROID INIT")
         tex_coords = [
-            0,0,1.,0,1.,1.,0,1.,
+            0.2,0.2,0.3,0.2,0.3,0.3,0.2,0.3
             # self.pos[0],
             # self.pos[1],
             # self.pos[0] + self.size[0],
