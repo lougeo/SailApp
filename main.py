@@ -836,7 +836,7 @@ class YCamera(BoxLayout):
         #     print("IN ANDROID INIT")
         self.tex_coords = [
             # 0,0,1.,0,1.,1.,0,1.
-            1.,0,1.,1.,0,1.,0,0,
+            0.,-0.1,-0.6,1.,0.7,-1.,-0.1,0.35435,
             # self.pos[0],
             # self.pos[1],
             # self.pos[0] + self.size[0],
@@ -848,12 +848,17 @@ class YCamera(BoxLayout):
         ]
 
         # print(tex_coords)
-        # camera.tex_coords = tex_coords
+        # # camera.tex_coords = tex_coords
         # self.add_widget(camera)
 
-        # with self.canvas:
-        #     Color(1., 1., 1.)
-        #     Rectangle(pos=self.pos, size=self.size, texture=camera.texture, tex_coords=tex_coords)
+    #     with self.canvas:
+    #         Color(1., 1., 1.)
+    #         self.cam_can = Rectangle(pos=self.pos, size=self.size)
+
+    #     self.bind(size=self.update_canvas)
+    
+    # def update_canvas(self, *args):
+    #     self.cam_can.size = self.ids.camera.size
 
 
 

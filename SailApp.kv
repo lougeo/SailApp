@@ -76,21 +76,24 @@ SM:
 
     YCamera:
         Camera:
+            id:camera
+            allow_stretch: True
+            keep_ratio: True
             canvas:
                 Color:
                     rgb: 1,1,1
                 Rectangle:
                     pos: root.pos
-                    size: root.size
+                    size: self.size
                     texture: self.texture
                     tex_coords: self.parent.tex_coords
-        # canvas.before:
-        #     PushMatrix
-        #     Rotate:
-        #         angle: -90
-        #         origin: self.center
-        # canvas.after:
-        #     PopMatrix
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: -90
+                    origin: self.center
+            canvas.after:
+                PopMatrix
         
     #     Camera:
     #         id: camera
