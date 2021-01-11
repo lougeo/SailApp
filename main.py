@@ -9,6 +9,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scatterlayout import ScatterLayout
+from kivy.uix.stencilview import StencilView
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
@@ -829,122 +830,124 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
 
-class YCamera(BoxLayout):
-    texture = ObjectProperty(None, allownone=True)
+class YCamera(StencilView):
+    # texture = ObjectProperty(None, allownone=True)
 
-    resolution = ListProperty([1, 1])
+    # resolution = ListProperty([1, 1])
 
-    tex_coords = ListProperty([0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0])
-    correct_camera = BooleanProperty(False)
+    # tex_coords = ListProperty([0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0])
+    # correct_camera = BooleanProperty(False)
 
-    _rect_pos = ListProperty([0, 0])
-    _rect_size = ListProperty([1, 1])
+    # _rect_pos = ListProperty([0, 0])
+    # _rect_size = ListProperty([1, 1])
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    # def __init__(self, **kwargs):
+    #     super().__init__(**kwargs)
 
-        self.bind(
-            pos=self._update_rect,
-            size=self._update_rect,
-            resolution=self._update_rect,
-            texture=self._update_rect,
-        )
+    #     self.bind(
+    #         pos=self._update_rect,
+    #         size=self._update_rect,
+    #         resolution=self._update_rect,
+    #         texture=self._update_rect,
+    #     )
 
-    def on_correct_camera(self, instance, correct):
-        print("Correct became", correct)
-        if correct:
-            self.tex_coords = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
-            print("Set 0!")
-        else:
-            self.tex_coords = [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
-            print("Set 1!")
-
-    def on_tex_coords(self, instance, value):
-        print("tex_coords became", self.tex_coords)
-
-    def _update_rect(self, *args):
-        self._update_rect_to_fill()
-
-    def _update_rect_to_fit(self, *args):
-        w, h = self.resolution
-        aspect_ratio = h / w
-
-        aspect_width = self.width
-        aspect_height = self.width * h / w
-        if aspect_height > self.height:
-            aspect_height = self.height
-            aspect_width = aspect_height * w / h
-
-        aspect_height = int(aspect_height)
-        aspect_width = int(aspect_width)
-
-        self._rect_pos = [self.center_x - aspect_width / 2,
-                          self.center_y - aspect_height / 2]
-
-        self._rect_size = [aspect_width, aspect_height]
-
-    def _update_rect_to_fill(self, *args):
-        w, h = self.resolution
-
-        aspect_ratio = h / w
-
-        aspect_width = self.width
-        aspect_height = self.width * h / w
-        if aspect_height < self.height:
-            aspect_height = self.height
-            aspect_width = aspect_height * w / h
-
-        aspect_height = int(aspect_height)
-        aspect_width = int(aspect_width)
-
-        self._rect_pos = [self.center_x - aspect_width / 2,
-                          self.center_y - aspect_height / 2]
-
-        self._rect_size = [aspect_width, aspect_height]
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-
-    #     # camera = Camera()
-    #     if platform == "android":
-    #         print("IN ANDROID INIT")
-    #         self.AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
-    #         self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-    #         PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    #         LANDSCAPE = self.AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-    #         SENSOR = self.AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR
-    #         print(f"PORTRAIT: {PORTRAIT}")
-    #         print(f"LANDSCAPE: {LANDSCAPE}")
-    #         print(f"SENSOR: {SENSOR}")
+    # def on_correct_camera(self, instance, correct):
+    #     print("Correct became", correct)
+    #     if correct:
+    #         self.tex_coords = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+    #         print("Set 0!")
     #     else:
-    #         print("REGULAR INIT")
-    #     # camera = Camera()
+    #         self.tex_coords = [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+    #         print("Set 1!")
 
-    #     self.tex_coords = [
-    #         0,0,1.,0,1.,1.,0,1.
-    #         # 0.,-0.1,-0.6,1.,0.7,-1.,-0.1,0.35435,
-    #     ]
+    # def on_tex_coords(self, instance, value):
+    #     print("tex_coords became", self.tex_coords)
 
-    #     # print(tex_coords)
-    #     # # camera.tex_coords = tex_coords
-    #     # self.add_widget(camera)
+    # def _update_rect(self, *args):
+    #     self._update_rect_to_fill()
 
-    # #     with self.canvas:
-    # #         Color(1., 1., 1.)
-    # #         self.cam_can = Rectangle(pos=self.pos, size=self.size)
+    # def _update_rect_to_fit(self, *args):
+    #     w, h = self.resolution
+    #     aspect_ratio = h / w
 
-    # #     self.bind(size=self.update_canvas)
-    # def on_size(self, *args):
-    #     print("ON SIZE")
-    #     if platform == "android":
-    #         print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
-    #         # 0 = landscape, 1=portrait, 4=rotate
-    #         # self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
+    #     aspect_width = self.width
+    #     aspect_height = self.width * h / w
+    #     if aspect_height > self.height:
+    #         aspect_height = self.height
+    #         aspect_width = aspect_height * w / h
+
+    #     aspect_height = int(aspect_height)
+    #     aspect_width = int(aspect_width)
+
+    #     self._rect_pos = [self.center_x - aspect_width / 2,
+    #                       self.center_y - aspect_height / 2]
+
+    #     self._rect_size = [aspect_width, aspect_height]
+
+    # def _update_rect_to_fill(self, *args):
+    #     w, h = self.resolution
+
+    #     aspect_ratio = h / w
+
+    #     aspect_width = self.width
+    #     aspect_height = self.width * h / w
+    #     if aspect_height < self.height:
+    #         aspect_height = self.height
+    #         aspect_width = aspect_height * w / h
+
+    #     aspect_height = int(aspect_height)
+    #     aspect_width = int(aspect_width)
+
+    #     self._rect_pos = [self.center_x - aspect_width / 2,
+    #                       self.center_y - aspect_height / 2]
+
+    #     self._rect_size = [aspect_width, aspect_height]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+        # camera = Camera()
+        if platform == "android":
+            print("IN ANDROID INIT")
+            self.AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
+            self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            LANDSCAPE = self.AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            SENSOR = self.AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR
+            print(f"PORTRAIT: {PORTRAIT}")
+            print(f"LANDSCAPE: {LANDSCAPE}")
+            print(f"SENSOR: {SENSOR}")
+        else:
+            print("REGULAR INIT")
+        # camera = Camera()
+
+        self.tex_coords = [
+            0,0,1.,0,1.,1.,0,1.
+            # 0.,-0.1,-0.6,1.,0.7,-1.,-0.1,0.35435,
+        ]
+
+        # print(tex_coords)
+        # # camera.tex_coords = tex_coords
+        # self.add_widget(camera)
+
+    #     with self.canvas:
+    #         Color(1., 1., 1.)
+    #         self.cam_can = Rectangle(pos=self.pos, size=self.size)
+
+    #     self.bind(size=self.update_canvas)
+    def on_size(self, *args):
+        # Could listen here and set the canvas object size and rotation.
+        print("ON SIZE")
+        if platform == "android":
+            print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
+            print(f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}")
+            # 0 = landscape, 1=portrait, 4=rotate
+            # self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         
     
-    # # def update_canvas(self, *args):
-    # #     self.cam_can.size = self.ids.camera.size
+    # def update_canvas(self, *args):
+    #     self.cam_can.size = self.ids.camera.size
 
 
 
