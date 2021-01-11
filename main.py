@@ -8,6 +8,7 @@ from kivy.uix.layout import Layout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.scatterlayout import ScatterLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
@@ -827,7 +828,7 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
 
-class YCamera(BoxLayout):
+class YCamera(ScatterLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         camera = Camera()
