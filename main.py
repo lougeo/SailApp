@@ -1063,12 +1063,13 @@ class YCamera(BoxLayout):
 
 class MainMenuScreen(Screen):
     def set_orientation(self, *args):
+        print(self.manager.get_screen('camera_screen').ids)
         if platform == "android":
             print("IN SET ORIENTATION")
             AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             # 0 = landscape, 1=portrait, 4=rotate
             print(f"IDS: {self.ids}")
-            self.ids.camera.setRequestedOrientation(0)
+            self.manager.get_screen('camera_screen').ids.camera.setRequestedOrientation(0)
             # AndroidPythonActivity.mActivity.setRequestedOrientation(0)
 
 
