@@ -916,10 +916,22 @@ class MainMenuScreen(Screen):
 
 
 class CameraScreen(Screen):
+    def __init__(self, **kwargs):
+        super(CameraScreen, self).__init__(**kwargs)
+        if platform == "android":
+            from plyer.camera import camera
+            self.cam = camera()
+        else:
+            self.cam = Camera()
+            
+        self.add_widget(self.cam)
+
+
 
     def capture(self):
         print("CAPTURE")
-        camera = self.ids['camera']
+        # camera = self.ids['camera']
+        camera = self.cam
         timestr = time.strftime("%Y%m%d_%H%M%S")
         file_name = "IMG_{}.png".format(timestr)
         if platform == "android":
