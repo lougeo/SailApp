@@ -1111,6 +1111,7 @@ class SplineScreen(Screen):
     def set_orientation(self, *args):
         if platform == "android":
             print("IN SET ORIENTATION")
+            self.img_src = ""
             AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
             # 0 = landscape, 1=portrait, 4=rotate
             AndroidPythonActivity.mActivity.setRequestedOrientation(0)
