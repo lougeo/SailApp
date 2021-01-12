@@ -24,6 +24,8 @@ from kivy.properties import ObjectProperty, StringProperty, ListProperty, Boolea
 
 from kivy.graphics import Color, Rectangle, Point, Line, Ellipse, Bezier
 
+from os.path import exists, join
+
 import time
 import math
 
@@ -31,6 +33,7 @@ if platform == "android":
     # from android.storage import primary_external_storage_path
     from android.permissions import request_permissions, Permission
     from jnius import JavaException, PythonJavaClass, autoclass, java_method
+    from plyer import camera as plyercamera
     request_permissions([
         Permission.CAMERA,
         Permission.READ_EXTERNAL_STORAGE, 
@@ -830,262 +833,36 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
 
-class YCamera(StencilView):
-    # texture = ObjectProperty(None, allownone=True)
+# class YCamera(StencilView):
 
-    # resolution = ListProperty([1, 1])
-
-    # tex_coords = ListProperty([0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0])
-    # correct_camera = BooleanProperty(False)
-
-    # _rect_pos = ListProperty([0, 0])
-    # _rect_size = ListProperty([1, 1])
-
-    # def __init__(self, **kwargs):
-    #     super().__init__(**kwargs)
-
-    #     self.bind(
-    #         pos=self._update_rect,
-    #         size=self._update_rect,
-    #         resolution=self._update_rect,
-    #         texture=self._update_rect,
-    #     )
-
-    # def on_correct_camera(self, instance, correct):
-    #     print("Correct became", correct)
-    #     if correct:
-    #         self.tex_coords = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
-    #         print("Set 0!")
-    #     else:
-    #         self.tex_coords = [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
-    #         print("Set 1!")
-
-    # def on_tex_coords(self, instance, value):
-    #     print("tex_coords became", self.tex_coords)
-
-    # def _update_rect(self, *args):
-    #     self._update_rect_to_fill()
-
-    # def _update_rect_to_fit(self, *args):
-    #     w, h = self.resolution
-    #     aspect_ratio = h / w
-
-    #     aspect_width = self.width
-    #     aspect_height = self.width * h / w
-    #     if aspect_height > self.height:
-    #         aspect_height = self.height
-    #         aspect_width = aspect_height * w / h
-
-    #     aspect_height = int(aspect_height)
-    #     aspect_width = int(aspect_width)
-
-    #     self._rect_pos = [self.center_x - aspect_width / 2,
-    #                       self.center_y - aspect_height / 2]
-
-    #     self._rect_size = [aspect_width, aspect_height]
-
-    # def _update_rect_to_fill(self, *args):
-    #     w, h = self.resolution
-
-    #     aspect_ratio = h / w
-
-    #     aspect_width = self.width
-    #     aspect_height = self.width * h / w
-    #     if aspect_height < self.height:
-    #         aspect_height = self.height
-    #         aspect_width = aspect_height * w / h
-
-    #     aspect_height = int(aspect_height)
-    #     aspect_width = int(aspect_width)
-
-    #     self._rect_pos = [self.center_x - aspect_width / 2,
-    #                       self.center_y - aspect_height / 2]
-
-    #     self._rect_size = [aspect_width, aspect_height]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
 
 
-        # camera = Camera()
-        if platform == "android":
-            print("IN ANDROID INIT")
-            self.AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
-            self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-            PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            LANDSCAPE = self.AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            SENSOR = self.AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR
-            print(f"PORTRAIT: {PORTRAIT}")
-            print(f"LANDSCAPE: {LANDSCAPE}")
-            print(f"SENSOR: {SENSOR}")
-        else:
-            print("REGULAR INIT")
-        # camera = Camera()
+#         # camera = Camera()
+#         if platform == "android":
+#             print("IN ANDROID INIT")
+#             self.AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
+#             self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+#             PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+#             LANDSCAPE = self.AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+#             SENSOR = self.AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR
+#             print(f"PORTRAIT: {PORTRAIT}")
+#             print(f"LANDSCAPE: {LANDSCAPE}")
+#             print(f"SENSOR: {SENSOR}")
+#         else:
+#             print("REGULAR INIT")
 
-        self.tex_coords = [
-            0,0,1.,0,1.,1.,0,1.
-            # 0.,-0.1,-0.6,1.,0.7,-1.,-0.1,0.35435,
-        ]
-
-        # print(tex_coords)
-        # # camera.tex_coords = tex_coords
-        # self.add_widget(camera)
-
-    #     with self.canvas:
-    #         Color(1., 1., 1.)
-    #         self.cam_can = Rectangle(pos=self.pos, size=self.size)
-
-    #     self.bind(size=self.update_canvas)
-    def on_size(self, *args):
-        # Could listen here and set the canvas object size and rotation.
-        print("ON SIZE")
-        if platform == "android":
-            print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
-            print(f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}")
-            # 0 = landscape, 1=portrait, 4=rotate
-            # self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
+#     def on_size(self, *args):
+#         # Could listen here and set the canvas object size and rotation.
+#         print("ON SIZE")
+#         if platform == "android":
+#             print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
+#             # This can differentiate between portrait and landscape, but not the diff landscapes.
+#             print(f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}")
+#             # 0 = landscape, 1=portrait, 4=rotate
+#             # self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         
-    
-    # def update_canvas(self, *args):
-    #     self.cam_can.size = self.ids.camera.size
-
-
-
-# import datetime
-# import os
-
-# from kivy.clock import mainthread
-# from kivy.lang import Builder
-# from kivy.properties import ObjectProperty
-# from kivy.resources import resource_add_path
-# from kivy.uix.behaviors import ButtonBehavior
-# from kivy.uix.camera import Camera
-# from kivy.uix.label import Label
-# from kivy.utils import platform
-
-# from platform_api import LANDSCAPE, PORTRAIT, set_orientation, take_picture, get_orientation
-
-# ROOT = os.path.dirname(os.path.abspath(__file__))
-# resource_add_path(ROOT)
-
-# def darker(color, factor=0.5):
-#     r, g, b, a = color
-#     r *= factor
-#     g *= factor
-#     b *= factor
-#     return r, g, b, a
-
-
-# def get_filename():
-#     return datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
-
-
-# def is_android():
-#     return platform == 'android'
-
-
-# def check_camera_permission():
-#     """
-#     Android runtime `CAMERA` permission check.
-#     """
-#     if not is_android():
-#         return True
-#     from android.permissions import Permission, check_permission
-#     permission = Permission.CAMERA
-#     return check_permission(permission)
-
-
-# def check_request_camera_permission(callback=None):
-#     """
-#     Android runtime `CAMERA` permission check & request.
-#     """
-#     had_permission = check_camera_permission()
-#     if not had_permission:
-#         from android.permissions import Permission, request_permissions
-#         permissions = [Permission.CAMERA]
-#         request_permissions(permissions, callback)
-#     return had_permission
-
-
-# class XCameraIconButton(ButtonBehavior, Label):
-#     pass
-
-
-# class XCamera(Camera):
-#     directory = ObjectProperty(None)
-#     _previous_orientation = None
-#     __events__ = ('on_picture_taken', 'on_camera_ready')
-
-#     def __init__(self, **kwargs):
-#         super().__init__(**kwargs)
-#         print("IN INIT")
-#         self._previous_orientation = PORTRAIT
-#         self.bind(_previous_orientation=self.restore_orientation)
-
-#     def _on_index(self, *largs):
-#         """
-#         Overrides `kivy.uix.camera.Camera._on_index()` to make sure
-#         `camera.open()` is not called unless Android `CAMERA` permission is
-#         granted, refs #5.
-#         """
-#         @mainthread
-#         def on_permissions_callback(permissions, grant_results):
-#             """
-#             On camera permission callback calls parent `_on_index()` method.
-#             """
-#             if all(grant_results):
-#                 self._on_index_dispatch(*largs)
-#         if check_request_camera_permission(callback=on_permissions_callback):
-#             self._on_index_dispatch(*largs)
-
-#     def _on_index_dispatch(self, *largs):
-#         super()._on_index(*largs)
-#         self.dispatch('on_camera_ready')
-
-#     def on_picture_taken(self, filename):
-#         """
-#         This event is fired every time a picture has been taken.
-#         """
-#         pass
-
-#     def on_camera_ready(self):
-#         """
-#         Fired when the camera is ready.
-#         """
-#         pass
-
-#     def shoot(self):
-#         def on_success(filename):
-#             self.dispatch('on_picture_taken', filename)
-#         filename = get_filename()
-#         if self.directory:
-#             filename = os.path.join(self.directory, filename)
-#         take_picture(self, filename, on_success)
-
-#     def force_landscape(self):
-#         self._previous_orientation = set_orientation(LANDSCAPE)
-
-#     def force_portrait(self):
-#         print("IN FORCE PORTRAIT")
-#         self._previous_orientation = set_orientation(PORTRAIT)
-
-#     def restore_orientation(self):
-#         if self._previous_orientation is not None:
-#             print("IN RESTORE ORIENTATION")
-#             set_orientation(self._previous_orientation)
-
-# from .platform_api import LANDSCAPE, PORTRAIT, set_orientation, take_picture
-# from kivy.lang import Builder
-# class XCamera(Camera):
-#     directory = ObjectProperty(None)
-#     _previous_orientation = None
-#     __events__ = ('on_picture_taken', 'on_camera_ready')
-#     def __init__(self, **kwargs):
-#         Builder.load_file(os.path.join(ROOT, "xcamera.kv"))
-#         super().__init__(**kwargs)
-    
-#     def loaded(self, platform_camera):
-#         mActivity.setRequestedOrientation(LANDSCAPE)
 
 # from plyer import camera as plyercamera
 # from os import getcwd
@@ -1123,13 +900,6 @@ class YCamera(StencilView):
 #         #         content=Label(text="This feature has not yet been implemented for this platform."))
 #         #     popup.open()
 
-#     def camera_callback(self, filepath):
-#         if(exists(filepath)):
-#             popup = Popup(content=Label(text="Picture saved!"))
-#             popup.open()
-#         else:
-#             popup = Popup(content=Label(text="Could not save your picture!"))
-#             popup.open()
 
 ######################################################################################################
 #                                              SCREENS                                               #
@@ -1138,20 +908,14 @@ class YCamera(StencilView):
 
 class MainMenuScreen(Screen):
     def set_orientation(self, *args):
-        pass
-        # if platform == "android":
-        #     print("IN SET ORIENTATION")
-        #     AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-        #     # 0 = landscape, 1=portrait, 4=rotate
-        #     AndroidPythonActivity.mActivity.setRequestedOrientation(0)
+        if platform == "android":
+            print("IN SET ORIENTATION")
+            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            # 0 = landscape, 1=portrait, 4=rotate
+            AndroidPythonActivity.mActivity.setRequestedOrientation(0)
 
 
-# from kivy_garden.xcamera import XCamera
 class CameraScreen(Screen):
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     camera = YCamera()
-    #     self.add_widget(camera)
 
     def capture(self):
         print("CAPTURE")
@@ -1161,22 +925,39 @@ class CameraScreen(Screen):
         if platform == "android":
             from android.storage import primary_external_storage_path
             primary_dir = primary_external_storage_path()
-            full_path = primary_dir + "/" + file_name
+            full_path = join(primary_dir, file_name)
+            print(f"FULL PATH: {full_path}")
         else:
             full_path = file_name
-        camera.export_to_png(full_path)
-        #camera.do_capture()
 
-        # if platform == "android":
-        #     print("IN CAPTURE")
-        #     AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
-        #     AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-        #     # 0 = landscape, 1=portrait, 4=rotate
-        #     print(AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR)
-        #     AndroidPythonActivity.mActivity.setRequestedOrientation(4)
+        if platform == "android":
+            plyercamera.take_picture(filename=full_path, on_complete=self.camera_callback)
+        else:
+            camera.export_to_png(full_path)
+
+        if platform == "android":
+            # 0 = landscape, 1=portrait, 4=rotate
+            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            AndroidPythonActivity.mActivity.setRequestedOrientation(4)
+
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
         self.manager.get_screen('spline_screen').img_src = full_path
+        
+    def camera_callback(self, filepath):
+        print("IN PLYER CAMERA CALLBACK")
+        if(exists(filepath)):
+            print("PICTURE SAVED")
+        else:
+            print("PICTURE NOT SAVED")
+            
+    def set_orientation(self, *args):
+        if platform == "android":
+            print("IN SET ORIENTATION")
+            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            # 0 = landscape, 1=portrait, 4=rotate
+            AndroidPythonActivity.mActivity.setRequestedOrientation(4)
+
 
 class FileChooserScreen(Screen):
     
@@ -1315,6 +1096,12 @@ class SplineScreen(Screen):
 
             self.ids.spline_screen_util_btns.add_widget(results_card)
     
+    def set_orientation(self, *args):
+        if platform == "android":
+            print("IN SET ORIENTATION")
+            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+            # 0 = landscape, 1=portrait, 4=rotate
+            AndroidPythonActivity.mActivity.setRequestedOrientation(0)
 
 
 class SM(ScreenManager):

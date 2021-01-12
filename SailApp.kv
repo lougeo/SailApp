@@ -75,33 +75,9 @@ SM:
 <CameraScreen>:
     name: "camera_screen"
 
-    YCamera:
-        # canvas.before:
-        #     PushMatrix
-        #     Rotate:
-        #         angle: -90
-        #         origin: self.center
-        # canvas.after:
-        #     PopMatrix
-        Camera:
-            id:camera
-            allow_stretch: True
-            # keep_ratio: True
-        #     canvas:
-        #         Color:
-        #             rgb: 1,1,1
-        #         Rectangle:
-        #             pos: self.pos
-        #             # size: (200,200)
-        #             size: self.size
-        #             texture: self.texture
-        #             tex_coords: self.parent.tex_coords
-        
-    #     Camera:
-    #         id: camera
-    #         allow_stretch: True
-    #         keep_ratio: True
-    #         texture_coords: [self.parent.x, self.parent.y, ]
+    Camera:
+        id:camera
+        allow_stretch: True
 
     FloatLayout:
         Button:
@@ -120,6 +96,7 @@ SM:
             on_release: 
                 root.manager.transition.direction = "right"
                 app.root.current = "main_menu"
+                root.set_orientation()
             size_hint: 0.1, 0.1
             pos_hint: {"x": 0.8, "y": 0.8}
             height: '48dp'
@@ -181,6 +158,7 @@ SM:
             on_release: 
                 root.manager.transition.direction = "right"
                 app.root.current = "camera_screen"
+                root.set_orientation()
 
         SplineButton:
             name: "top"
