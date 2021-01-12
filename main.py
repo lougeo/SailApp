@@ -940,11 +940,11 @@ class CameraScreen(Screen):
         else:
             full_path = file_name
 
+        camera = self.ids['camera']
         if platform == "android":
-            from plyer import camera
+            # from plyer import camera
             camera.take_picture(filename=full_path, on_complete=self.camera_callback)
         else:
-            camera = self.ids['camera']
             camera.export_to_png(full_path)
 
         if platform == "android":
