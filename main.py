@@ -919,8 +919,8 @@ class CameraScreen(Screen):
     def __init__(self, **kwargs):
         super(CameraScreen, self).__init__(**kwargs)
         if platform == "android":
-            from plyer.camera import camera
-            self.cam = camera()
+            from plyer.platforms.android.camera import AndroidCamera
+            self.cam = AndroidCamera()
         else:
             self.cam = Camera()
             
