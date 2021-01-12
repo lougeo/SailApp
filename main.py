@@ -33,7 +33,6 @@ if platform == "android":
     # from android.storage import primary_external_storage_path
     from android.permissions import request_permissions, Permission
     from jnius import JavaException, PythonJavaClass, autoclass, java_method
-    from plyer import camera
     request_permissions([
         Permission.CAMERA,
         Permission.READ_EXTERNAL_STORAGE, 
@@ -942,6 +941,7 @@ class CameraScreen(Screen):
             full_path = file_name
 
         if platform == "android":
+            from plyer import camera
             camera.take_picture(filename=full_path, on_complete=self.camera_callback)
         else:
             camera = self.ids['camera']
