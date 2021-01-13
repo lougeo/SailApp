@@ -33,7 +33,7 @@ if platform == "android":
     # from android.storage import primary_external_storage_path
     from android.permissions import request_permissions, Permission
     from jnius import JavaException, PythonJavaClass, autoclass, java_method
-    from android_camera import AndroidCamera
+    # from android_camera import AndroidCamera
     request_permissions([
         Permission.CAMERA,
         Permission.READ_EXTERNAL_STORAGE, 
@@ -917,14 +917,14 @@ class MainMenuScreen(Screen):
 
 
 class CameraScreen(Screen):
-    def __init__(self, **kwargs):
-        super(CameraScreen, self).__init__(**kwargs)
-        if platform == "android":
-            self.cam = AndroidCamera()
-        else:
-            self.cam = Camera()
+    # def __init__(self, **kwargs):
+    #     super(CameraScreen, self).__init__(**kwargs)
+    #     if platform == "android":
+    #         self.cam = AndroidCamera()
+    #     else:
+    #         self.cam = Camera()
             
-        self.add_widget(self.cam)
+    #     self.add_widget(self.cam)
 
 
 
@@ -940,11 +940,12 @@ class CameraScreen(Screen):
         else:
             full_path = file_name
 
-        # camera = self.ids['camera']
-        camera = self.cam
+        # camera = self.cam
         if platform == "android":
+            from plyer import camera
             camera.take_picture(filename=full_path, on_complete=self.camera_callback)
         else:
+            camera = self.ids['camera']
             camera.export_to_png(full_path)
 
         if platform == "android":
