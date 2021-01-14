@@ -850,7 +850,7 @@ class MainMenuScreen(Screen):
     def open_camera(self):
         print("CAPTURE")
         timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = "IMG_{}.png".format(timestr)
+        file_name = f"IMG_{timestr}.png"
         if platform == "android":
             from android.storage import primary_external_storage_path
             primary_dir = primary_external_storage_path()
