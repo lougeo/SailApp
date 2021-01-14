@@ -7,6 +7,7 @@ Intent = autoclass('android.content.Intent')
 PythonActivity = autoclass('org.kivy.android.PythonActivity')
 MediaStore = autoclass('android.provider.MediaStore')
 Uri = autoclass('android.net.Uri')
+FileProvider = autoclass('android.support.v4.content.FileProvider')
 
 
 class AndroidCamera:
@@ -18,9 +19,10 @@ class AndroidCamera:
         android.activity.unbind(on_activity_result=self._on_activity_result)
         android.activity.bind(on_activity_result=self._on_activity_result)
         intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        uri = Uri.parse('file:/' + filename)
-        print(f"URI: {uri}")
-        parcelable = cast('android.os.Parcelable', uri)
+        # uri = Uri.parse('file:/' + filename)
+        # print(f"URI: {uri}")
+        fileprovider = FileProvider('content:/' + filename)
+        parcelable = cast('android.os.Parcelable', fileprovider)
         print(f"PARCELABLE: {parcelable}")
         intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
         PythonActivity.mActivity.startActivityForResult(intent, 0x123)
