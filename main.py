@@ -882,6 +882,9 @@ class MainMenuScreen(Screen):
         else:
             print("PICTURE NOT SAVED")
             print(filepath)
+            self.manager.transition.direction = "left"
+            self.manager.current = "spline_screen"
+            self.manager.get_screen('spline_screen').img_src = filepath
 
 # class CameraScreen(Screen):
 #     pass
