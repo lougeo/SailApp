@@ -18,7 +18,7 @@ class AndroidCamera:
         android.activity.unbind(on_activity_result=self._on_activity_result)
         android.activity.bind(on_activity_result=self._on_activity_result)
         intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        uri = Uri.parse('file://' + filename)
+        uri = Uri.parse('file:/' + filename)
         print(f"URI: {uri}")
         parcelable = cast('android.os.Parcelable', uri)
         print(f"PARCELABLE: {parcelable}")
