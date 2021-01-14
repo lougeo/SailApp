@@ -7,9 +7,9 @@ Intent = autoclass('android.content.Intent')
 PythonActivity = autoclass('org.kivy.android.PythonActivity')
 MediaStore = autoclass('android.provider.MediaStore')
 Uri = autoclass('android.net.Uri')
-FileProvider = autoclass('android.support.v4.content.FileProvider')
-Context = autoclass("android.content.Context")
-Environment = autoclass("android.os.Environment")
+# FileProvider = autoclass('android.support.v4.content.FileProvider')
+# Context = autoclass("android.content.Context")
+# Environment = autoclass("android.os.Environment")
 
 class AndroidCamera:
 
