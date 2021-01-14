@@ -22,7 +22,7 @@ class AndroidCamera:
         print(f"URI: {uri}")
         parcelable = cast('android.os.Parcelable', uri)
         print(f"PARCELABLE: {parcelable}")
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, filename)
         PythonActivity.mActivity.startActivityForResult(intent, 0x123)
 
     def on_activity_result(self, requestCode, resultCode, intent):
