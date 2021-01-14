@@ -2,8 +2,6 @@ import android
 import android.activity
 from os import remove
 from jnius import autoclass, cast
-from plyer.facades import Camera
-from plyer.platforms.android import activity
 
 Intent = autoclass('android.content.Intent')
 PythonActivity = autoclass('org.kivy.android.PythonActivity')
@@ -11,9 +9,9 @@ MediaStore = autoclass('android.provider.MediaStore')
 Uri = autoclass('android.net.Uri')
 
 
-class AndroidCamera(Camera):
+class AndroidCamera:
 
-    def take_picture(self, on_complete, filename=None):
+    def take_picture(self, filename, on_complete):
         assert(on_complete is not None)
         self.on_complete = on_complete
         self.filename = filename
@@ -23,7 +21,7 @@ class AndroidCamera(Camera):
         uri = Uri.parse('file://' + filename)
         parcelable = cast('android.os.Parcelable', uri)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
-        activity.startActivityForResult(intent, 0x123)
+        PythonActivity.startActivityForResult(intent, 0x123)
 
     def on_activity_result(self, requestCode, resultCode, intent):
         if requestCode != 0x123:
