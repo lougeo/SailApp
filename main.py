@@ -941,7 +941,7 @@ class CameraScreen(Screen):
         # camera = self.cam
         if platform == "android":
             from android_camera import AndroidCamera
-            AndroidCamera.take_picture(filename=full_path, on_complete=self.camera_callback)
+            AndroidCamera().take_picture(filename=full_path, on_complete=self.camera_callback)
         else:
             camera = self.ids['camera']
             camera.export_to_png(full_path)
