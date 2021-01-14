@@ -21,7 +21,7 @@ class AndroidCamera:
         # uri = Uri.parse('file://' + filename)
         # parcelable = cast('android.os.Parcelable', uri)
         # intent.putExtra(MediaStore.EXTRA_OUTPUT, filename)
-        PythonActivity.startActivityForResult(intent, 0x123)
+        PythonActivity.mActivity.startActivityForResult(intent, 0x123)
 
     def on_activity_result(self, requestCode, resultCode, intent):
         if requestCode != 0x123:
