@@ -11,16 +11,16 @@ Uri = autoclass('android.net.Uri')
 
 class AndroidCamera:
 
-    def take_picture(self, filename, on_complete):
+    def take_picture(self, filename=None, on_complete=None):
         assert(on_complete is not None)
         self.on_complete = on_complete
         self.filename = filename
         android.activity.unbind(on_activity_result=self.on_activity_result)
         android.activity.bind(on_activity_result=self.on_activity_result)
         intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        uri = Uri.parse('file://' + filename)
-        parcelable = cast('android.os.Parcelable', uri)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
+        # uri = Uri.parse('file://' + filename)
+        # parcelable = cast('android.os.Parcelable', uri)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, filename)
         PythonActivity.startActivityForResult(intent, 0x123)
 
     def on_activity_result(self, requestCode, resultCode, intent):
