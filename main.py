@@ -876,14 +876,15 @@ class MainMenuScreen(Screen):
         print("IN CAMERA CALLBACK")
         if(exists(filepath)):
             print("PICTURE SAVED")
-            # self.manager.transition.direction = "left"
-            # self.manager.current = "spline_screen"
-            # self.manager.get_screen('spline_screen').img_src = full_path
+            self.manager.transition.direction = "left"
+            self.manager.current = "spline_screen"
+            self.manager.get_screen('spline_screen').img_src = filepath
         else:
             print("PICTURE NOT SAVED")
+            print(filepath)
 
-class CameraScreen(Screen):
-    pass
+# class CameraScreen(Screen):
+#     pass
             
     # def set_orientation(self, *args):
     #     if platform == "android":
