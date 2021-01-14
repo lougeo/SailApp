@@ -28,9 +28,9 @@ class AndroidCamera:
         #     filename,
         # )
         uri = "content://com.sailmeter.fileprovider" + filename
-        parcelable = cast('android.os.Parcelable', filename)
-        print(f"PARCELABLE: {parcelable}")
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
+        # parcelable = cast('android.os.Parcelable', filename)
+        # print(f"PARCELABLE: {parcelable}")
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, filename)
         PythonActivity.mActivity.startActivityForResult(intent, 0x123)
 
     def _on_activity_result(self, requestCode, resultCode, intent):
