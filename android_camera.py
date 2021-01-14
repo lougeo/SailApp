@@ -26,7 +26,7 @@ class AndroidCamera:
     def on_activity_result(self, requestCode, resultCode, intent):
         if requestCode != 0x123:
             return
-        android.activity.unbind(on_activity_result=self._on_activity_result)
+        android.activity.unbind(on_activity_result=self.on_activity_result)
         if self.on_complete(self.filename):
             self.remove(self.filename)
 

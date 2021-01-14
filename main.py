@@ -832,73 +832,6 @@ class BezierLine(Widget):
 class ResultsCard(GridLayout):
     name = StringProperty()
 
-# class YCamera(StencilView):
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-
-
-#         # camera = Camera()
-#         if platform == "android":
-#             print("IN ANDROID INIT")
-#             self.AndroidActivityInfo = autoclass('android.content.pm.ActivityInfo')
-#             self.AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-#             PORTRAIT = self.AndroidActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-#             LANDSCAPE = self.AndroidActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-#             SENSOR = self.AndroidActivityInfo.SCREEN_ORIENTATION_SENSOR
-#             print(f"PORTRAIT: {PORTRAIT}")
-#             print(f"LANDSCAPE: {LANDSCAPE}")
-#             print(f"SENSOR: {SENSOR}")
-#         else:
-#             print("REGULAR INIT")
-
-#     def on_size(self, *args):
-#         # Could listen here and set the canvas object size and rotation.
-#         print("ON SIZE")
-#         if platform == "android":
-#             print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
-#             # This can differentiate between portrait and landscape, but not the diff landscapes.
-#             print(f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}")
-#             # 0 = landscape, 1=portrait, 4=rotate
-#             # self.AndroidPythonActivity.mActivity.setRequestedOrientation(4)
-        
-
-# from os import getcwd
-# from os.path import exists
-# from kivy.uix.popup import Popup
-# class XCamera(FloatLayout):
-#     def __init__(self, **kwargs):
-#         super(XCamera, self).__init__(**kwargs)
-#         # self.cwd = getcwd() + "/"
-#         # self.ids.path_label.text = self.cwd
-
-#     def do_capture(self):
-#         print("capture")
-#         # filepath = self.cwd + self.ids.filename_text.text
-#         camera = self.ids['camera']
-#         timestr = time.strftime("%Y%m%d_%H%M%S")
-#         file_name = "IMG_{}.png".format(timestr)
-#         if platform == "android":
-#             from android.storage import primary_external_storage_path
-#             primary_dir = primary_external_storage_path()
-#             full_path = primary_dir + "/" + file_name
-#         else:
-#             full_path = file_name
-
-#         if(exists(file_name)):
-#             popup = Popup("Picture with this name already exists!")
-#             popup.open()
-#             return False
-
-#         # try:
-#         camera.take_picture(filename=file_name,
-#                             on_complete=self.camera_callback)
-#         # except NotImplementedError:
-#         #     popup = Popup(
-#         #         content=Label(text="This feature has not yet been implemented for this platform."))
-#         #     popup.open()
-
-
 
 ######################################################################################################
 #                                              SCREENS                                               #
@@ -907,26 +840,14 @@ class ResultsCard(GridLayout):
 
 class MainMenuScreen(Screen):
     def set_orientation(self, *args):
-        if platform == "android":
-            print("IN SET ORIENTATION")
-            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-            # 0 = landscape, 1=portrait, 4=rotate
-            AndroidPythonActivity.mActivity.setRequestedOrientation(0)
+        pass
+        # if platform == "android":
+        #     print("IN SET ORIENTATION")
+        #     AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+        #     # 0 = landscape, 1=portrait, 4=rotate
+        #     AndroidPythonActivity.mActivity.setRequestedOrientation(0)
 
-
-class CameraScreen(Screen):
-    # def __init__(self, **kwargs):
-    #     super(CameraScreen, self).__init__(**kwargs)
-    #     if platform == "android":
-    #         self.cam = AndroidCamera()
-    #     else:
-    #         self.cam = Camera()
-            
-    #     self.add_widget(self.cam)
-
-
-
-    def capture(self):
+    def open_camera(self):
         print("CAPTURE")
         timestr = time.strftime("%Y%m%d_%H%M%S")
         file_name = "IMG_{}.png".format(timestr)
@@ -946,28 +867,30 @@ class CameraScreen(Screen):
             camera = self.ids['camera']
             camera.export_to_png(full_path)
 
-        if platform == "android":
-            # 0 = landscape, 1=portrait, 4=rotate
-            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-            AndroidPythonActivity.mActivity.setRequestedOrientation(4)
-
-        self.manager.transition.direction = "left"
-        self.manager.current = "spline_screen"
-        self.manager.get_screen('spline_screen').img_src = full_path
+        # if platform == "android":
+        #     # 0 = landscape, 1=portrait, 4=rotate
+        #     AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+        #     AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         
     def camera_callback(self, filepath):
         print("IN CAMERA CALLBACK")
         if(exists(filepath)):
             print("PICTURE SAVED")
+            # self.manager.transition.direction = "left"
+            # self.manager.current = "spline_screen"
+            # self.manager.get_screen('spline_screen').img_src = full_path
         else:
             print("PICTURE NOT SAVED")
+
+class CameraScreen(Screen):
+    pass
             
-    def set_orientation(self, *args):
-        if platform == "android":
-            print("IN SET ORIENTATION")
-            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-            # 0 = landscape, 1=portrait, 4=rotate
-            AndroidPythonActivity.mActivity.setRequestedOrientation(4)
+    # def set_orientation(self, *args):
+    #     if platform == "android":
+    #         print("IN SET ORIENTATION")
+    #         AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
+    #         # 0 = landscape, 1=portrait, 4=rotate
+    #         AndroidPythonActivity.mActivity.setRequestedOrientation(4)
 
 
 class FileChooserScreen(Screen):
