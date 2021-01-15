@@ -885,6 +885,7 @@ class FileChooserScreen(Screen):
     
     def load(self, path, selection):
         file_name = selection[0]
+        print(file_name)
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
         self.manager.get_screen('spline_screen').img_src = file_name
