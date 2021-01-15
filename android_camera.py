@@ -50,8 +50,8 @@ class AndroidCamera:
         assert(on_complete is not None)
         # self.on_complete = on_complete
         # self.filename = filename
-        android.activity.unbind(on_activity_result=self._on_activity_result)
-        android.activity.bind(on_activity_result=self._on_activity_result)
+        android.activity.unbind(on_activity_result=self.on_activity_result)
+        android.activity.bind(on_activity_result=self.on_activity_result)
         intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         # uri = Uri.parse('file:/' + filename)
         # print(f"URI: {uri}")
