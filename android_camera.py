@@ -57,6 +57,8 @@ class AndroidCamera:
         # print(f"URI: {uri}")
         image_file = self._create_image_file()
         print(image_file)
+        print(self.currentActivity.getApplicationContext())
+        print(self.currentActivity.getApplicationContext().getPackageName())
         uri = FileProvider.getUriForFile(
             self.currentActivity.getApplicationContext(),
             self.currentActivity.getApplicationContext().getPackageName(),
