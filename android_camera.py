@@ -29,7 +29,7 @@ class AndroidCamera:
 
         camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        photo_file = self._create_image_file(filename)
+        photo_file = self._create_image_file()
 
         if photo_file is not None:
             photo_uri = FileProvider.getUriForFile(
