@@ -33,11 +33,11 @@ class AndroidCamera:
     #     photo_file = self._create_image_file()
 
     #     if photo_file is not None:
-    #         photo_uri = FileProvider.getUriForFile(
-    #             self.currentActivity.getApplicationContext(),
-    #             self.currentActivity.getApplicationContext().getPackageName(),
-    #             photo_file
-    #         )
+            photo_uri = FileProvider.getUriForFile(
+                self.currentActivity.getApplicationContext(),
+                self.currentActivity.getApplicationContext().getPackageName(),
+                photo_file
+            )
 
     #         parcelable = cast('android.os.Parcelable', photo_uri)
 
@@ -58,10 +58,15 @@ class AndroidCamera:
         image_file = self._create_image_file()
 
         uri = FileProvider.getUriForFile(
-            Context.getApplicationContext(),
-            "com.sailmeter.sailapp.fileprovider",
-            image_file,
+            self.currentActivity.getApplicationContext(),
+            self.currentActivity.getApplicationContext().getPackageName(),
+            image_file
         )
+        # uri = FileProvider.getUriForFile(
+        #     Context.getApplicationContext(),
+        #     "com.sailmeter.sailapp.fileprovider",
+        #     image_file,
+        # )
         # uri = "content://com.sailmeter.fileprovider" + filename
         parcelable = cast('android.os.Parcelable', uri)
         print(f"PARCELABLE: {parcelable}")
