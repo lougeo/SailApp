@@ -33,11 +33,11 @@ class AndroidCamera:
     #     photo_file = self._create_image_file()
 
     #     if photo_file is not None:
-            photo_uri = FileProvider.getUriForFile(
-                self.currentActivity.getApplicationContext(),
-                self.currentActivity.getApplicationContext().getPackageName(),
-                photo_file
-            )
+            # photo_uri = FileProvider.getUriForFile(
+            #     self.currentActivity.getApplicationContext(),
+            #     self.currentActivity.getApplicationContext().getPackageName(),
+            #     photo_file
+            # )
 
     #         parcelable = cast('android.os.Parcelable', photo_uri)
 
