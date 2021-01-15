@@ -24,55 +24,55 @@ class AndroidCamera:
     def __init__(self):
         self.currentActivity = cast('android.app.Activity', PythonActivity.mActivity)
 
-    # def take_picture(self, on_complete):
-
-    #     self.on_complete = on_complete
-
-    #     camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-    #     photo_file = self._create_image_file()
-
-    #     if photo_file is not None:
-            # photo_uri = FileProvider.getUriForFile(
-            #     self.currentActivity.getApplicationContext(),
-            #     self.currentActivity.getApplicationContext().getPackageName(),
-            #     photo_file
-            # )
-
-    #         parcelable = cast('android.os.Parcelable', photo_uri)
-
-    #         activity.unbind(on_activity_result=self.on_activity_result)
-    #         activity.bind(on_activity_result=self.on_activity_result)
-
-    #         camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
-    #         self.currentActivity.startActivityForResult(camera_intent, self.CAMERA_REQUEST_CODE)
     def take_picture(self, on_complete):
-        assert(on_complete is not None)
-        # self.on_complete = on_complete
-        # self.filename = filename
-        android.activity.unbind(on_activity_result=self.on_activity_result)
-        android.activity.bind(on_activity_result=self.on_activity_result)
-        intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        # uri = Uri.parse('file:/' + filename)
-        # print(f"URI: {uri}")
-        image_file = self._create_image_file()
 
-        uri = FileProvider.getUriForFile(
-            self.currentActivity.getApplicationContext(),
-            # "com.sailmeter.sailapp.provider",
-            self.currentActivity.getApplicationContext().getPackageName() + '.provider',
-            image_file
-        )
-        # uri = FileProvider.getUriForFile(
-        #     Context.getApplicationContext(),
-        #     "com.sailmeter.sailapp.fileprovider",
-        #     image_file,
-        # )
-        # uri = "content://com.sailmeter.fileprovider" + filename
-        parcelable = cast('android.os.Parcelable', uri)
-        print(f"PARCELABLE: {parcelable}")
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
-        PythonActivity.mActivity.startActivityForResult(intent, 0x123)
+        self.on_complete = on_complete
+
+        camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        photo_file = self._create_image_file()
+
+        if photo_file is not None:
+            photo_uri = FileProvider.getUriForFile(
+                self.currentActivity.getApplicationContext(),
+                self.currentActivity.getApplicationContext().getPackageName(),
+                photo_file
+            )
+
+            parcelable = cast('android.os.Parcelable', photo_uri)
+
+            activity.unbind(on_activity_result=self.on_activity_result)
+            activity.bind(on_activity_result=self.on_activity_result)
+
+            camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
+            self.currentActivity.startActivityForResult(camera_intent, self.CAMERA_REQUEST_CODE)
+    # def take_picture(self, on_complete):
+    #     assert(on_complete is not None)
+    #     # self.on_complete = on_complete
+    #     # self.filename = filename
+    #     android.activity.unbind(on_activity_result=self.on_activity_result)
+    #     android.activity.bind(on_activity_result=self.on_activity_result)
+    #     intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    #     # uri = Uri.parse('file:/' + filename)
+    #     # print(f"URI: {uri}")
+    #     image_file = self._create_image_file()
+
+    #     uri = FileProvider.getUriForFile(
+    #         self.currentActivity.getApplicationContext(),
+    #         # "com.sailmeter.sailapp.provider",
+    #         self.currentActivity.getApplicationContext().getPackageName() + '.provider',
+    #         image_file
+    #     )
+    #     # uri = FileProvider.getUriForFile(
+    #     #     Context.getApplicationContext(),
+    #     #     "com.sailmeter.sailapp.fileprovider",
+    #     #     image_file,
+    #     # )
+    #     # uri = "content://com.sailmeter.fileprovider" + filename
+    #     parcelable = cast('android.os.Parcelable', uri)
+    #     print(f"PARCELABLE: {parcelable}")
+    #     intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
+    #     PythonActivity.mActivity.startActivityForResult(intent, 0x123)
 
     def on_activity_result(self, requestCode, resultCode, intent):
         if request_code == self.CAMERA_REQUEST_CODE:
