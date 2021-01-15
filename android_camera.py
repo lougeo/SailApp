@@ -35,7 +35,7 @@ class AndroidCamera:
         if photo_file is not None:
             photo_uri = FileProvider.getUriForFile(
                 Context.getApplicationContext(),
-                "sailmeter.com.sailapp.provider"
+                "sailmeter.com.sailapp.provider",
                 # self.currentActivity.getApplicationContext().getPackageName() + '.provider',
                 photo_file
             )
