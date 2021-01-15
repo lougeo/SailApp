@@ -51,7 +51,6 @@ SM:
             text: "Camera"
             pos_hint: {"x": 0.2, "y": 0.5}
             on_release: 
-                root.set_orientation()
                 root.open_camera()
 
         GalleryButton: 
@@ -124,39 +123,33 @@ SM:
 
 <SplineScreen>:
     name: "spline_screen"
-    BoxLayout:
-        id: scatter_container
-        orientation: "vertical"
-        MainScatter:
-            id: scatter
-            do_rotation: False
-            # do_translation: False
-            size: scatter_image.size
-            size_hint: None, None
-            auto_bring_to_front: False
-            scale_min: 1
-            scale_max: 3
-            # do_collide_after_children: True
-            Image:
-                id: scatter_image
-                source: root.img_src
-                size: root.size
+    # BoxLayout:
+    #     id: scatter_container
+    #     orientation: "vertical"
+    #     MainScatter:
+    #         id: scatter
+    #         do_rotation: False
+    #         # do_translation: False
+    #         size: scatter_image.size
+    #         size_hint: None, None
+    #         auto_bring_to_front: False
+    #         scale_min: 1
+    #         scale_max: 3
+    #         # do_collide_after_children: True
+    Image:
+        id: scatter_image
+        source: root.img_src
+        size: root.size
 
     FloatLayout:
         id: spline_screen_util_btns
 
-        # FloatLayout:
-        #     id: results_layout
-        #     pos_hint: {"x": 0.5, "y": 0.5}
-        #     size_hint: (0.3, 0.5)
-
         SplineButton:
-            text: "Back"
+            text: "Main Menu"
             pos_hint: {"x": 0.8, "y": 0.8}
             on_release: 
                 root.manager.transition.direction = "right"
-                app.root.current = "camera_screen"
-                root.set_orientation()
+                app.root.current = "main_menu"
 
         SplineButton:
             name: "top"

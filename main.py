@@ -839,14 +839,6 @@ class ResultsCard(GridLayout):
 
 
 class MainMenuScreen(Screen):
-    def set_orientation(self, *args):
-        pass
-        # if platform == "android":
-        #     print("IN SET ORIENTATION")
-        #     AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-        #     # 0 = landscape, 1=portrait, 4=rotate
-        #     AndroidPythonActivity.mActivity.setRequestedOrientation(0)
-
     def open_camera(self):
         print("CAPTURE")
         timestr = time.strftime("%Y%m%d_%H%M%S")
@@ -859,18 +851,12 @@ class MainMenuScreen(Screen):
         else:
             full_path = file_name
 
-        # camera = self.cam
         if platform == "android":
             from android_camera import AndroidCamera
             AndroidCamera().take_picture(self.camera_callback)
         else:
             camera = self.ids['camera']
             camera.export_to_png(full_path)
-
-        # if platform == "android":
-        #     # 0 = landscape, 1=portrait, 4=rotate
-        #     AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-        #     AndroidPythonActivity.mActivity.setRequestedOrientation(4)
         
     def camera_callback(self, filepath):
         print("IN CAMERA CALLBACK")
@@ -883,9 +869,6 @@ class MainMenuScreen(Screen):
         else:
             print("PICTURE NOT SAVED")
             print(filepath)
-            # self.manager.transition.direction = "left"
-            # self.manager.current = "spline_screen"
-            # self.manager.get_screen('spline_screen').img_src = filepath
 
 # class CameraScreen(Screen):
 #     pass
@@ -910,7 +893,7 @@ class SplineScreen(Screen):
     img_src = StringProperty("")
     def on_img_src(self, *args):
         print("IMG_SRC CHANGE")
-        self.img_src = "/storage/emulated/0/Pictures/1598122017311.jpg"
+        # self.img_src = "/storage/emulated/0/Pictures/1598122017311.jpg"
         print(self.img_src)
 
     def add_chord(self, btn_name):
@@ -1038,15 +1021,6 @@ class SplineScreen(Screen):
             btm_camber.add_widget(btm_camber_value)
 
             self.ids.spline_screen_util_btns.add_widget(results_card)
-    
-    def set_orientation(self, *args):
-        if platform == "android":
-            print("IN SET ORIENTATION")
-            self.img_src = ""
-            AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-            # 0 = landscape, 1=portrait, 4=rotate
-            AndroidPythonActivity.mActivity.setRequestedOrientation(0)
-
 
 class SM(ScreenManager):
     pass
