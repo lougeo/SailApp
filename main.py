@@ -877,15 +877,16 @@ class MainMenuScreen(Screen):
         if(exists(filepath)):
             print("PICTURE SAVED")
             print(filepath)
+            partial_path = filepath.replace("/storage/emulated/0/", "")
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
-            self.manager.get_screen('spline_screen').img_src = filepath
+            self.manager.get_screen('spline_screen').img_src = partial_path
         else:
             print("PICTURE NOT SAVED")
             print(filepath)
-            self.manager.transition.direction = "left"
-            self.manager.current = "spline_screen"
-            self.manager.get_screen('spline_screen').img_src = filepath
+            # self.manager.transition.direction = "left"
+            # self.manager.current = "spline_screen"
+            # self.manager.get_screen('spline_screen').img_src = filepath
 
 # class CameraScreen(Screen):
 #     pass
@@ -911,7 +912,7 @@ class SplineScreen(Screen):
     def on_img_src(self, *args):
         print("IMG_SRC CHANGE")
         print(self.img_src)
-        
+
     def add_chord(self, btn_name):
         garbage = []
 
