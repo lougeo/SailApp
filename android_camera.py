@@ -89,6 +89,8 @@ class AndroidCamera:
         print(f"ENV DIR: {Environment.DIRECTORY_PICTURES}")
         storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         print(f"STORAGE DIR: {storage_dir.getAbsolutePath()}")
+        storage_dir = Context.getApplicationContext()
+        print(f"STORAGE DIR2: {storage_dir.getAbsolutePath()}")
 
         image = File.createTempFile(
             image_file_name,
