@@ -79,7 +79,7 @@ class AndroidCamera:
     def on_activity_result(self, request_code, request_code2, intent):
         if request_code == self.CAMERA_REQUEST_CODE:
             android.activity.unbind(on_activity_result=self.on_activity_result)
-            self.on_complete(file_path=self.image_path)
+            self.on_complete(self.image_path)
 
     def _create_image_file(self):
         timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
