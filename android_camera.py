@@ -2,6 +2,7 @@ import android
 import android.activity
 from os import remove
 from jnius import autoclass, cast
+import time
 
 Intent = autoclass('android.content.Intent')
 PythonActivity = autoclass('org.kivy.android.PythonActivity')
