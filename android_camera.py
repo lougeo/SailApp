@@ -83,7 +83,7 @@ class AndroidCamera:
         timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
         image_file_name = "IMG_" + timestamp + "_"
         storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        print(f"STORAGE DIR: {storage_dir}")
+        print(f"STORAGE DIR: {storage_dir.getAbsolutePath()}")
         image = File.createTempFile(
             image_file_name,
             ".jpg",
