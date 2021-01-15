@@ -878,7 +878,7 @@ class MainMenuScreen(Screen):
             print("PICTURE SAVED")
             print(filepath)
             partial_path = filepath.replace("/storage/emulated/0", "")
-            partial_path = "~" + partila_path
+            partial_path = "~" + partial_path
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
             self.manager.get_screen('spline_screen').img_src = partial_path
