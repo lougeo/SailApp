@@ -73,7 +73,7 @@ class AndroidCamera:
             activity.unbind(on_activity_result=self.on_activity_result)
             self.on_complete(file_path=self.image_path)
 
-    def _create_image_file(self, filename):
+    def _create_image_file(self):
         timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
         image_file_name = "IMG_" + timestamp + "_"
         storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
