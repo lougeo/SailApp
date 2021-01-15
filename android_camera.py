@@ -76,7 +76,7 @@ class AndroidCamera:
     #     intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
     #     PythonActivity.mActivity.startActivityForResult(intent, 0x123)
 
-    def on_activity_result(self, requestCode, resultCode, intent):
+    def on_activity_result(self, request_code, request_code, intent):
         if request_code == self.CAMERA_REQUEST_CODE:
             activity.unbind(on_activity_result=self.on_activity_result)
             self.on_complete(file_path=self.image_path)
