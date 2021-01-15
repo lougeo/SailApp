@@ -35,7 +35,7 @@ class AndroidCamera:
         if photo_file is not None:
             photo_uri = FileProvider.getUriForFile(
                 self.currentActivity.getApplicationContext(),
-                self.currentActivity.getApplicationContext().getPackageName(),
+                self.currentActivity.getApplicationContext().getPackageName() + '.provider',
                 photo_file
             )
 
