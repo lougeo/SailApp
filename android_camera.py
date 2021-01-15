@@ -61,7 +61,8 @@ class AndroidCamera:
         print(self.currentActivity.getApplicationContext().getPackageName() + '.provider')
         uri = FileProvider.getUriForFile(
             self.currentActivity.getApplicationContext(),
-            self.currentActivity.getApplicationContext().getPackageName() + '.provider',
+            "com.sailmeter.sailapp.provider"
+            # self.currentActivity.getApplicationContext().getPackageName() + '.provider',
             image_file
         )
         # uri = FileProvider.getUriForFile(
