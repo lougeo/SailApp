@@ -43,8 +43,8 @@ class AndroidCamera:
             parcelable = cast('android.os.Parcelable', photo_uri)
             print(f"PARCELABLE: {parcelable}")
 
-            activity.activity.unbind(on_activity_result=self.on_activity_result)
-            activity.activity.bind(on_activity_result=self.on_activity_result)
+            android.activity.unbind(on_activity_result=self.on_activity_result)
+            android.activity.bind(on_activity_result=self.on_activity_result)
 
             camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
             self.currentActivity.startActivityForResult(camera_intent, self.CAMERA_REQUEST_CODE)
