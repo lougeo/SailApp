@@ -84,6 +84,7 @@ class AndroidCamera:
         image_file_name = "IMG_" + timestamp + "_"
 
         from android.storage import primary_external_storage_path
+        from os.path import exists, join
         primary_dir = primary_external_storage_path()
         full_path = join(primary_dir, image_file_name)
         print(f"ENV DIR: {Environment.DIRECTORY_PICTURES}")
