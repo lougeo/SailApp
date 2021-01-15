@@ -34,8 +34,9 @@ class AndroidCamera:
 
         if photo_file is not None:
             photo_uri = FileProvider.getUriForFile(
-                self.currentActivity.getApplicationContext(),
-                self.currentActivity.getApplicationContext().getPackageName() + '.provider',
+                Context.getApplicationContext(),
+                "sailmeter.com.sailapp.provider"
+                # self.currentActivity.getApplicationContext().getPackageName() + '.provider',
                 photo_file
             )
 
@@ -82,19 +83,12 @@ class AndroidCamera:
     def _create_image_file(self):
         timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
         image_file_name = "IMG_" + timestamp + "_"
-
-        from android.storage import primary_external_storage_path
-        from os.path import exists, join
-        primary_dir = primary_external_storage_path()
-        full_path = join(primary_dir, image_file_name)
-        print(f"ENV DIR: {Environment.DIRECTORY_PICTURES}")
         storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         print(f"STORAGE DIR: {storage_dir.getAbsolutePath()}")
-
         image = File.createTempFile(
             image_file_name,
             ".jpg",
-            full_path
+            storage_dir
         )
         self.image_path = image.getAbsolutePath()
         print(f"IMAGE FULL PATH: {self.image_path}")
