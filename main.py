@@ -19,6 +19,7 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.camera import Camera
+from kivy.uix.image import Image
 from kivy.utils import platform
 from kivy.properties import ObjectProperty, StringProperty, ListProperty, BooleanProperty
 
@@ -839,24 +840,23 @@ class ResultsCard(GridLayout):
 
 
 class MainMenuScreen(Screen):
+
     def open_camera(self):
         print("CAPTURE")
-        timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = f"IMG_{timestr}.png"
         if platform == "android":
             from android.storage import primary_external_storage_path
+            from android_camera import AndroidCamera
+
+            timestr = time.strftime("%Y%m%d_%H%M%S")
+            file_name = f"IMG_{timestr}.png"
             primary_dir = primary_external_storage_path()
             full_path = join(primary_dir, file_name)
             print(f"FULL PATH: {full_path}")
-        else:
-            full_path = file_name
 
-        if platform == "android":
-            from android_camera import AndroidCamera
             AndroidCamera().take_picture(self.camera_callback)
         else:
-            camera = self.ids['camera']
-            camera.export_to_png(full_path)
+            self.manager.transition.direction = "left"
+            self.manager.current = "camera_screen"
         
     def camera_callback(self, filepath):
         print("IN CAMERA CALLBACK")
@@ -870,16 +870,19 @@ class MainMenuScreen(Screen):
             print("PICTURE NOT SAVED")
             print(filepath)
 
-# class CameraScreen(Screen):
-#     pass
-            
-    # def set_orientation(self, *args):
-    #     if platform == "android":
-    #         print("IN SET ORIENTATION")
-    #         AndroidPythonActivity = autoclass('org.kivy.android.PythonActivity')
-    #         # 0 = landscape, 1=portrait, 4=rotate
-    #         AndroidPythonActivity.mActivity.setRequestedOrientation(4)
-
+class CameraScreen(Screen):
+    """
+    Only used in dev environment.
+    """
+    def capture(self):
+        print("CAPTURE")
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        file_name = f"IMG_{timestr}.png"
+        camera = self.ids['camera']
+        camera.export_to_png(file_name)
+        self.manager.transition.direction = "left"
+        self.manager.current = "spline_screen"
+        self.manager.get_screen('spline_screen').img_src = file_name
 
 class FileChooserScreen(Screen):
     
@@ -894,8 +897,14 @@ class SplineScreen(Screen):
     img_src = StringProperty("")
     def on_img_src(self, *args):
         print("IMG_SRC CHANGE")
+        args = locals()
+        print(f"ARGS: {args}")
         print(self.img_src)
-        self.ids.scatter_image.source = self.img_src
+        image = Image()
+        image.size = self.size
+        image.source = self.img_src
+        
+        self.ids.scatter.add_widget(image)
 
     def add_chord(self, btn_name):
         garbage = []

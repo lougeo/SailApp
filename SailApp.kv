@@ -5,7 +5,7 @@
 
 SM:
     MainMenuScreen:
-    # CameraScreen:
+    CameraScreen:
     FileChooserScreen:
     SplineScreen:
 
@@ -69,34 +69,34 @@ SM:
             pos_hint: {"x": 0.525, "y": 0.1}
 
 
-# <CameraScreen>:
-#     name: "camera_screen"
+<CameraScreen>:
+    # THIS IS ONLY USED IN DEV ENVIRONMENT
+    name: "camera_screen"
 
-    # Camera:
-    #     id:camera
-    #     allow_stretch: True
+    Camera:
+        id:camera
+        allow_stretch: True
 
-    # FloatLayout:
-    #     Button:
-    #         text: 'Capture'
-    #         size_hint: 0.1, 0.1
-    #         pos_hint: {"x": 0.45, "y": 0.1}
-    #         height: '48dp'
-    #         on_press: 
-    #             root.capture()
+    FloatLayout:
+        Button:
+            text: 'Capture'
+            size_hint: 0.1, 0.1
+            pos_hint: {"x": 0.45, "y": 0.1}
+            height: '48dp'
+            on_press: 
+                root.capture()
 
-    #     Button:
-    #         text: 'Main Menu'
-    #         text_size: self.size
-    #         halign: "center"
-    #         valign: "middle"
-    #         on_release: 
-    #             root.manager.transition.direction = "right"
-    #             app.root.current = "main_menu"
-    #             root.set_orientation()
-    #         size_hint: 0.1, 0.1
-    #         pos_hint: {"x": 0.8, "y": 0.8}
-    #         height: '48dp'
+        Button:
+            text: 'Main Menu'
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            on_release: 
+                root.manager.transition.direction = "right"
+                app.root.current = "main_menu"
+            size_hint: 0.1, 0.1
+            pos_hint: {"x": 0.8, "y": 0.8}
+            height: '48dp'
 
 <FileChooserScreen>:
     name: "file_chooser"
@@ -123,23 +123,23 @@ SM:
 
 <SplineScreen>:
     name: "spline_screen"
-    # BoxLayout:
-    #     id: scatter_container
-    #     orientation: "vertical"
-    #     MainScatter:
-    #         id: scatter
-    #         do_rotation: False
-    #         # do_translation: False
-    #         size: scatter_image.size
-    #         size_hint: None, None
-    #         auto_bring_to_front: False
-    #         scale_min: 1
-    #         scale_max: 3
-    #         # do_collide_after_children: True
-    Image:
-        id: scatter_image
-        source: root.img_src
-        size: root.size
+    BoxLayout:
+        id: scatter_container
+        orientation: "vertical"
+        MainScatter:
+            id: scatter
+            do_rotation: False
+            # do_translation: False
+            size: root.size
+            size_hint: None, None
+            auto_bring_to_front: False
+            scale_min: 1
+            scale_max: 3
+            # do_collide_after_children: True
+            Image:
+                id: scatter_image
+                source: root.img_src
+                size: root.size
 
     FloatLayout:
         id: spline_screen_util_btns
