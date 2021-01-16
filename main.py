@@ -894,8 +894,8 @@ class SplineScreen(Screen):
     img_src = StringProperty("")
     def on_img_src(self, *args):
         print("IMG_SRC CHANGE")
-        # self.img_src = "/storage/emulated/0/Pictures/1598122017311.jpg"
         print(self.img_src)
+        self.ids.scatter_image.source = self.img_src
 
     def add_chord(self, btn_name):
         garbage = []

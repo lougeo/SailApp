@@ -48,6 +48,27 @@ class AndroidCamera:
 
             camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
             self.currentActivity.startActivityForResult(camera_intent, self.CAMERA_REQUEST_CODE)
+
+    def on_activity_result(self, request_code, request_code2, intent):
+        if request_code == self.CAMERA_REQUEST_CODE:
+            android.activity.unbind(on_activity_result=self.on_activity_result)
+            self.on_complete(self.image_path)
+
+    def _create_image_file(self):
+        timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
+        image_file_name = "IMG_" + timestamp + "_"
+        storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        print(f"STORAGE DIR: {storage_dir.getAbsolutePath()}")
+        image = File.createTempFile(
+            image_file_name,
+            ".jpg",
+            storage_dir
+        )
+        self.image_path = image.getAbsolutePath()
+        print(f"IMAGE FULL PATH: {self.image_path}")
+        return image
+
+        
     # def take_picture(self, on_complete):
     #     assert(on_complete is not None)
     #     # self.on_complete = on_complete
@@ -76,24 +97,6 @@ class AndroidCamera:
     #     intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
     #     PythonActivity.mActivity.startActivityForResult(intent, 0x123)
 
-    def on_activity_result(self, request_code, request_code2, intent):
-        if request_code == self.CAMERA_REQUEST_CODE:
-            android.activity.unbind(on_activity_result=self.on_activity_result)
-            self.on_complete(self.image_path)
-
-    def _create_image_file(self):
-        timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
-        image_file_name = "IMG_" + timestamp + "_"
-        storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        print(f"STORAGE DIR: {storage_dir.getAbsolutePath()}")
-        image = File.createTempFile(
-            image_file_name,
-            ".jpg",
-            storage_dir
-        )
-        self.image_path = image.getAbsolutePath()
-        print(f"IMAGE FULL PATH: {self.image_path}")
-        return image
     # def _create_image_file(self):
     #     timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
     #     image_file_name = "IMG_" + timestamp + "_"
