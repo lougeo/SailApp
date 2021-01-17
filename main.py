@@ -1068,6 +1068,10 @@ class MainApp(App):
     
     def on_pause(self):
         return True
+    
+    def on_resume(self):
+        print(self.ids)
+        return True
 
 if __name__ == '__main__':
     MainApp().run()
