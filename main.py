@@ -875,10 +875,6 @@ class MainMenuScreen(Screen):
             intent.setData(Uri.parse(uri))
             context.sendBroadcast(intent)
 
-            im = Image.open(filepath)
-            im.thumbnail(Window.size)
-            outfile = '{0}/IMG_{1}.jpg'.format(THUMBNAIL_PATH, self.time)
-            im.save(outfile, "JPEG")
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
