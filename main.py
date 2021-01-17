@@ -1070,7 +1070,8 @@ class MainApp(App):
         return True
     
     def on_resume(self):
-        print(self.ids)
+        print("ON RESUME")
+        print(dir(self))
         return True
 
 if __name__ == '__main__':
