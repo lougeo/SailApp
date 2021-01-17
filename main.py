@@ -895,6 +895,17 @@ class FileChooserScreen(Screen):
 
 class SplineScreen(Screen):
     img_src = StringProperty("")
+    # def __init__(self, *args, **kwargs):
+    #     super(SplineScreen, self).__init__(*args, **kwargs)
+        
+    #     print("INIT")
+    #     print(self.img_src)
+    #     image = Image()
+    #     image.size = self.size
+    #     image.source = self.img_src
+
+    #     self.ids.scatter.add_widget(image)
+
     def on_img_src(self, *args):
         print("IMG_SRC CHANGE")
         args = locals()
@@ -903,7 +914,8 @@ class SplineScreen(Screen):
         image = Image()
         image.size = self.size
         image.source = self.img_src
-        
+        print(f"IDS: {self.ids}")
+
         self.ids.scatter.add_widget(image)
 
     def add_chord(self, btn_name):
