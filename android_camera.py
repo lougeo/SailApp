@@ -13,6 +13,7 @@ Context = autoclass("android.content.Context")
 Environment = autoclass("android.os.Environment")
 File = autoclass('java.io.File')
 
+from kivy.clock import mainthread
 
 class AndroidCamera:
 
@@ -44,7 +45,7 @@ class AndroidCamera:
 
             camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
             self.currentActivity.startActivityForResult(camera_intent, self.CAMERA_REQUEST_CODE)
-
+    @mainthread
     def on_activity_result(self, request_code, request_code2, intent):
         if request_code == self.CAMERA_REQUEST_CODE:
             android.activity.unbind(on_activity_result=self.on_activity_result)

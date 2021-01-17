@@ -872,8 +872,8 @@ class MainMenuScreen(Screen):
             # print(f"CONTENT RESOLVER: {contentResolver}")
             # print(f"URI: {uri}")
             # contentResolver.notifyChange(uri)
-            media_scanner = autoclass('android.media.MediaScannerConnection')
-            media_scanner.connect().scanFile(filepath)
+            # media_scanner = autoclass('android.media.MediaScannerConnection')
+            # media_scanner.connect().scanFile(filepath)
             
 
             self.manager.transition.direction = "left"
@@ -920,8 +920,8 @@ class SplineScreen(Screen):
 
     #     self.ids.scatter.add_widget(image)
 
-    # def on_img_src(self, *args):
-    #     print("IMG_SRC CHANGE")
+    def on_img_src(self, *args):
+        print("IMG_SRC CHANGE")
     #     print(self.img_src)
     #     if self.scatter_image:
     #         print("SCATTER IMAGE")
