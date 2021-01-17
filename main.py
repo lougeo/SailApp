@@ -864,14 +864,17 @@ class MainMenuScreen(Screen):
             print("PICTURE SAVED")
             print(filepath)
 
-            PythonActivity = autoclass('org.kivy.android.PythonActivity')
-            Uri = autoclass('android.net.Uri')
+            # PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            # Uri = autoclass('android.net.Uri')
 
-            contentResolver = PythonActivity.mActivity.getContentResolver()
-            uri = Uri.parse("content:/" + filepath)
-            print(f"CONTENT RESOLVER: {contentResolver}")
-            print(f"URI: {uri}")
-            contentResolver.notifyChange(uri)
+            # contentResolver = PythonActivity.mActivity.getContentResolver()
+            # uri = Uri.parse("file:/" + filepath)
+            # print(f"CONTENT RESOLVER: {contentResolver}")
+            # print(f"URI: {uri}")
+            # contentResolver.notifyChange(uri)
+            media_scanner = autoclass('android.media.ScannerConnection')
+            media_scanner.scanFile(filepath)
+            
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
