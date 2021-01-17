@@ -912,13 +912,15 @@ class SplineScreen(Screen):
         args = locals()
         print(f"ARGS: {args}")
         print(self.img_src)
-        self.ids.scatter_image.source = self.img_src
-        # image = Image()
-        # image.size = self.size
-        # image.source = self.img_src
-        # print(f"IDS: {self.ids}")
+        self.ids.scatter.remove_widget(self.ids.scatter_image)
+        
+        image = Image()
+        image.size = self.size
+        image.source = self.img_src
+        print(f"IDS: {self.ids}")
 
-        # self.ids.scatter.add_widget(image)
+        self.ids.scatter.add_widget(image)
+        print(f"IDS: {self.ids}")
 
     def add_chord(self, btn_name):
         garbage = []
@@ -1070,9 +1072,7 @@ class MainApp(App):
         return True
     
     def on_resume(self):
-        print("ON RESUME")
-        print(dir(self))
-        return True
+        pass
 
 if __name__ == '__main__':
     MainApp().run()
