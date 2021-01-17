@@ -869,7 +869,7 @@ class MainMenuScreen(Screen):
 
             contentResolver = PythonActivity.mActivity
             uri = Uri.parse("content:/" + filepath)
-            contentResolver.notifyChange(uri)
+            contentResolver.getContentResolver().notifyChange(uri)
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
