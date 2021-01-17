@@ -867,9 +867,11 @@ class MainMenuScreen(Screen):
             PythonActivity = autoclass('org.kivy.android.PythonActivity')
             Uri = autoclass('android.net.Uri')
 
-            contentResolver = PythonActivity.mActivity
+            contentResolver = PythonActivity.mActivity.getContentResolver()
             uri = Uri.parse("content:/" + filepath)
-            contentResolver.getContentResolver().notifyChange(uri)
+            print(f"CONTENT RESOLVER: {contentResolver}")
+            print(f"URI: {uri}")
+            contentResolver.notifyChange(uri)
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"

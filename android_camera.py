@@ -38,7 +38,6 @@ class AndroidCamera:
             )
 
             parcelable = cast('android.os.Parcelable', photo_uri)
-            print(f"PARCELABLE: {parcelable}")
 
             android.activity.unbind(on_activity_result=self.on_activity_result)
             android.activity.bind(on_activity_result=self.on_activity_result)
