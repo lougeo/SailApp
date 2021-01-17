@@ -863,18 +863,6 @@ class MainMenuScreen(Screen):
         if(exists(filepath)):
             print("PICTURE SAVED")
             print(filepath)
-            Intent = autoclass('android.content.Intent')
-            PythonActivity = autoclass('org.kivy.android.PythonActivity')
-            Uri = autoclass('android.net.Uri')
-
-            # Push photo into gallery
-            context = PythonActivity.mActivity
-            intent = Intent()
-            uri = 'file://{0}'.format(filepath)
-            intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-            intent.setData(Uri.parse(uri))
-            context.sendBroadcast(intent)
-
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
@@ -919,17 +907,18 @@ class SplineScreen(Screen):
 
     #     self.ids.scatter.add_widget(image)
 
-    # def on_img_src(self, *args):
-    #     print("IMG_SRC CHANGE")
-    #     args = locals()
-    #     print(f"ARGS: {args}")
-    #     print(self.img_src)
-    #     image = Image()
-    #     image.size = self.size
-    #     image.source = self.img_src
-    #     print(f"IDS: {self.ids}")
+    def on_img_src(self, *args):
+        print("IMG_SRC CHANGE")
+        args = locals()
+        print(f"ARGS: {args}")
+        print(self.img_src)
+        self.ids.scatter_image.source = self.img_src
+        # image = Image()
+        # image.size = self.size
+        # image.source = self.img_src
+        # print(f"IDS: {self.ids}")
 
-    #     self.ids.scatter.add_widget(image)
+        # self.ids.scatter.add_widget(image)
 
     def add_chord(self, btn_name):
         garbage = []
