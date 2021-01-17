@@ -863,6 +863,23 @@ class MainMenuScreen(Screen):
         if(exists(filepath)):
             print("PICTURE SAVED")
             print(filepath)
+            Intent = autoclass('android.content.Intent')
+            PythonActivity = autoclass('org.renpy.android.PythonActivity')
+            Uri = autoclass('android.net.Uri')
+
+            # Push photo into gallery
+            context = PythonActivity.mActivity
+            intent = Intent()
+            uri = 'file://{0}'.format(filepath)
+            intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            intent.setData(Uri.parse(uri))
+            context.sendBroadcast(intent)
+
+            im = Image.open(filepath)
+            im.thumbnail(Window.size)
+            outfile = '{0}/IMG_{1}.jpg'.format(THUMBNAIL_PATH, self.time)
+            im.save(outfile, "JPEG")
+
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
             self.manager.get_screen('spline_screen').img_src = filepath
@@ -906,17 +923,17 @@ class SplineScreen(Screen):
 
     #     self.ids.scatter.add_widget(image)
 
-    def on_img_src(self, *args):
-        print("IMG_SRC CHANGE")
-        args = locals()
-        print(f"ARGS: {args}")
-        print(self.img_src)
-        image = Image()
-        image.size = self.size
-        image.source = self.img_src
-        print(f"IDS: {self.ids}")
+    # def on_img_src(self, *args):
+    #     print("IMG_SRC CHANGE")
+    #     args = locals()
+    #     print(f"ARGS: {args}")
+    #     print(self.img_src)
+    #     image = Image()
+    #     image.size = self.size
+    #     image.source = self.img_src
+    #     print(f"IDS: {self.ids}")
 
-        self.ids.scatter.add_widget(image)
+    #     self.ids.scatter.add_widget(image)
 
     def add_chord(self, btn_name):
         garbage = []
