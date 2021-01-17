@@ -864,7 +864,7 @@ class MainMenuScreen(Screen):
             print("PICTURE SAVED")
             print(filepath)
             Intent = autoclass('android.content.Intent')
-            PythonActivity = autoclass('org.renpy.android.PythonActivity')
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
             Uri = autoclass('android.net.Uri')
 
             # Push photo into gallery
