@@ -873,7 +873,7 @@ class MainMenuScreen(Screen):
             # print(f"URI: {uri}")
             # contentResolver.notifyChange(uri)
             media_scanner = autoclass('android.media.MediaScannerConnection')
-            media_scanner.scanFile(filepath)
+            media_scanner.connect().scanFile(filepath)
             
 
             self.manager.transition.direction = "left"
