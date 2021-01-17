@@ -872,7 +872,7 @@ class MainMenuScreen(Screen):
             # print(f"CONTENT RESOLVER: {contentResolver}")
             # print(f"URI: {uri}")
             # contentResolver.notifyChange(uri)
-            media_scanner = autoclass('android.media.ScannerConnection')
+            media_scanner = autoclass('android.media.MediaScannerConnection')
             media_scanner.scanFile(filepath)
             
 
