@@ -864,6 +864,13 @@ class MainMenuScreen(Screen):
             print("PICTURE SAVED")
             print(filepath)
 
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            Uri = autoclass('android.net.Uri')
+
+            contentResolver = PythonActivity.mActivity
+            uri = Uri.parse("content:/" + filepath)
+            contentResolver.notifyChange(uri)
+
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
             self.manager.get_screen('spline_screen').img_src = filepath
@@ -896,6 +903,7 @@ class FileChooserScreen(Screen):
 
 class SplineScreen(Screen):
     img_src = StringProperty("")
+    scatter_image = ObjectProperty()
     # def __init__(self, *args, **kwargs):
     #     super(SplineScreen, self).__init__(*args, **kwargs)
         
@@ -907,20 +915,18 @@ class SplineScreen(Screen):
 
     #     self.ids.scatter.add_widget(image)
 
-    def on_img_src(self, *args):
-        print("IMG_SRC CHANGE")
-        args = locals()
-        print(f"ARGS: {args}")
-        print(self.img_src)
-        self.ids.scatter.remove_widget(self.ids.scatter_image)
+    # def on_img_src(self, *args):
+    #     print("IMG_SRC CHANGE")
+    #     print(self.img_src)
+    #     if self.scatter_image:
+    #         print("SCATTER IMAGE")
+    #         self.remove_widget(self.scatter_image)
         
-        image = Image()
-        image.size = self.size
-        image.source = self.img_src
-        print(f"IDS: {self.ids}")
+    #     self.scatter_image = Image()
+    #     self.scatter_image.size = self.size
+    #     self.scatter_image.source = self.img_src
 
-        self.ids.scatter.add_widget(image)
-        print(f"IDS: {self.ids}")
+    #     self.ids.scatter.add_widget(self.scatter_image)
 
     def add_chord(self, btn_name):
         garbage = []

@@ -12,9 +12,6 @@ FileProvider = autoclass('android.support.v4.content.FileProvider')
 Context = autoclass("android.content.Context")
 Environment = autoclass("android.os.Environment")
 File = autoclass('java.io.File')
-SimpleDateFormat = autoclass('java.text.SimpleDateFormat')
-Date = autoclass('java.util.Date')
-IOException = autoclass('java.io.IOException')
 
 
 class AndroidCamera:
