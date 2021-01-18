@@ -96,6 +96,21 @@ class MainScatter(Scatter):
     mid_camber_prop = StringProperty()
     btm_camber_prop = StringProperty()
 
+    ###########################    METHODS    ###########################
+    def on_transform(self, *args, **kwargs):
+        super().on_transform(*args, **kwargs)
+        for child in self.children:
+            if hasattr(child, "name") and "point" in child.name:
+                win = self.get_parent_window()
+                btn_size = (win.width * 0.1 / self.scale, win.width * 0.1 / self.scale)
+                # This is super hacky, but it won't update the pos unless the value has changed.
+                # Value reset to proper center after widget is touched.
+                btn_center = (child.center_x + 0.0001, child.center_y + 0.0001)
+                child.size = btn_size
+                child.center = btn_center
+    # def on_transform_with_touch(self, *args):
+    #     print("ON TRANSFORM WITH TOUCH")
+
     ###########################    TOP    ###########################
     def on_end_point_1_top_prop(self, instance, value):
         self.top_thickness_prop = calculate_thickness(
@@ -311,9 +326,6 @@ class EndPoint(Widget):
     name = StringProperty()
 
     def __init__(self, **kwargs):
-        # Set size before calling super
-        self.size = (50, 50)
-        # Call super
         super(EndPoint, self).__init__(**kwargs)
         # Draw shapes
         with self.canvas:
@@ -325,13 +337,18 @@ class EndPoint(Widget):
                 Color(0, 0, 1.)
             self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1., 1., 1.)
-            self.inner = Rectangle(size=(44, 44), pos=(self.pos[0] + 3, self.pos[1] + 3))
+            self.inner = Rectangle(size=(self.width * 0.9, self.height * 0.9), pos=(self.x + self.width * 0.05, self.y + self.height * 0.05))
         # Bind update point method to pos
-        self.bind(pos=self.update_point)
+        self.bind(pos=self.update_point_pos)
+        self.bind(size=self.update_point_size)
         
-    def update_point(self, *args):
+    def update_point_size(self, *args):
+        self.outer.size = self.size
+        self.inner.size = (self.width * 0.9, self.height * 0.9)
+        
+    def update_point_pos(self, *args):
         self.outer.pos = self.pos
-        self.inner.pos = (self.pos[0] + 3, self.pos[1] + 3)
+        self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -526,16 +543,18 @@ class DepthPoint(Widget):
                 Color(0, 0, 1.)                
             self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1., 1., 1.)
-            self.inner = Rectangle(size=(44, 44), pos=(self.pos[0] + 3, self.pos[1] + 3))
+            self.inner = Rectangle(size=(self.width * 0.9, self.height * 0.9), pos=(self.x + self.width * 0.05, self.y + self.height * 0.05))
         # Bind update point method to pos
-        self.bind(pos=self.update_point)
+        self.bind(pos=self.update_point_pos)
+        self.bind(size=self.update_point_size)
         
-    def update_point(self, *args):
+    def update_point_size(self, *args):
+        self.outer.size = self.size
+        self.inner.size = (self.width * 0.9, self.height * 0.9)
+        
+    def update_point_pos(self, *args):
         self.outer.pos = self.pos
-        self.inner.pos = (self.pos[0] + 3, self.pos[1] + 3)
-
-    # def translate_point(self, *args):
-    #     print('in translate')
+        self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -694,13 +713,18 @@ class BezierPoint(Widget):
                 Color(0, 0, 1.)
             self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1., 1., 1.)
-            self.inner = Rectangle(size=(44, 44), pos=(self.pos[0] + 3, self.pos[1] + 3))
+            self.inner = Rectangle(size=(self.width * 0.9, self.height * 0.9), pos=(self.x + self.width * 0.05, self.y + self.height * 0.05))
         # Bind update point method to pos
-        self.bind(pos=self.update_point)
+        self.bind(pos=self.update_point_pos)
+        self.bind(size=self.update_point_size)
         
-    def update_point(self, *args):
+    def update_point_size(self, *args):
+        self.outer.size = self.size
+        self.inner.size = (self.width * 0.9, self.height * 0.9)
+        
+    def update_point_pos(self, *args):
         self.outer.pos = self.pos
-        self.inner.pos = (self.pos[0] + 3, self.pos[1] + 3)
+        self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
         
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -842,7 +866,6 @@ class ResultsCard(GridLayout):
 class MainMenuScreen(Screen):
 
     def open_camera(self):
-        print("CAPTURE")
         if platform == "android":
             from android.storage import primary_external_storage_path
             from android_camera import AndroidCamera
@@ -851,7 +874,6 @@ class MainMenuScreen(Screen):
             file_name = f"IMG_{timestr}.png"
             primary_dir = primary_external_storage_path()
             full_path = join(primary_dir, file_name)
-            print(f"FULL PATH: {full_path}")
 
             AndroidCamera().take_picture(self.camera_callback)
         else:
@@ -859,22 +881,9 @@ class MainMenuScreen(Screen):
             self.manager.current = "camera_screen"
         
     def camera_callback(self, filepath):
-        print("IN CAMERA CALLBACK")
         if(exists(filepath)):
             print("PICTURE SAVED")
             print(filepath)
-
-            # PythonActivity = autoclass('org.kivy.android.PythonActivity')
-            # Uri = autoclass('android.net.Uri')
-
-            # contentResolver = PythonActivity.mActivity.getContentResolver()
-            # uri = Uri.parse("file:/" + filepath)
-            # print(f"CONTENT RESOLVER: {contentResolver}")
-            # print(f"URI: {uri}")
-            # contentResolver.notifyChange(uri)
-            # media_scanner = autoclass('android.media.MediaScannerConnection')
-            # media_scanner.connect().scanFile(filepath)
-            
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
@@ -888,7 +897,6 @@ class CameraScreen(Screen):
     Only used in dev environment.
     """
     def capture(self):
-        print("CAPTURE")
         timestr = time.strftime("%Y%m%d_%H%M%S")
         file_name = f"IMG_{timestr}.png"
         camera = self.ids['camera']
@@ -908,30 +916,6 @@ class FileChooserScreen(Screen):
 
 class SplineScreen(Screen):
     img_src = StringProperty("")
-    scatter_image = ObjectProperty()
-    # def __init__(self, *args, **kwargs):
-    #     super(SplineScreen, self).__init__(*args, **kwargs)
-        
-    #     print("INIT")
-    #     print(self.img_src)
-    #     image = Image()
-    #     image.size = self.size
-    #     image.source = self.img_src
-
-    #     self.ids.scatter.add_widget(image)
-
-    def on_img_src(self, *args):
-        print("IMG_SRC CHANGE")
-    #     print(self.img_src)
-    #     if self.scatter_image:
-    #         print("SCATTER IMAGE")
-    #         self.remove_widget(self.scatter_image)
-        
-    #     self.scatter_image = Image()
-    #     self.scatter_image.size = self.size
-    #     self.scatter_image.source = self.img_src
-
-    #     self.ids.scatter.add_widget(self.scatter_image)
 
     def add_chord(self, btn_name):
         garbage = []
@@ -946,6 +930,8 @@ class SplineScreen(Screen):
         else:
             # Getting arbitrary starting points for coord
             win = self.get_parent_window()
+            scale = self.ids.scatter.scale
+            point_size = (win.width * 0.1 / scale, win.width * 0.1 / scale)
             end_point_1_coords = (win.width * 0.25, win.height * 0.50)
             end_point_2_coords = (win.width * 0.75, win.height * 0.50)
             depth_point_coords = (win.width * 0.50, win.height * 0.25)
@@ -954,12 +940,12 @@ class SplineScreen(Screen):
             bezier_point_2_coords = (win.width * 0.75, win.height * 0.25)
             # Instantiating the chord elements
             main_line = MainLine(name=f"main_line_{btn_name}", points=list(end_point_1_coords + end_point_2_coords))
-            end_point_1 = EndPoint(name=f"end_point_1_{btn_name}", center=end_point_1_coords)
-            end_point_2 = EndPoint(name=f"end_point_2_{btn_name}", center=end_point_2_coords)
-            depth_point = DepthPoint(name=f"depth_point_{btn_name}", center=depth_point_coords)
+            end_point_1 = EndPoint(name=f"end_point_1_{btn_name}", size=point_size, center=end_point_1_coords)
+            end_point_2 = EndPoint(name=f"end_point_2_{btn_name}", size=point_size, center=end_point_2_coords)
+            depth_point = DepthPoint(name=f"depth_point_{btn_name}", size=point_size, center=depth_point_coords)
             depth_line = DepthLine(name=f"depth_line_{btn_name}", points=list(depth_point_intercept_coords + depth_point_coords))
-            bezier_point_1 = BezierPoint(name=f"bezier_point_1_{btn_name}", center=bezier_point_1_coords)
-            bezier_point_2 = BezierPoint(name=f"bezier_point_2_{btn_name}", center=bezier_point_2_coords)
+            bezier_point_1 = BezierPoint(name=f"bezier_point_1_{btn_name}", size=point_size, center=bezier_point_1_coords)
+            bezier_point_2 = BezierPoint(name=f"bezier_point_2_{btn_name}", size=point_size, center=bezier_point_2_coords)
             bezier_line_1 = BezierLine(name=f"bezier_line_1_{btn_name}", points=list(end_point_1_coords + bezier_point_1_coords + depth_point_coords))
             bezier_line_2 = BezierLine(name=f"bezier_line_2_{btn_name}", points=list(end_point_2_coords + bezier_point_2_coords + depth_point_coords))
             # Adding chord elements to scatter
