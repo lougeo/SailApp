@@ -155,22 +155,22 @@ SM:
             name: "top"
             text: "TOP"
             pos_hint: {"x": 0, "y": 0}
-            on_release: root.add_chord(self.name)
+            on_release: scatter.add_chord(self.name)
 
         SplineButton:
             name: "mid"
             text: "MID"
             pos_hint: {"x": 0.25, "y": 0}
-            on_release: root.add_chord(self.name)
+            on_release: scatter.add_chord(self.name)
 
         SplineButton:
             name: "btm"
             text: "BTM"
             pos_hint: {"x": 0.5, "y": 0}
-            on_release: root.add_chord(self.name)
+            on_release: scatter.add_chord(self.name)
 
         SplineButton:
             name: "run"
             text: "RUN"
             pos_hint: {"x": 0.8, "y": 0}
-            on_release: root.show_results()
+            on_release: scatter.show_results()
