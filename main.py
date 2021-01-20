@@ -946,6 +946,18 @@ class BezierLine(Widget):
 
 class ResultsCard(GridLayout):
     name = StringProperty()
+    full_screen = BooleanProperty(defaultvalue=False)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos) and touch.is_double_tap:
+            if not self.full_screen:
+                self.pos_hint = {"x":0, "y":0.2}
+                self.size_hint = (0.8, 0.8)
+                self.full_screen = True
+            else:
+                self.pos_hint = {"x":0, "y":0.5}
+                self.size_hint = (0.3, 0.5)
+                self.full_screen = False
 
 
 ######################################################################################################
@@ -1018,57 +1030,13 @@ class SplineScreen(Screen):
                 self.ids.spline_screen_util_btns.remove_widget(widget)
         else:
             # Instantiate and add results widget
-            win = self.get_parent_window()
-            # results_card = ResultsCard(name="results_card", pos=(0, win.height - 400), size=(200, 400))
-            results_card = ResultsCard(name="results_card", pos_hint={"x":0, "y":0.5}, size_hint=(0.3, 0.5), rows=3)
-            top_layout = GridLayout(rows=3)
-            mid_layout = GridLayout(rows=3)
-            btm_layout = GridLayout(rows=3)
-            top_label = Label(text="TOP", color=(1.,0,0))
-            mid_label = Label(text="MID", color=(0,1.,0))
-            btm_label = Label(text="BTM", color=(0,0,1.))
-            top_thickness = GridLayout(cols=2)
-            mid_thickness = GridLayout(cols=2)
-            btm_thickness = GridLayout(cols=2)
-            top_camber = GridLayout(cols=2)
-            mid_camber = GridLayout(cols=2)
-            btm_camber = GridLayout(cols=2)
-            top_thickness_label = Label(text="Thickness", color=(1.,0,0))
-            mid_thickness_label = Label(text="Thickness", color=(0,1.,0))
-            btm_thickness_label = Label(text="Thickness", color=(0,0,1.))
-            top_thickness_value = Label(text=self.ids.scatter.top_thickness_prop, color=(1.,0,0))
-            mid_thickness_value = Label(text=self.ids.scatter.mid_thickness_prop, color=(0,1.,0))
-            btm_thickness_value = Label(text=self.ids.scatter.btm_thickness_prop, color=(0,0,1.))
-            top_camber_label = Label(text="Camber", color=(1.,0,0))
-            mid_camber_label = Label(text="Camber", color=(0,1.,0))
-            btm_camber_label = Label(text="Camber", color=(0,0,1.))
-            top_camber_value = Label(text=self.ids.scatter.top_camber_prop, color=(1.,0,0))
-            mid_camber_value = Label(text=self.ids.scatter.mid_camber_prop, color=(0,1.,0))
-            btm_camber_value = Label(text=self.ids.scatter.btm_camber_prop, color=(0,0,1.))
-            results_card.add_widget(top_layout)
-            results_card.add_widget(mid_layout)
-            results_card.add_widget(btm_layout)
-            top_layout.add_widget(top_label)
-            top_layout.add_widget(top_thickness)
-            top_layout.add_widget(top_camber)
-            mid_layout.add_widget(mid_label)
-            mid_layout.add_widget(mid_thickness)
-            mid_layout.add_widget(mid_camber)
-            btm_layout.add_widget(btm_label)
-            btm_layout.add_widget(btm_thickness)
-            btm_layout.add_widget(btm_camber)
-            top_thickness.add_widget(top_thickness_label)
-            top_thickness.add_widget(top_thickness_value)
-            mid_thickness.add_widget(mid_thickness_label)
-            mid_thickness.add_widget(mid_thickness_value)
-            btm_thickness.add_widget(btm_thickness_label)
-            btm_thickness.add_widget(btm_thickness_value)
-            top_camber.add_widget(top_camber_label)
-            top_camber.add_widget(top_camber_value)
-            mid_camber.add_widget(mid_camber_label)
-            mid_camber.add_widget(mid_camber_value)
-            btm_camber.add_widget(btm_camber_label)
-            btm_camber.add_widget(btm_camber_value)
+            results_card = ResultsCard(name="results_card")
+            results_card.ids.thickness_top_label.text = self.ids.scatter.top_thickness_prop
+            results_card.ids.camber_top_label.text = self.ids.scatter.top_camber_prop
+            results_card.ids.thickness_mid_label.text = self.ids.scatter.mid_thickness_prop
+            results_card.ids.camber_mid_label.text = self.ids.scatter.mid_camber_prop
+            results_card.ids.thickness_btm_label.text = self.ids.scatter.btm_thickness_prop
+            results_card.ids.camber_btm_label.text = self.ids.scatter.btm_camber_prop
 
             self.ids.spline_screen_util_btns.add_widget(results_card)
 
