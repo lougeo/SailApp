@@ -10,26 +10,14 @@ SM:
     FileChooserScreen:
     SplineScreen:
 
-
-<CameraButton@Button>:
-    color: 1, 1, 1, 1
-    size_hint: 0.6, 0.3
-
-<GalleryButton@Button>:
-    color: 1, 1, 1, 1
-    size_hint: 0.6, 0.15
-
 <SmMenuButton@Button>:
     color: 1, 1, 1, 1
     size_hint: 0.275, 0.15
 
-<SplineButton@Button>:
-    size_hint: 0.2, 0.2
-
 <ResultsCard>
     id: results_card
     rows: 3
-    pos_hint: {"x":0, "y":0.5}
+    pos_hint: {"x":0.7, "y":0.5}
     size_hint: 0.3, 0.5
     canvas.before:
         Color:
@@ -119,35 +107,55 @@ SM:
     FloatLayout:
         Label:
             id: "Title"
-            text: "[b]Sail App[/b]"
+            text: "[b]Sail Shape[/b]"
+            color: 0, 0, 0
             markup:True
             font_size: 30
             text_size: self.size
             halign: "center"
             valign: "middle"
-            size_hint: 0.6, 0.2
-            pos_hint: {"x": 0.2, "y": 0.8}
+            size_hint: 0.6, 0.3
+            pos_hint: {"x": 0.2, "y": 0.7}
 
-        CameraButton:
-            text: "Camera"
-            pos_hint: {"x": 0.2, "y": 0.5}
+        MDIconButton:
+            icon: "camera"
+            user_font_size: "84sp"
+            size_hint: 0.6, 0.3
+            pos_hint: {"x": 0.2, "y": 0.4}
             on_release: 
                 root.open_camera()
+            # MDIcon:
+            #     pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            #     icon: "camera"
+            #     halign: "center"
 
-        GalleryButton: 
-            text: "From Gallery"
-            pos_hint: {"x": 0.2, "y": 0.3}
+            # MDLabel:
+            #     text: "Camera"
+            #     halign: "center"
+            # theme_text_color: "Custom"
+            # text_color: 1, 0, 0, 1
+            # line_color: 0, 0, 1, 1
+            # icon_color: 1, 0, 0, 1
+            # theme_text_color: 1, 1, 1, 1
+            # font_size: "64sp"
+
+
+        MDIconButton: 
+            icon: "folder-multiple-image"
+            user_font_size: "54sp"
+            size_hint: 0.6, 0.3
+            pos_hint: {"x": 0.2, "y": 0.1}
             on_release:
                 root.manager.transition.direction = "left"
                 app.root.current = "file_chooser"
             
-        SmMenuButton:
-            text: "Account"
-            pos_hint: {"x": 0.2, "y": 0.1}
+        # SmMenuButton:
+        #     text: "Account"
+        #     pos_hint: {"x": 0.2, "y": 0.1}
             
-        SmMenuButton:
-            text: "Settings"
-            pos_hint: {"x": 0.525, "y": 0.1}
+        # SmMenuButton:
+        #     text: "Settings"
+        #     pos_hint: {"x": 0.525, "y": 0.1}
 
 
 <CameraScreen>:
@@ -159,11 +167,12 @@ SM:
         allow_stretch: True
 
     FloatLayout:
-        Button:
-            text: 'Capture'
+        MDFloatingActionButton:
+            # text: 'Capture'
+            icon: "camera-iris"
             size_hint: 0.1, 0.1
             pos_hint: {"x": 0.45, "y": 0.1}
-            height: '48dp'
+            # height: '48dp'
             on_press: 
                 root.capture()
 
@@ -182,11 +191,17 @@ SM:
 <FileChooserScreen>:
     name: "file_chooser"
     BoxLayout:
-        size: root.size
-        pos: root.pos
+        # size: root.size
+        # pos: root.pos
+        canvas.before:
+            Color:
+                rgb: 0,0,0
+            Rectangle:
+                size: root.size
         orientation: "vertical"
         FileChooserListView:
             id: filechooser
+            color: 0,0,0,1
             rootpath: '/storage/emulated/0/' if platform == 'android' else '/'
 
         BoxLayout:
@@ -225,33 +240,55 @@ SM:
     FloatLayout:
         id: spline_screen_util_btns
 
-        SplineButton:
-            text: "Main Menu"
-            pos_hint: {"x": 0.8, "y": 0.8}
+        MDFillRoundFlatButton:
+            # text: "Main Menu"
+            # text_color: 0, 0, 0, 1
+            md_bg_color: 1, 1, 1, 1
+            size_hint: 0.2, 0.2
+            pos_hint: {"x": 0, "y": 0.8}
             on_release: 
                 root.manager.transition.direction = "right"
                 app.root.current = "main_menu"
+            MDIcon:
+                icon: "keyboard-return"
+                halign: "center"
+                font_size: "50sp"
 
-        SplineButton:
+
+        MDFillRoundFlatButton:
             name: "top"
             text: "TOP"
+            # text_color: 1, 0, 0, 1
+            md_bg_color: 1, 0, 0, 1
+            size_hint: 0.2, 0.2
             pos_hint: {"x": 0, "y": 0}
             on_release: scatter.add_chord(self.name)
 
-        SplineButton:
+        MDFillRoundFlatButton:
             name: "mid"
             text: "MID"
+            md_bg_color: 0, 1, 0, 1
+            size_hint: 0.2, 0.2
             pos_hint: {"x": 0.25, "y": 0}
             on_release: scatter.add_chord(self.name)
 
-        SplineButton:
+        MDFillRoundFlatButton:
             name: "btm"
             text: "BTM"
+            md_bg_color: 0, 0, 1, 1
+            size_hint: 0.2, 0.2
             pos_hint: {"x": 0.5, "y": 0}
             on_release: scatter.add_chord(self.name)
 
-        SplineButton:
+        MDFillRoundFlatButton:
             name: "run"
-            text: "RUN"
+            # text: "RUN"
+            # text_color: 0, 0, 0, 1
+            md_bg_color: 1, 1, 1, 1
+            size_hint: 0.2, 0.2
             pos_hint: {"x": 0.8, "y": 0}
             on_release: root.show_results()
+            MDIcon:
+                icon: "flare"
+                halign: "center"
+                font_size: "50sp"
