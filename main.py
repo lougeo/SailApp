@@ -41,6 +41,8 @@ from kivymd.app import MDApp
 if platform == "android":
     # from android.storage import primary_external_storage_path
     from android.permissions import request_permissions, Permission
+    from android.storage import primary_external_storage_path
+    from android_camera import AndroidCamera
     from jnius import JavaException, PythonJavaClass, autoclass, java_method
 
     request_permissions(
@@ -1165,9 +1167,6 @@ class MainMenuScreen(Screen):
 
     def open_camera(self):
         if platform == "android":
-            from android.storage import primary_external_storage_path
-            from android_camera import AndroidCamera
-
             timestr = time.strftime("%Y%m%d_%H%M%S")
             self.file_name = f"IMG_{timestr}.png"
             primary_dir = primary_external_storage_path()
@@ -1180,14 +1179,12 @@ class MainMenuScreen(Screen):
 
     def camera_callback(self, filepath):
         if exists(filepath):
-            from android.storage import primary_external_storage_path
-
             print("PICTURE SAVED")
             print(filepath)
             main_dir = "Pictures"
             app_dir = "SailShape"
             main_path = join(primary_external_storage_path(), main_dir)
-            app_path = join(app_path, app_dir)
+            app_path = join(main_path, app_dir)
             if not exists(main_path):
                 os.mkdir(main_path)
             if not exists(app_path):
