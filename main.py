@@ -1230,6 +1230,7 @@ class SplineScreen(Screen):
             filename = self.path_leaf(self.img_src)
             full_app_path = join(app_path, filename)
             os.replace(self.img_src, full_app_path)
+            print(f"NEW FULL PATH: {full_app_path}")
             self.img_src = full_app_path
 
     def path_leaf(self, path):
