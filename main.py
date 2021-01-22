@@ -1232,7 +1232,7 @@ class SplineScreen(Screen):
             full_app_path = join(app_path, filename)
             os.replace(self.img_src, full_app_path)
 
-    def path_leaf(path):
+    def path_leaf(self, path):
         head, tail = ntpath.split(path)
         return tail or ntpath.basename(head)
 
