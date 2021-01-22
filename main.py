@@ -1180,6 +1180,8 @@ class MainMenuScreen(Screen):
 
     def camera_callback(self, filepath):
         if exists(filepath):
+            from android.storage import primary_external_storage_path
+
             print("PICTURE SAVED")
             print(filepath)
             main_dir = "Pictures"
