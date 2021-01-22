@@ -1182,7 +1182,6 @@ class MainMenuScreen(Screen):
         if exists(filepath):
             print("PICTURE SAVED")
             print(filepath)
-
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
             self.manager.get_screen("spline_screen").img_src = filepath
@@ -1231,6 +1230,7 @@ class SplineScreen(Screen):
             filename = self.path_leaf(self.img_src)
             full_app_path = join(app_path, filename)
             os.replace(self.img_src, full_app_path)
+            self.img_src = full_app_path
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
