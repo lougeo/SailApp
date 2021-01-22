@@ -17,8 +17,8 @@ SM:
 <ResultsCard>
     id: results_card
     rows: 3
-    pos_hint: {"x":0.7, "y":0.5}
-    size_hint: 0.3, 0.5
+    pos_hint: {"x":0.6, "y":0.5}
+    size_hint: 0.4, 0.5
     canvas.before:
         Color:
             rgba: 1., 1., 1., 0.8
@@ -37,23 +37,27 @@ SM:
         GridLayout:
             cols: 2
             Label:
-                text: "Thickness"
+                text: " Thickness"
                 color: 1., 0, 0
+                # size_hint: (None, None)
+                # size: self.texture_size
             Label:
                 id: thickness_top_label
                 color: 1., 0, 0
         GridLayout:
             cols: 2
             Label:
-                text: "Camber"
+                text: " Camber"
                 color: 1., 0, 0
+                # size_hint: (None, None)
+                # size: self.texture_size
             Label:
                 id: camber_top_label
                 color: 1., 0, 0
     GridLayout:
         rows: 3
         Label:
-            text: "MID"
+            text: "MIDDLE"
             color: 0, 1., 0
             bold: True
             underline: True
@@ -78,7 +82,7 @@ SM:
     GridLayout:
         rows: 3
         Label:
-            text: "BTM"
+            text: "BOTTOM"
             color: 0, 0, 1.
             bold: True
             underline: True
@@ -258,16 +262,17 @@ SM:
 
         MDFillRoundFlatButton:
             name: "top"
-            text: "TOP"
+            text: "T"
             font_size: "20sp"
             md_bg_color: 0.86, 0.15, 0.5, 1.
+            # text_size: self.size
             size_hint: 0.2, 0.2
             pos_hint: {"x": 0, "y": 0}
             on_release: scatter.add_chord(self.name)
 
         MDFillRoundFlatButton:
             name: "mid"
-            text: "MID"
+            text: "M"
             font_size: "20sp"
             md_bg_color: 1., 0.38, 0, 1.
             size_hint: 0.2, 0.2
@@ -276,7 +281,7 @@ SM:
 
         MDFillRoundFlatButton:
             name: "btm"
-            text: "BTM"
+            text: "B"
             font_size: "20sp"
             md_bg_color: 1., 0.69, 0, 1.
             size_hint: 0.2, 0.2

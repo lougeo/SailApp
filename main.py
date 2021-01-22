@@ -1150,8 +1150,8 @@ class ResultsCard(GridLayout):
                 self.size_hint = (0.8, 0.8)
                 self.full_screen = True
             else:
-                self.pos_hint = {"x": 0.7, "y": 0.5}
-                self.size_hint = (0.3, 0.5)
+                self.pos_hint = {"x": 0.6, "y": 0.5}
+                self.size_hint = (0.4, 0.5)
                 self.full_screen = False
 
 
