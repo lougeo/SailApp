@@ -545,11 +545,11 @@ class EndPoint(Widget):
         # Draw shapes
         with self.canvas:
             if "top" in self.name:
-                Color(1.0, 0, 0)
+                Color(0.86, 0.15, 0.5, 1.0)
             elif "mid" in self.name:
-                Color(0, 1.0, 0)
+                Color(1.0, 0.38, 0, 1.0)
             elif "btm" in self.name:
-                Color(0, 0, 1.0)
+                Color(1.0, 0.69, 0, 1.0)
             self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1.0, 1.0, 1.0)
             self.inner = Rectangle(
@@ -802,11 +802,11 @@ class DepthPoint(Widget):
         # Draw shapes
         with self.canvas:
             if "top" in self.name:
-                Color(1.0, 0, 0)
+                Color(0.86, 0.15, 0.5, 1.0)
             elif "mid" in self.name:
-                Color(0, 1.0, 0)
+                Color(1.0, 0.38, 0, 1.0)
             elif "btm" in self.name:
-                Color(0, 0, 1.0)
+                Color(1.0, 0.69, 0, 1.0)
             self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1.0, 1.0, 1.0)
             self.inner = Rectangle(
@@ -978,11 +978,11 @@ class BezierPoint(Widget):
         super(BezierPoint, self).__init__(**kwargs)
         with self.canvas:
             if "top" in self.name:
-                Color(1.0, 0, 0)
+                Color(0.86, 0.15, 0.5, 1.0)
             elif "mid" in self.name:
-                Color(0, 1.0, 0)
+                Color(1.0, 0.38, 0, 1.0)
             elif "btm" in self.name:
-                Color(0, 0, 1.0)
+                Color(1.0, 0.69, 0, 1.0)
             self.outer = Rectangle(size=self.size, pos=self.pos)
             Color(1.0, 1.0, 1.0)
             self.inner = Rectangle(
@@ -1071,11 +1071,11 @@ class MainLine(Widget):
 
         with self.canvas:
             if "top" in self.name:
-                Color(1.0, 0, 0)
+                Color(0.86, 0.15, 0.5, 1.0)
             elif "mid" in self.name:
-                Color(0, 1.0, 0)
+                Color(1.0, 0.38, 0, 1.0)
             elif "btm" in self.name:
-                Color(0, 0, 1.0)
+                Color(1.0, 0.69, 0, 1.0)
             self.outer = Line(points=points, width=2.0)
             Color(1.0, 1.0, 1.0)
             self.inner = Line(points=points, width=1.0)
@@ -1106,11 +1106,11 @@ class BezierLine(Widget):
         super(BezierLine, self).__init__(**kwargs)
         with self.canvas:
             if "top" in self.name:
-                Color(1.0, 0, 0)
+                Color(0.86, 0.15, 0.5, 1.0)
             elif "mid" in self.name:
-                Color(0, 1.0, 0)
+                Color(1.0, 0.38, 0, 1.0)
             elif "btm" in self.name:
-                Color(0, 0, 1.0)
+                Color(1.0, 0.69, 0, 1.0)
             self.bline = Bezier(points=points)
 
     def update_line(self, point, control, value):

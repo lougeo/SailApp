@@ -105,12 +105,13 @@ SM:
 <MainMenuScreen>:
     name: "main_menu"
     FloatLayout:
-        Label:
+        MDLabel:
             id: "Title"
             text: "[b]Sail Shape[/b]"
+            font_style: "H3"
             color: 0, 0, 0
             markup:True
-            font_size: 30
+            # font_size: 30
             text_size: self.size
             halign: "center"
             valign: "middle"
@@ -258,8 +259,8 @@ SM:
         MDFillRoundFlatButton:
             name: "top"
             text: "TOP"
-            # text_color: 1, 0, 0, 1
-            md_bg_color: 1, 0, 0, 1
+            font_size: "30sp"
+            md_bg_color: 0.86, 0.15, 0.5, 1.
             size_hint: 0.2, 0.2
             pos_hint: {"x": 0, "y": 0}
             on_release: scatter.add_chord(self.name)
@@ -267,7 +268,8 @@ SM:
         MDFillRoundFlatButton:
             name: "mid"
             text: "MID"
-            md_bg_color: 0, 1, 0, 1
+            font_size: "30sp"
+            md_bg_color: 1., 0.38, 0, 1.
             size_hint: 0.2, 0.2
             pos_hint: {"x": 0.25, "y": 0}
             on_release: scatter.add_chord(self.name)
@@ -275,7 +277,8 @@ SM:
         MDFillRoundFlatButton:
             name: "btm"
             text: "BTM"
-            md_bg_color: 0, 0, 1, 1
+            font_size: "30sp"
+            md_bg_color: 1., 0.69, 0, 1.
             size_hint: 0.2, 0.2
             pos_hint: {"x": 0.5, "y": 0}
             on_release: scatter.add_chord(self.name)
