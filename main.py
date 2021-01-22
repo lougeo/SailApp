@@ -35,6 +35,7 @@ from os.path import exists, join
 
 import time
 import math
+import ntpath
 
 from kivymd.app import MDApp
 
@@ -1181,16 +1182,6 @@ class MainMenuScreen(Screen):
         if exists(filepath):
             print("PICTURE SAVED")
             print(filepath)
-            main_dir = "Pictures"
-            app_dir = "SailShape"
-            main_path = join(primary_external_storage_path(), main_dir)
-            app_path = join(main_path, app_dir)
-            if not exists(main_path):
-                os.mkdir(main_path)
-            if not exists(app_path):
-                os.mkdir(app_path)
-            full_app_path = join(app_path, self.file_name)
-            os.replace(filepath, full_app_path)
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
@@ -1226,6 +1217,24 @@ class FileChooserScreen(Screen):
 
 class SplineScreen(Screen):
     img_src = StringProperty("")
+
+    def on_img_src(self, *args):
+        if platform == "android":
+            main_dir = "Pictures"
+            app_dir = "SailShape"
+            main_path = join(primary_external_storage_path(), main_dir)
+            app_path = join(main_path, app_dir)
+            if not exists(main_path):
+                os.mkdir(main_path)
+            if not exists(app_path):
+                os.mkdir(app_path)
+            filename = self.path_leaf(self.img_src)
+            full_app_path = join(app_path, filename)
+            os.replace(self.img_src, full_app_path)
+
+    def path_leaf(path):
+        head, tail = ntpath.split(path)
+        return tail or ntpath.basename(head)
 
     def show_results(self):
         garbage = []

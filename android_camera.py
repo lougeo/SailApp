@@ -1,26 +1,26 @@
 import android
 import android.activity
-from os import remove
 from jnius import autoclass, cast
+from kivy.clock import mainthread
+from os import remove
 import time
 
-Intent = autoclass('android.content.Intent')
-PythonActivity = autoclass('org.kivy.android.PythonActivity')
-MediaStore = autoclass('android.provider.MediaStore')
-Uri = autoclass('android.net.Uri')
-FileProvider = autoclass('android.support.v4.content.FileProvider')
+Intent = autoclass("android.content.Intent")
+PythonActivity = autoclass("org.kivy.android.PythonActivity")
+MediaStore = autoclass("android.provider.MediaStore")
+Uri = autoclass("android.net.Uri")
+FileProvider = autoclass("android.support.v4.content.FileProvider")
 Context = autoclass("android.content.Context")
 Environment = autoclass("android.os.Environment")
-File = autoclass('java.io.File')
+File = autoclass("java.io.File")
 
-from kivy.clock import mainthread
 
 class AndroidCamera:
 
     CAMERA_REQUEST_CODE = 1450
 
     def __init__(self):
-        self.currentActivity = cast('android.app.Activity', PythonActivity.mActivity)
+        self.currentActivity = cast("android.app.Activity", PythonActivity.mActivity)
 
     def take_picture(self, on_complete):
 
@@ -35,16 +35,19 @@ class AndroidCamera:
                 Context.getApplicationContext(),
                 "sailmeter.com.sailapp",
                 # self.currentActivity.getApplicationContext().getPackageName() + '.provider',
-                photo_file
+                photo_file,
             )
 
-            parcelable = cast('android.os.Parcelable', photo_uri)
+            parcelable = cast("android.os.Parcelable", photo_uri)
 
             android.activity.unbind(on_activity_result=self.on_activity_result)
             android.activity.bind(on_activity_result=self.on_activity_result)
 
             camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
-            self.currentActivity.startActivityForResult(camera_intent, self.CAMERA_REQUEST_CODE)
+            self.currentActivity.startActivityForResult(
+                camera_intent, self.CAMERA_REQUEST_CODE
+            )
+
     @mainthread
     def on_activity_result(self, request_code, request_code2, intent):
         if request_code == self.CAMERA_REQUEST_CODE:
@@ -56,16 +59,11 @@ class AndroidCamera:
         image_file_name = "IMG_" + timestamp + "_"
         storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         print(f"STORAGE DIR: {storage_dir.getAbsolutePath()}")
-        image = File.createTempFile(
-            image_file_name,
-            ".jpg",
-            storage_dir
-        )
+        image = File.createTempFile(image_file_name, ".jpg", storage_dir)
         self.image_path = image.getAbsolutePath()
         print(f"IMAGE FULL PATH: {self.image_path}")
         return image
 
-        
     # def take_picture(self, on_complete):
     #     assert(on_complete is not None)
     #     # self.on_complete = on_complete
