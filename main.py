@@ -1161,15 +1161,17 @@ class ResultsCard(GridLayout):
 
 
 class MainMenuScreen(Screen):
+    file_name = StringProperty("")
+
     def open_camera(self):
         if platform == "android":
             from android.storage import primary_external_storage_path
             from android_camera import AndroidCamera
 
             timestr = time.strftime("%Y%m%d_%H%M%S")
-            file_name = f"IMG_{timestr}.png"
+            self.file_name = f"IMG_{timestr}.png"
             primary_dir = primary_external_storage_path()
-            full_path = join(primary_dir, file_name)
+            full_path = join(primary_dir, self.file_name)
 
             AndroidCamera().take_picture(self.camera_callback)
         else:
@@ -1180,6 +1182,16 @@ class MainMenuScreen(Screen):
         if exists(filepath):
             print("PICTURE SAVED")
             print(filepath)
+            main_dir = "Pictures"
+            app_dir = "SailShape"
+            main_path = join(primary_external_storage_path(), main_dir)
+            app_path = join(app_path, app_dir)
+            if not exists(main_path):
+                os.mkdir(main_path)
+            if not exists(app_path):
+                os.mkdir(app_path)
+            full_app_path = join(app_path, self.file_name)
+            os.replace(filepath, full_app_path)
 
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
