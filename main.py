@@ -80,6 +80,8 @@ def calculate_camber(EP1, EP2, DP, INT):
 
 
 class MainScatter(Scatter):
+    reseting = BooleanProperty(defaultvalue=False)
+
     ###########################    CHORD PIECES    ###########################
 
     end_point_1_top_prop = ListProperty([])
@@ -116,6 +118,7 @@ class MainScatter(Scatter):
     ###########################    METHODS    ###########################
 
     def on_transform(self, *args, **kwargs):
+        print("ON TRANSFORM")
         super().on_transform(*args, **kwargs)
         for child in self.children:
             if hasattr(child, "name") and "point" in child.name:
@@ -141,398 +144,458 @@ class MainScatter(Scatter):
             for widget in garbage:
                 self.remove_widget(widget)
         else:
-            # Getting the window and setting initial size
-            win = self.get_parent_window()
-            scale = self.scale
-            point_size = (win.width * 0.1 / scale, win.width * 0.1 / scale)
-            # Getting the respective properties
-            prop_coords = {}
-            for prop in self.properties():
-                if btn_name + "_prop" in prop:
-                    prop_coords.update(
-                        {
-                            prop.replace("_" + btn_name + "_prop", ""): getattr(
-                                self, prop
-                            )
-                        }
-                    )
-            # Deciding to use default of set coords
-            if all(prop_coords.values()):
-                # Set coords
-                coords = prop_coords
-            else:
-                # Default coords
-                if btn_name == "top":
-                    max_height = 0.60
-                    min_height = 0.35
-                elif btn_name == "mid":
-                    max_height = 0.50
-                    min_height = 0.25
-                elif btn_name == "btm":
-                    max_height = 0.40
-                    min_height = 0.15
-                coords = {
-                    "end_point_1": (win.width * 0.25, win.height * max_height),
-                    "end_point_2": (win.width * 0.75, win.height * max_height),
-                    "depth_point": (win.width * 0.50, win.height * min_height),
-                    "depth_point_intercept": (
-                        win.width * 0.50,
-                        win.height * max_height,
+            if not self.reseting:
+                # Getting the window and setting initial size
+                win = self.get_parent_window()
+                scale = self.scale
+                point_size = (win.width * 0.1 / scale, win.width * 0.1 / scale)
+                # Getting the respective properties
+                prop_coords = {}
+                for prop in self.properties():
+                    if btn_name + "_prop" in prop:
+                        prop_coords.update(
+                            {
+                                prop.replace("_" + btn_name + "_prop", ""): getattr(
+                                    self, prop
+                                )
+                            }
+                        )
+                # Deciding to use default of set coords
+                if all(prop_coords.values()):
+                    # Set coords
+                    coords = prop_coords
+                else:
+                    # Default coords
+                    if btn_name == "top":
+                        max_height = 0.60
+                        min_height = 0.35
+                    elif btn_name == "mid":
+                        max_height = 0.50
+                        min_height = 0.25
+                    elif btn_name == "btm":
+                        max_height = 0.40
+                        min_height = 0.15
+                    coords = {
+                        "end_point_1": (win.width * 0.25, win.height * max_height),
+                        "end_point_2": (win.width * 0.75, win.height * max_height),
+                        "depth_point": (win.width * 0.50, win.height * min_height),
+                        "depth_point_intercept": (
+                            win.width * 0.50,
+                            win.height * max_height,
+                        ),
+                        "bezier_point_1": (win.width * 0.25, win.height * min_height),
+                        "bezier_point_2": (win.width * 0.75, win.height * min_height),
+                    }
+                # Instantiating the chord elements
+                main_line = MainLine(
+                    name=f"main_line_{btn_name}",
+                    points=(coords.get("end_point_1") + coords.get("end_point_2")),
+                )
+                end_point_1 = EndPoint(
+                    name=f"end_point_1_{btn_name}",
+                    size=point_size,
+                    center=coords.get("end_point_1"),
+                )
+                end_point_2 = EndPoint(
+                    name=f"end_point_2_{btn_name}",
+                    size=point_size,
+                    center=coords.get("end_point_2"),
+                )
+                depth_point = DepthPoint(
+                    name=f"depth_point_{btn_name}",
+                    size=point_size,
+                    center=coords.get("depth_point"),
+                )
+                depth_line = DepthLine(
+                    name=f"depth_line_{btn_name}",
+                    points=(
+                        coords.get("depth_point_intercept") + coords.get("depth_point")
                     ),
-                    "bezier_point_1": (win.width * 0.25, win.height * min_height),
-                    "bezier_point_2": (win.width * 0.75, win.height * min_height),
-                }
-            # Instantiating the chord elements
-            main_line = MainLine(
-                name=f"main_line_{btn_name}",
-                points=(coords.get("end_point_1") + coords.get("end_point_2")),
-            )
-            end_point_1 = EndPoint(
-                name=f"end_point_1_{btn_name}",
-                size=point_size,
-                center=coords.get("end_point_1"),
-            )
-            end_point_2 = EndPoint(
-                name=f"end_point_2_{btn_name}",
-                size=point_size,
-                center=coords.get("end_point_2"),
-            )
-            depth_point = DepthPoint(
-                name=f"depth_point_{btn_name}",
-                size=point_size,
-                center=coords.get("depth_point"),
-            )
-            depth_line = DepthLine(
-                name=f"depth_line_{btn_name}",
-                points=(
-                    coords.get("depth_point_intercept") + coords.get("depth_point")
-                ),
-            )
-            bezier_point_1 = BezierPoint(
-                name=f"bezier_point_1_{btn_name}",
-                size=point_size,
-                center=coords.get("bezier_point_1"),
-            )
-            bezier_point_2 = BezierPoint(
-                name=f"bezier_point_2_{btn_name}",
-                size=point_size,
-                center=coords.get("bezier_point_2"),
-            )
-            bezier_line_1 = BezierLine(
-                name=f"bezier_line_1_{btn_name}",
-                points=(
-                    coords.get("end_point_1")
-                    + coords.get("bezier_point_1")
-                    + coords.get("depth_point")
-                ),
-            )
-            bezier_line_2 = BezierLine(
-                name=f"bezier_line_2_{btn_name}",
-                points=(
-                    coords.get("end_point_2")
-                    + coords.get("bezier_point_2")
-                    + coords.get("depth_point")
-                ),
-            )
-            # Adding chord elements to scatter
-            self.add_widget(depth_line)
-            self.add_widget(main_line)
-            self.add_widget(end_point_1)
-            self.add_widget(end_point_2)
-            self.add_widget(depth_point)
-            self.add_widget(bezier_point_1)
-            self.add_widget(bezier_point_2)
-            self.add_widget(bezier_line_1)
-            self.add_widget(bezier_line_2)
-            # Setting the related scatter properties to initial element position
-            if not all(prop_coords.values()):
-                if btn_name == "top":
-                    self.end_point_1_top_prop = coords.get("end_point_1")
-                    self.end_point_2_top_prop = coords.get("end_point_2")
-                    self.depth_point_top_prop = coords.get("depth_point")
-                    self.depth_point_intercept_top_prop = coords.get(
-                        "depth_point_intercept"
-                    )
-                    self.bezier_point_1_top_prop = coords.get("bezier_point_1")
-                    self.bezier_point_2_top_prop = coords.get("bezier_point_2")
-                elif btn_name == "mid":
-                    self.end_point_1_mid_prop = coords.get("end_point_1")
-                    self.end_point_2_mid_prop = coords.get("end_point_2")
-                    self.depth_point_mid_prop = coords.get("depth_point")
-                    self.depth_point_intercept_mid_prop = coords.get(
-                        "depth_point_intercept"
-                    )
-                    self.bezier_point_1_mid_prop = coords.get("bezier_point_1")
-                    self.bezier_point_2_mid_prop = coords.get("bezier_point_2")
-                elif btn_name == "btm":
-                    self.end_point_1_btm_prop = coords.get("end_point_1")
-                    self.end_point_2_btm_prop = coords.get("end_point_2")
-                    self.depth_point_btm_prop = coords.get("depth_point")
-                    self.depth_point_intercept_btm_prop = coords.get(
-                        "depth_point_intercept"
-                    )
-                    self.bezier_point_1_btm_prop = coords.get("bezier_point_1")
-                    self.bezier_point_2_btm_prop = coords.get("bezier_point_2")
+                )
+                bezier_point_1 = BezierPoint(
+                    name=f"bezier_point_1_{btn_name}",
+                    size=point_size,
+                    center=coords.get("bezier_point_1"),
+                )
+                bezier_point_2 = BezierPoint(
+                    name=f"bezier_point_2_{btn_name}",
+                    size=point_size,
+                    center=coords.get("bezier_point_2"),
+                )
+                bezier_line_1 = BezierLine(
+                    name=f"bezier_line_1_{btn_name}",
+                    points=(
+                        coords.get("end_point_1")
+                        + coords.get("bezier_point_1")
+                        + coords.get("depth_point")
+                    ),
+                )
+                bezier_line_2 = BezierLine(
+                    name=f"bezier_line_2_{btn_name}",
+                    points=(
+                        coords.get("end_point_2")
+                        + coords.get("bezier_point_2")
+                        + coords.get("depth_point")
+                    ),
+                )
+                # Adding chord elements to scatter
+                self.add_widget(depth_line)
+                self.add_widget(main_line)
+                self.add_widget(end_point_1)
+                self.add_widget(end_point_2)
+                self.add_widget(depth_point)
+                self.add_widget(bezier_point_1)
+                self.add_widget(bezier_point_2)
+                self.add_widget(bezier_line_1)
+                self.add_widget(bezier_line_2)
+                # Setting the related scatter properties to initial element position
+                if not all(prop_coords.values()):
+                    if btn_name == "top":
+                        self.end_point_1_top_prop = coords.get("end_point_1")
+                        self.end_point_2_top_prop = coords.get("end_point_2")
+                        self.depth_point_top_prop = coords.get("depth_point")
+                        self.depth_point_intercept_top_prop = coords.get(
+                            "depth_point_intercept"
+                        )
+                        self.bezier_point_1_top_prop = coords.get("bezier_point_1")
+                        self.bezier_point_2_top_prop = coords.get("bezier_point_2")
+                    elif btn_name == "mid":
+                        self.end_point_1_mid_prop = coords.get("end_point_1")
+                        self.end_point_2_mid_prop = coords.get("end_point_2")
+                        self.depth_point_mid_prop = coords.get("depth_point")
+                        self.depth_point_intercept_mid_prop = coords.get(
+                            "depth_point_intercept"
+                        )
+                        self.bezier_point_1_mid_prop = coords.get("bezier_point_1")
+                        self.bezier_point_2_mid_prop = coords.get("bezier_point_2")
+                    elif btn_name == "btm":
+                        self.end_point_1_btm_prop = coords.get("end_point_1")
+                        self.end_point_2_btm_prop = coords.get("end_point_2")
+                        self.depth_point_btm_prop = coords.get("depth_point")
+                        self.depth_point_intercept_btm_prop = coords.get(
+                            "depth_point_intercept"
+                        )
+                        self.bezier_point_1_btm_prop = coords.get("bezier_point_1")
+                        self.bezier_point_2_btm_prop = coords.get("bezier_point_2")
+
+    def reset(self, *args):
+        self.reseting = True
+
+        btn_names = ["top", "mid", "btm"]
+        for btn in btn_names:
+            self.add_chord(btn)
+
+        self.end_point_1_top_prop = []
+        self.end_point_2_top_prop = []
+        self.depth_point_top_prop = []
+        self.depth_point_intercept_top_prop = []
+        self.bezier_point_1_top_prop = []
+        self.bezier_point_2_top_prop = []
+
+        self.end_point_1_mid_prop = []
+        self.end_point_2_mid_prop = []
+        self.depth_point_mid_prop = []
+        self.depth_point_intercept_mid_prop = []
+        self.bezier_point_1_mid_prop = []
+        self.bezier_point_2_mid_prop = []
+
+        self.end_point_1_btm_prop = []
+        self.end_point_2_btm_prop = []
+        self.depth_point_btm_prop = []
+        self.depth_point_intercept_btm_prop = []
+        self.bezier_point_1_btm_prop = []
+        self.bezier_point_2_btm_prop = []
+
+        self.top_thickness_prop = ""
+        self.mid_thickness_prop = ""
+        self.btm_thickness_prop = ""
+
+        self.top_camber_prop = ""
+        self.mid_camber_prop = ""
+        self.btm_camber_prop = ""
+
+        self.reseting = False
 
     ###########################    TOP    ###########################
     def on_end_point_1_top_prop(self, instance, value):
-        self.top_thickness_prop = calculate_thickness(
-            value,
-            self.end_point_2_top_prop,
-            self.depth_point_top_prop,
-            self.depth_point_intercept_top_prop,
-        )
-        self.top_camber_prop = calculate_camber(
-            value,
-            self.end_point_2_top_prop,
-            self.depth_point_top_prop,
-            self.depth_point_intercept_top_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line_top":
-                child.update_line(1, value)
-            if hasattr(child, "name") and child.name == "bezier_line_1_top":
-                child.update_line(1, "ep", value)
+        if not self.reseting:
+            self.top_thickness_prop = calculate_thickness(
+                value,
+                self.end_point_2_top_prop,
+                self.depth_point_top_prop,
+                self.depth_point_intercept_top_prop,
+            )
+            self.top_camber_prop = calculate_camber(
+                value,
+                self.end_point_2_top_prop,
+                self.depth_point_top_prop,
+                self.depth_point_intercept_top_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "main_line_top":
+                    child.update_line(1, value)
+                if hasattr(child, "name") and child.name == "bezier_line_1_top":
+                    child.update_line(1, "ep", value)
 
     def on_end_point_2_top_prop(self, instance, value):
-        self.top_thickness_prop = calculate_thickness(
-            self.end_point_1_top_prop,
-            value,
-            self.depth_point_top_prop,
-            self.depth_point_intercept_top_prop,
-        )
-        self.top_camber_prop = calculate_camber(
-            self.end_point_1_top_prop,
-            value,
-            self.depth_point_top_prop,
-            self.depth_point_intercept_top_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line_top":
-                child.update_line(2, value)
-            if hasattr(child, "name") and child.name == "bezier_line_2_top":
-                child.update_line(2, "ep", value)
+        if not self.reseting:
+            self.top_thickness_prop = calculate_thickness(
+                self.end_point_1_top_prop,
+                value,
+                self.depth_point_top_prop,
+                self.depth_point_intercept_top_prop,
+            )
+            self.top_camber_prop = calculate_camber(
+                self.end_point_1_top_prop,
+                value,
+                self.depth_point_top_prop,
+                self.depth_point_intercept_top_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "main_line_top":
+                    child.update_line(2, value)
+                if hasattr(child, "name") and child.name == "bezier_line_2_top":
+                    child.update_line(2, "ep", value)
 
     def on_depth_point_top_prop(self, instance, value):
-        self.top_thickness_prop = calculate_thickness(
-            self.end_point_1_top_prop,
-            self.end_point_2_top_prop,
-            value,
-            self.depth_point_intercept_top_prop,
-        )
-        self.top_camber_prop = calculate_camber(
-            self.end_point_1_top_prop,
-            self.end_point_2_top_prop,
-            value,
-            self.depth_point_intercept_top_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "depth_point_top":
-                child.center = value
-            if hasattr(child, "name") and child.name == "depth_line_top":
-                child.update_line(self.depth_point_intercept_top_prop, value)
-            if hasattr(child, "name") and child.name == "bezier_line_1_top":
-                child.update_line(1, "dp", value)
-            if hasattr(child, "name") and child.name == "bezier_line_2_top":
-                child.update_line(2, "dp", value)
+        if not self.reseting:
+            self.top_thickness_prop = calculate_thickness(
+                self.end_point_1_top_prop,
+                self.end_point_2_top_prop,
+                value,
+                self.depth_point_intercept_top_prop,
+            )
+            self.top_camber_prop = calculate_camber(
+                self.end_point_1_top_prop,
+                self.end_point_2_top_prop,
+                value,
+                self.depth_point_intercept_top_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "depth_point_top":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "depth_line_top":
+                    child.update_line(self.depth_point_intercept_top_prop, value)
+                if hasattr(child, "name") and child.name == "bezier_line_1_top":
+                    child.update_line(1, "dp", value)
+                if hasattr(child, "name") and child.name == "bezier_line_2_top":
+                    child.update_line(2, "dp", value)
 
     def on_bezier_point_1_top_prop(self, instance, value):
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "bezier_point_1_top":
-                child.center = value
-            if hasattr(child, "name") and child.name == "bezier_line_1_top":
-                child.update_line(1, "bp", value)
+        if not self.reseting:
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "bezier_point_1_top":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "bezier_line_1_top":
+                    child.update_line(1, "bp", value)
 
     def on_bezier_point_2_top_prop(self, instance, value):
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "bezier_point_2_top":
-                child.center = value
-            if hasattr(child, "name") and child.name == "bezier_line_2_top":
-                child.update_line(2, "bp", value)
+        if not self.reseting:
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "bezier_point_2_top":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "bezier_line_2_top":
+                    child.update_line(2, "bp", value)
 
     ###########################    MID    ###########################
     def on_end_point_1_mid_prop(self, instance, value):
-        self.mid_thickness_prop = calculate_thickness(
-            value,
-            self.end_point_2_mid_prop,
-            self.depth_point_mid_prop,
-            self.depth_point_intercept_mid_prop,
-        )
-        self.mid_camber_prop = calculate_camber(
-            value,
-            self.end_point_2_mid_prop,
-            self.depth_point_mid_prop,
-            self.depth_point_intercept_mid_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line_mid":
-                child.update_line(1, value)
-            if hasattr(child, "name") and child.name == "bezier_line_1_mid":
-                child.update_line(1, "ep", value)
+        if not self.reseting:
+            self.mid_thickness_prop = calculate_thickness(
+                value,
+                self.end_point_2_mid_prop,
+                self.depth_point_mid_prop,
+                self.depth_point_intercept_mid_prop,
+            )
+            self.mid_camber_prop = calculate_camber(
+                value,
+                self.end_point_2_mid_prop,
+                self.depth_point_mid_prop,
+                self.depth_point_intercept_mid_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "main_line_mid":
+                    child.update_line(1, value)
+                if hasattr(child, "name") and child.name == "bezier_line_1_mid":
+                    child.update_line(1, "ep", value)
 
     def on_end_point_2_mid_prop(self, instance, value):
-        self.mid_thickness_prop = calculate_thickness(
-            self.end_point_1_mid_prop,
-            value,
-            self.depth_point_mid_prop,
-            self.depth_point_intercept_mid_prop,
-        )
-        self.mid_camber_prop = calculate_camber(
-            self.end_point_1_mid_prop,
-            value,
-            self.depth_point_mid_prop,
-            self.depth_point_intercept_mid_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line_mid":
-                child.update_line(2, value)
-            if hasattr(child, "name") and child.name == "bezier_line_2_mid":
-                child.update_line(2, "ep", value)
+        if not self.reseting:
+            self.mid_thickness_prop = calculate_thickness(
+                self.end_point_1_mid_prop,
+                value,
+                self.depth_point_mid_prop,
+                self.depth_point_intercept_mid_prop,
+            )
+            self.mid_camber_prop = calculate_camber(
+                self.end_point_1_mid_prop,
+                value,
+                self.depth_point_mid_prop,
+                self.depth_point_intercept_mid_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "main_line_mid":
+                    child.update_line(2, value)
+                if hasattr(child, "name") and child.name == "bezier_line_2_mid":
+                    child.update_line(2, "ep", value)
 
     def on_depth_point_mid_prop(self, instance, value):
-        self.mid_thickness_prop = calculate_thickness(
-            self.end_point_1_mid_prop,
-            self.end_point_2_mid_prop,
-            value,
-            self.depth_point_intercept_mid_prop,
-        )
-        self.mid_camber_prop = calculate_camber(
-            self.end_point_1_mid_prop,
-            self.end_point_2_mid_prop,
-            value,
-            self.depth_point_intercept_mid_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "depth_point_mid":
-                child.center = value
-            if hasattr(child, "name") and child.name == "depth_line_mid":
-                child.update_line(self.depth_point_intercept_mid_prop, value)
-            if hasattr(child, "name") and child.name == "bezier_line_1_mid":
-                child.update_line(1, "dp", value)
-            if hasattr(child, "name") and child.name == "bezier_line_2_mid":
-                child.update_line(2, "dp", value)
+        if not self.reseting:
+            self.mid_thickness_prop = calculate_thickness(
+                self.end_point_1_mid_prop,
+                self.end_point_2_mid_prop,
+                value,
+                self.depth_point_intercept_mid_prop,
+            )
+            self.mid_camber_prop = calculate_camber(
+                self.end_point_1_mid_prop,
+                self.end_point_2_mid_prop,
+                value,
+                self.depth_point_intercept_mid_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "depth_point_mid":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "depth_line_mid":
+                    child.update_line(self.depth_point_intercept_mid_prop, value)
+                if hasattr(child, "name") and child.name == "bezier_line_1_mid":
+                    child.update_line(1, "dp", value)
+                if hasattr(child, "name") and child.name == "bezier_line_2_mid":
+                    child.update_line(2, "dp", value)
 
     def on_bezier_point_1_mid_prop(self, instance, value):
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "bezier_point_1_mid":
-                child.center = value
-            if hasattr(child, "name") and child.name == "bezier_line_1_mid":
-                child.update_line(1, "bp", value)
+        if not self.reseting:
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "bezier_point_1_mid":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "bezier_line_1_mid":
+                    child.update_line(1, "bp", value)
 
     def on_bezier_point_2_mid_prop(self, instance, value):
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "bezier_point_2_mid":
-                child.center = value
-            if hasattr(child, "name") and child.name == "bezier_line_2_mid":
-                child.update_line(2, "bp", value)
+        if not self.reseting:
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "bezier_point_2_mid":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "bezier_line_2_mid":
+                    child.update_line(2, "bp", value)
 
     ###########################    BTM    ###########################
     def on_end_point_1_btm_prop(self, instance, value):
-        self.btm_thickness_prop = calculate_thickness(
-            value,
-            self.end_point_2_btm_prop,
-            self.depth_point_btm_prop,
-            self.depth_point_intercept_btm_prop,
-        )
-        self.btm_camber_prop = calculate_camber(
-            value,
-            self.end_point_2_btm_prop,
-            self.depth_point_btm_prop,
-            self.depth_point_intercept_btm_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line_btm":
-                child.update_line(1, value)
-            if hasattr(child, "name") and child.name == "bezier_line_1_btm":
-                child.update_line(1, "ep", value)
+        if not self.reseting:
+            self.btm_thickness_prop = calculate_thickness(
+                value,
+                self.end_point_2_btm_prop,
+                self.depth_point_btm_prop,
+                self.depth_point_intercept_btm_prop,
+            )
+            self.btm_camber_prop = calculate_camber(
+                value,
+                self.end_point_2_btm_prop,
+                self.depth_point_btm_prop,
+                self.depth_point_intercept_btm_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "main_line_btm":
+                    child.update_line(1, value)
+                if hasattr(child, "name") and child.name == "bezier_line_1_btm":
+                    child.update_line(1, "ep", value)
 
     def on_end_point_2_btm_prop(self, instance, value):
-        self.btm_thickness_prop = calculate_thickness(
-            self.end_point_1_btm_prop,
-            value,
-            self.depth_point_btm_prop,
-            self.depth_point_intercept_btm_prop,
-        )
-        self.btm_camber_prop = calculate_camber(
-            self.end_point_1_btm_prop,
-            value,
-            self.depth_point_btm_prop,
-            self.depth_point_intercept_btm_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "main_line_btm":
-                child.update_line(2, value)
-            if hasattr(child, "name") and child.name == "bezier_line_2_btm":
-                child.update_line(2, "ep", value)
+        if not self.reseting:
+            self.btm_thickness_prop = calculate_thickness(
+                self.end_point_1_btm_prop,
+                value,
+                self.depth_point_btm_prop,
+                self.depth_point_intercept_btm_prop,
+            )
+            self.btm_camber_prop = calculate_camber(
+                self.end_point_1_btm_prop,
+                value,
+                self.depth_point_btm_prop,
+                self.depth_point_intercept_btm_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "main_line_btm":
+                    child.update_line(2, value)
+                if hasattr(child, "name") and child.name == "bezier_line_2_btm":
+                    child.update_line(2, "ep", value)
 
     def on_depth_point_btm_prop(self, instance, value):
-        self.btm_thickness_prop = calculate_thickness(
-            self.end_point_1_btm_prop,
-            self.end_point_2_btm_prop,
-            value,
-            self.depth_point_intercept_btm_prop,
-        )
-        self.btm_camber_prop = calculate_camber(
-            self.end_point_1_btm_prop,
-            self.end_point_2_btm_prop,
-            value,
-            self.depth_point_intercept_btm_prop,
-        )
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "depth_point_btm":
-                child.center = value
-            if hasattr(child, "name") and child.name == "depth_line_btm":
-                child.update_line(self.depth_point_intercept_btm_prop, value)
-            if hasattr(child, "name") and child.name == "bezier_line_1_btm":
-                child.update_line(1, "dp", value)
-            if hasattr(child, "name") and child.name == "bezier_line_2_btm":
-                child.update_line(2, "dp", value)
+        if not self.reseting:
+            self.btm_thickness_prop = calculate_thickness(
+                self.end_point_1_btm_prop,
+                self.end_point_2_btm_prop,
+                value,
+                self.depth_point_intercept_btm_prop,
+            )
+            self.btm_camber_prop = calculate_camber(
+                self.end_point_1_btm_prop,
+                self.end_point_2_btm_prop,
+                value,
+                self.depth_point_intercept_btm_prop,
+            )
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "depth_point_btm":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "depth_line_btm":
+                    child.update_line(self.depth_point_intercept_btm_prop, value)
+                if hasattr(child, "name") and child.name == "bezier_line_1_btm":
+                    child.update_line(1, "dp", value)
+                if hasattr(child, "name") and child.name == "bezier_line_2_btm":
+                    child.update_line(2, "dp", value)
 
     def on_bezier_point_1_btm_prop(self, instance, value):
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "bezier_point_1_btm":
-                child.center = value
-            if hasattr(child, "name") and child.name == "bezier_line_1_btm":
-                child.update_line(1, "bp", value)
+        if not self.reseting:
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "bezier_point_1_btm":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "bezier_line_1_btm":
+                    child.update_line(1, "bp", value)
 
     def on_bezier_point_2_btm_prop(self, instance, value):
-        for child in self.children:
-            if hasattr(child, "name") and child.name == "bezier_point_2_btm":
-                child.center = value
-            if hasattr(child, "name") and child.name == "bezier_line_2_btm":
-                child.update_line(2, "bp", value)
+        if not self.reseting:
+            for child in self.children:
+                if hasattr(child, "name") and child.name == "bezier_point_2_btm":
+                    child.center = value
+                if hasattr(child, "name") and child.name == "bezier_line_2_btm":
+                    child.update_line(2, "bp", value)
 
     ###########################    RESULTS    ###########################
 
     def on_top_thickness_prop(self, instance, value):
-        for child in self.parent.parent.children[0].children:
-            if hasattr(child, "name") and "results_card" in child.name:
-                child.children[2].children[1].children[0].text = value
+        if not self.reseting:
+            for child in self.parent.parent.children[0].children:
+                if hasattr(child, "name") and "results_card" in child.name:
+                    child.children[2].children[1].children[0].text = value
 
     def on_mid_thickness_prop(self, instance, value):
-        for child in self.parent.parent.children[0].children:
-            if hasattr(child, "name") and "results_card" in child.name:
-                child.children[1].children[1].children[0].text = value
+        if not self.reseting:
+            for child in self.parent.parent.children[0].children:
+                if hasattr(child, "name") and "results_card" in child.name:
+                    child.children[1].children[1].children[0].text = value
 
     def on_btm_thickness_prop(self, instance, value):
-        for child in self.parent.parent.children[0].children:
-            if hasattr(child, "name") and "results_card" in child.name:
-                child.children[0].children[1].children[0].text = value
+        if not self.reseting:
+            for child in self.parent.parent.children[0].children:
+                if hasattr(child, "name") and "results_card" in child.name:
+                    child.children[0].children[1].children[0].text = value
 
     def on_top_camber_prop(self, instance, value):
-        for child in self.parent.parent.children[0].children:
-            if hasattr(child, "name") and "results_card" in child.name:
-                child.children[2].children[0].children[0].text = value
+        if not self.reseting:
+            for child in self.parent.parent.children[0].children:
+                if hasattr(child, "name") and "results_card" in child.name:
+                    child.children[2].children[0].children[0].text = value
 
     def on_mid_camber_prop(self, instance, value):
-        for child in self.parent.parent.children[0].children:
-            if hasattr(child, "name") and "results_card" in child.name:
-                child.children[1].children[0].children[0].text = value
+        if not self.reseting:
+            for child in self.parent.parent.children[0].children:
+                if hasattr(child, "name") and "results_card" in child.name:
+                    child.children[1].children[0].children[0].text = value
 
     def on_btm_camber_prop(self, instance, value):
-        for child in self.parent.parent.children[0].children:
-            if hasattr(child, "name") and "results_card" in child.name:
-                child.children[0].children[0].children[0].text = value
+        if not self.reseting:
+            for child in self.parent.parent.children[0].children:
+                if hasattr(child, "name") and "results_card" in child.name:
+                    child.children[0].children[0].children[0].text = value
 
 
 ###########################################################################################################
@@ -1281,6 +1344,9 @@ class SplineScreen(Screen):
             results_card.ids.camber_btm_label.text = self.ids.scatter.btm_camber_prop
 
             self.ids.spline_screen_util_btns.add_widget(results_card)
+
+    def reset(self, *args):
+        self.img_src = ""
 
 
 class SM(ScreenManager):

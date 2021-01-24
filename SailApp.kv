@@ -252,6 +252,8 @@ SM:
             size_hint: 0.2, 0.2
             pos_hint: {"x": 0, "y": 0.8}
             on_release: 
+                root.reset()
+                scatter.reset()
                 root.manager.transition.direction = "right"
                 app.root.current = "main_menu"
             MDIcon:
