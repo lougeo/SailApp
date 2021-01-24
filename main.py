@@ -1297,23 +1297,25 @@ class FileChooserScreen(Screen):
 
 
 class SplineScreen(Screen):
+    reseting = BooleanProperty(defaultvalue=False)
     img_src = StringProperty("")
 
     def on_img_src(self, *args):
-        if platform == "android":
-            main_dir = "Pictures"
-            app_dir = "SailShape"
-            main_path = join(primary_external_storage_path(), main_dir)
-            app_path = join(main_path, app_dir)
-            if not exists(main_path):
-                os.mkdir(main_path)
-            if not exists(app_path):
-                os.mkdir(app_path)
-            filename = self.path_leaf(self.img_src)
-            full_app_path = join(app_path, filename)
-            os.replace(self.img_src, full_app_path)
-            print(f"NEW FULL PATH: {full_app_path}")
-            self.img_src = full_app_path
+        if not self.reseting:
+            if platform == "android":
+                main_dir = "Pictures"
+                app_dir = "SailShape"
+                main_path = join(primary_external_storage_path(), main_dir)
+                app_path = join(main_path, app_dir)
+                if not exists(main_path):
+                    os.mkdir(main_path)
+                if not exists(app_path):
+                    os.mkdir(app_path)
+                filename = self.path_leaf(self.img_src)
+                full_app_path = join(app_path, filename)
+                os.replace(self.img_src, full_app_path)
+                print(f"NEW FULL PATH: {full_app_path}")
+                self.img_src = full_app_path
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
@@ -1346,7 +1348,9 @@ class SplineScreen(Screen):
             self.ids.spline_screen_util_btns.add_widget(results_card)
 
     def reset(self, *args):
+        self.reseting = True
         self.img_src = ""
+        self.reseting = False
 
 
 class SM(ScreenManager):
