@@ -1206,6 +1206,25 @@ class CameraScreen(Screen):
 
 
 class FileChooserScreen(Screen):
+    def get_rootpath(self, *args):
+        if platform == "android":
+            main_dir = "Pictures"
+            app_dir = "SailShape"
+            main_path = join(primary_external_storage_path(), main_dir)
+            app_path = join(main_path, app_dir)
+            if exists(app_path):
+                rootpath = app_path
+            elif exists(main_path):
+                rootpath = main_path
+            else:
+                rootpath = primary_external_storage_path()
+        else:
+            from os import getcwd
+
+            rootpath = getcwd()
+        print(f"ROOTPATH: {rootpath}")
+        return rootpath
+
     def load(self, path, selection):
         file_name = selection[0]
         print(file_name)

@@ -207,7 +207,7 @@ SM:
         FileChooserListView:
             id: filechooser
             color: 0,0,0,1
-            rootpath: '/storage/emulated/0/' if platform == 'android' else '/'
+            rootpath: root.get_rootpath()#'/storage/emulated/0/' if platform == 'android' else '/'
 
         BoxLayout:
             size_hint_y: None
