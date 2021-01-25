@@ -1360,11 +1360,15 @@ class SplineScreen(Screen):
             im = PILImage.open(self.img_src)
             if im._getexif():
                 exif_dict = piexif.load(im.info["exif"])
-                print(exif_dict)
-                data = json.loads(
-                    exif_dict.get("Exif").get(piexif.ExifIFD.UserComment).decode("utf8")
-                )
-                self.ids.scatter.load_initial(data)
+                comment_exifIFD = exif_dict.get("Exif").get(piexif.ExifIFD.UserComment)
+                print(comment_exifIFD)
+                if comment_exifIFD:
+                    data = json.loads(
+                        exif_dict.get("Exif")
+                        .get(piexif.ExifIFD.UserComment)
+                        .decode("utf8")
+                    )
+                    self.ids.scatter.load_initial(data)
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
