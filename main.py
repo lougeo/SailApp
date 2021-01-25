@@ -1380,22 +1380,29 @@ class SplineScreen(Screen):
             for widget in garbage:
                 self.ids.spline_screen_util_btns.remove_widget(widget)
         else:
-            # Instantiate and add results widget
-            results_card = ResultsCard(name="results_card")
-            results_card.ids.thickness_top_label.text = (
-                self.ids.scatter.top_thickness_prop
-            )
-            results_card.ids.camber_top_label.text = self.ids.scatter.top_camber_prop
-            results_card.ids.thickness_mid_label.text = (
-                self.ids.scatter.mid_thickness_prop
-            )
-            results_card.ids.camber_mid_label.text = self.ids.scatter.mid_camber_prop
-            results_card.ids.thickness_btm_label.text = (
-                self.ids.scatter.btm_thickness_prop
-            )
-            results_card.ids.camber_btm_label.text = self.ids.scatter.btm_camber_prop
+            if not self.reseting:
+                # Instantiate and add results widget
+                results_card = ResultsCard(name="results_card")
+                results_card.ids.thickness_top_label.text = (
+                    self.ids.scatter.top_thickness_prop
+                )
+                results_card.ids.camber_top_label.text = (
+                    self.ids.scatter.top_camber_prop
+                )
+                results_card.ids.thickness_mid_label.text = (
+                    self.ids.scatter.mid_thickness_prop
+                )
+                results_card.ids.camber_mid_label.text = (
+                    self.ids.scatter.mid_camber_prop
+                )
+                results_card.ids.thickness_btm_label.text = (
+                    self.ids.scatter.btm_thickness_prop
+                )
+                results_card.ids.camber_btm_label.text = (
+                    self.ids.scatter.btm_camber_prop
+                )
 
-            self.ids.spline_screen_util_btns.add_widget(results_card)
+                self.ids.spline_screen_util_btns.add_widget(results_card)
 
     def reset(self):
         self.reseting = True
