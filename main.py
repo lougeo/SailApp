@@ -121,7 +121,6 @@ class MainScatter(Scatter):
     ###########################    METHODS    ###########################
 
     def on_transform(self, *args, **kwargs):
-        print("ON TRANSFORM")
         super().on_transform(*args, **kwargs)
         for child in self.children:
             if hasattr(child, "name") and "point" in child.name:
@@ -132,9 +131,6 @@ class MainScatter(Scatter):
                 btn_center = (child.center_x + 0.0001, child.center_y + 0.0001)
                 child.size = btn_size
                 child.center = btn_center
-
-    # def on_transform_with_touch(self, *args):
-    #     print("ON TRANSFORM WITH TOUCH")
 
     def add_chord(self, btn_name):
         garbage = []
@@ -1325,15 +1321,16 @@ class FileChooserScreen(Screen):
             from os import getcwd
 
             rootpath = getcwd()
-        print(f"ROOTPATH: {rootpath}")
         return rootpath
 
     def load(self, path, selection):
         file_name = selection[0]
-        print(file_name)
         self.manager.transition.direction = "left"
         self.manager.current = "spline_screen"
         self.manager.get_screen("spline_screen").img_src = file_name
+
+    def update_filechooser(self):
+        self.ids.filechooser._update_files()
 
 
 class SplineScreen(Screen):
@@ -1357,11 +1354,11 @@ class SplineScreen(Screen):
                 print(f"NEW FULL PATH: {full_app_path}")
                 self.img_src = full_app_path
 
+            # Checking for saved chord data
             im = PILImage.open(self.img_src)
             if im._getexif():
                 exif_dict = piexif.load(im.info["exif"])
                 comment_exifIFD = exif_dict.get("Exif").get(piexif.ExifIFD.UserComment)
-                print(comment_exifIFD)
                 if comment_exifIFD:
                     data = json.loads(
                         exif_dict.get("Exif")
@@ -1445,7 +1442,6 @@ class SplineScreen(Screen):
         else:
             exif_dict = {"Exif": {}}
         exif_dict["Exif"][piexif.ExifIFD.UserComment] = data.encode("utf8")
-        print(exif_dict)
         exif_bytes = piexif.dump(exif_dict)
         im.save(self.img_src, "jpeg", exif=exif_bytes)
 

@@ -151,6 +151,7 @@ SM:
             size_hint: 0.6, 0.3
             pos_hint: {"x": 0.2, "y": 0.1}
             on_release:
+                root.manager.get_screen("file_chooser").update_filechooser()
                 root.manager.transition.direction = "left"
                 app.root.current = "file_chooser"
             
@@ -196,8 +197,6 @@ SM:
 <FileChooserScreen>:
     name: "file_chooser"
     BoxLayout:
-        # size: root.size
-        # pos: root.pos
         canvas.before:
             Color:
                 rgb: 0,0,0
@@ -207,7 +206,9 @@ SM:
         FileChooserListView:
             id: filechooser
             color: 0,0,0,1
-            rootpath: root.get_rootpath()#'/storage/emulated/0/' if platform == 'android' else '/'
+            filters: ["*.jpeg"]
+            path: root.get_rootpath()
+            on_submit: root.load(filechooser.path, filechooser.selection)
 
         BoxLayout:
             size_hint_y: None
