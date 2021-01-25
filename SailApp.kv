@@ -212,16 +212,20 @@ SM:
             on_submit: root.load(filechooser.path, filechooser.selection)
 
         BoxLayout:
-            size_hint_y: None
-            height: 100
-            Button:
+            # size_hint_y: None
+            # height: 100
+            MDFillRoundFlatButton:
                 text: "Cancel"
+                size_hint: 0.5, 0.2
+                pos_hint: {"center_x": 0.75, "y": 0}
                 on_release: 
                     root.manager.transition.direction = "right"
                     app.root.current = "main_menu"
 
-            Button:
+            MDFillRoundFlatButton:
                 text: "Load"
+                size_hint: 0.5, 0.2
+                pos_hint: {"center_x": 0.25, "y": 0}
                 on_release: root.load(filechooser.path, filechooser.selection)
 
 <SplineScreen>:
