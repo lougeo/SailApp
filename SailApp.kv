@@ -206,7 +206,7 @@ SM:
         FileChooserListView:
             id: filechooser
             color: 0,0,0,1
-            filters: ["*.jpeg"]
+            # filters: ["*.jpeg"]
             path: root.get_rootpath()
             on_submit: root.load(filechooser.path, filechooser.selection)
 
