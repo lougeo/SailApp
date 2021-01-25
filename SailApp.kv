@@ -211,7 +211,7 @@ SM:
 
         BoxLayout:
             size_hint_y: None
-            height: 50
+            height: 100
             Button:
                 text: "Cancel"
                 on_release: 
@@ -261,6 +261,16 @@ SM:
                 halign: "center"
                 font_size: "50sp"
 
+        MDFillRoundFlatButton:
+            md_bg_color: 0.29, 0.71, 0.26, 1
+            size_hint: 0.2, 0.2
+            pos_hint: {"x": 0, "y": 0.55}
+            on_release: 
+                root.save(scatter)
+            MDIcon:
+                icon: "content-save"
+                halign: "center"
+                font_size: "50sp"
 
         MDFillRoundFlatButton:
             name: "top"

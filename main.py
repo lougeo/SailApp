@@ -31,11 +31,14 @@ from kivy.properties import (
 
 from kivy.graphics import Color, Rectangle, Point, Line, Ellipse, Bezier
 
+import json
+import os
 from os.path import exists, join
-
-import time
+from PIL import Image as PILImage, ExifTags
+import piexif
 import math
 import ntpath
+import time
 
 from kivymd.app import MDApp
 
@@ -313,6 +316,43 @@ class MainScatter(Scatter):
         self.top_camber_prop = ""
         self.mid_camber_prop = ""
         self.btm_camber_prop = ""
+
+        self.reseting = False
+
+    def load_initial(self, data):
+        top = data.get("top")
+        mid = data.get("mid")
+        btm = data.get("btm")
+        self.reseting = True
+
+        self.end_point_1_top_prop = top.get("ep1")
+        self.end_point_2_top_prop = top.get("ep2")
+        self.depth_point_top_prop = top.get("dp")
+        self.depth_point_intercept_top_prop = top.get("dpi")
+        self.bezier_point_1_top_prop = top.get("bp1")
+        self.bezier_point_2_top_prop = top.get("bp2")
+
+        self.end_point_1_mid_prop = mid.get("ep1")
+        self.end_point_2_mid_prop = mid.get("ep2")
+        self.depth_point_mid_prop = mid.get("dp")
+        self.depth_point_intercept_mid_prop = mid.get("dpi")
+        self.bezier_point_1_mid_prop = mid.get("bp1")
+        self.bezier_point_2_mid_prop = mid.get("bp2")
+
+        self.end_point_1_btm_prop = btm.get("ep1")
+        self.end_point_2_btm_prop = btm.get("ep2")
+        self.depth_point_btm_prop = btm.get("dp")
+        self.depth_point_intercept_btm_prop = btm.get("dpi")
+        self.bezier_point_1_btm_prop = btm.get("bp1")
+        self.bezier_point_2_btm_prop = btm.get("bp2")
+
+        self.top_thickness_prop = top.get("T")
+        self.mid_thickness_prop = mid.get("T")
+        self.btm_thickness_prop = btm.get("T")
+
+        self.top_camber_prop = top.get("C")
+        self.mid_camber_prop = mid.get("C")
+        self.btm_camber_prop = btm.get("C")
 
         self.reseting = False
 
@@ -1260,7 +1300,7 @@ class CameraScreen(Screen):
 
     def capture(self):
         timestr = time.strftime("%Y%m%d_%H%M%S")
-        file_name = f"IMG_{timestr}.png"
+        file_name = f"IMG_{timestr}.jpeg"
         camera = self.ids["camera"]
         camera.export_to_png(file_name)
         self.manager.transition.direction = "left"
@@ -1317,6 +1357,14 @@ class SplineScreen(Screen):
                 print(f"NEW FULL PATH: {full_app_path}")
                 self.img_src = full_app_path
 
+            im = PILImage.open(self.img_src)
+            if im._getexif():
+                exif_dict = piexif.load(im.info["exif"])
+                data = json.loads(
+                    exif_dict.get("Exif").get(piexif.ExifIFD.UserComment).decode("utf8")
+                )
+                self.ids.scatter.load_initial(data)
+
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
         return tail or ntpath.basename(head)
@@ -1347,10 +1395,54 @@ class SplineScreen(Screen):
 
             self.ids.spline_screen_util_btns.add_widget(results_card)
 
-    def reset(self, *args):
+    def reset(self):
         self.reseting = True
         self.img_src = ""
         self.reseting = False
+
+    def save(self, scatter):
+        top = {
+            "ep1": scatter.end_point_1_top_prop,
+            "ep2": scatter.end_point_2_top_prop,
+            "dp": scatter.depth_point_top_prop,
+            "dpi": scatter.depth_point_intercept_top_prop,
+            "bp1": scatter.bezier_point_1_top_prop,
+            "bp2": scatter.bezier_point_2_top_prop,
+            "T": scatter.top_thickness_prop,
+            "C": scatter.top_camber_prop,
+        }
+        mid = {
+            "ep1": scatter.end_point_1_mid_prop,
+            "ep2": scatter.end_point_2_mid_prop,
+            "dp": scatter.depth_point_mid_prop,
+            "dpi": scatter.depth_point_intercept_mid_prop,
+            "bp1": scatter.bezier_point_1_mid_prop,
+            "bp2": scatter.bezier_point_2_mid_prop,
+            "T": scatter.mid_thickness_prop,
+            "C": scatter.mid_camber_prop,
+        }
+        btm = {
+            "ep1": scatter.end_point_1_btm_prop,
+            "ep2": scatter.end_point_2_btm_prop,
+            "dp": scatter.depth_point_btm_prop,
+            "dpi": scatter.depth_point_intercept_btm_prop,
+            "bp1": scatter.bezier_point_1_btm_prop,
+            "bp2": scatter.bezier_point_2_btm_prop,
+            "T": scatter.btm_thickness_prop,
+            "C": scatter.btm_camber_prop,
+        }
+
+        data = json.dumps({"top": top, "mid": mid, "btm": btm})
+
+        im = PILImage.open(self.img_src)
+        if im._getexif():
+            exif_dict = piexif.load(im.info["exif"])
+        else:
+            exif_dict = {"Exif": {}}
+        exif_dict["Exif"][piexif.ExifIFD.UserComment] = data.encode("utf8")
+        print(exif_dict)
+        exif_bytes = piexif.dump(exif_dict)
+        im.save(self.img_src, "jpeg", exif=exif_bytes)
 
 
 class SM(ScreenManager):
