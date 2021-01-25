@@ -122,15 +122,15 @@ class MainScatter(Scatter):
 
     def on_transform(self, *args, **kwargs):
         super().on_transform(*args, **kwargs)
-        # for child in self.children:
-        #     if hasattr(child, "name") and "point" in child.name:
-        #         win = self.get_parent_window()
-        #         btn_size = (win.width * 0.1 / self.scale, win.width * 0.1 / self.scale)
-        #         # This is super hacky, but it won't update the pos unless the value has changed.
-        #         # Value reset to proper center after widget is touched.
-        #         btn_center = (child.center_x + 0.0001, child.center_y + 0.0001)
-        #         child.size = btn_size
-        #         child.center = btn_center
+        for child in self.children:
+            if hasattr(child, "name") and "point" in child.name:
+                win = self.get_parent_window()
+                btn_size = (win.width * 0.1 / self.scale, win.width * 0.1 / self.scale)
+                # This is super hacky, but it won't update the pos unless the value has changed.
+                # Value reset to proper center after widget is touched.
+                btn_center = (child.center_x + 0.0001, child.center_y + 0.0001)
+                child.size = btn_size
+                child.center = btn_center
 
     def add_chord(self, btn_name):
         garbage = []
