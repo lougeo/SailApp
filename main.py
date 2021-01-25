@@ -1360,6 +1360,7 @@ class SplineScreen(Screen):
             im = PILImage.open(self.img_src)
             if im._getexif():
                 exif_dict = piexif.load(im.info["exif"])
+                print(exif_dict)
                 data = json.loads(
                     exif_dict.get("Exif").get(piexif.ExifIFD.UserComment).decode("utf8")
                 )
