@@ -1268,7 +1268,7 @@ class MainMenuScreen(Screen):
     def open_camera(self):
         if platform == "android":
             timestr = time.strftime("%Y%m%d_%H%M%S")
-            self.file_name = f"IMG_{timestr}.png"
+            self.file_name = f"IMG_{timestr}.jpeg"
             primary_dir = primary_external_storage_path()
             full_path = join(primary_dir, self.file_name)
 
