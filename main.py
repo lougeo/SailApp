@@ -132,7 +132,7 @@ class MainScatter(Scatter):
                 child.size = btn_size
                 child.center = btn_center
 
-    def add_chord(self, btn_name):
+    def add_chord(self, btn_name, loading=False):
         garbage = []
 
         for child in self.children:
@@ -165,6 +165,8 @@ class MainScatter(Scatter):
                     coords = prop_coords
                 else:
                     # Default coords
+                    if loading == True:
+                        return True
                     if btn_name == "top":
                         max_height = 0.60
                         min_height = 0.35
@@ -351,6 +353,9 @@ class MainScatter(Scatter):
         self.btm_camber_prop = btm.get("C")
 
         self.reseting = False
+
+        for chord in ["top", "mid", "btm"]:
+            self.add_chord(chord, loading=True)
 
     ###########################    TOP    ###########################
     def on_end_point_1_top_prop(self, instance, value):
