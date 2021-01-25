@@ -1399,7 +1399,9 @@ class SplineScreen(Screen):
 
     def reset(self):
         self.reseting = True
+        self.ids.scatter.pos = 0, 0
         self.img_src = ""
+        self.show_results()
         self.reseting = False
 
     def save(self, scatter):
