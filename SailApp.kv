@@ -2,6 +2,7 @@
 #:import Button kivy.uix.button.Button
 #:import GridLayout kivy.uix.gridlayout
 #:import platform kivy.utils.platform
+#:import Snackbar kivymd.uix.snackbar.Snackbar
     
 
 SM:
@@ -268,6 +269,7 @@ SM:
             pos_hint: {"x": 0, "y": 0.55}
             on_release: 
                 root.save(scatter)
+                Snackbar(text="Chord data saved!").show()
             MDIcon:
                 icon: "content-save"
                 halign: "center"
