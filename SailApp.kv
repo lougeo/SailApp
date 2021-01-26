@@ -216,18 +216,18 @@ SM:
             # height: 100
             MDFillRoundFlatButton:
                 text: "Cancel"
-                font_size: "15sp"
+                # font_size: "15sp"
                 size_hint: 0.5, 1.
-                pos_hint: {"center_x": 0.75, "y": 0}
+                pos_hint: {"center_x": 0.25, "y": 0}
                 on_release: 
                     root.manager.transition.direction = "right"
                     app.root.current = "main_menu"
 
             MDFillRoundFlatButton:
                 text: "Load"
-                font_size: "15sp"
+                # font_size: "15sp"
                 size_hint: 0.5, 1.
-                pos_hint: {"center_x": 0.25, "y": 0}
+                pos_hint: {"center_x": 0.75, "y": 0}
                 on_release: root.load(filechooser.path, filechooser.selection)
 
 <SplineScreen>:
@@ -253,26 +253,26 @@ SM:
     FloatLayout:
         id: spline_screen_util_btns
 
-        MDFillRoundFlatButton:
-            # text: "Main Menu"
-            # text_color: 0, 0, 0, 1
-            md_bg_color: 1, 1, 1, 1
-            size_hint: 0.2, 0.2
-            pos_hint: {"x": 0, "y": 0.8}
-            on_release: 
-                root.reset()
-                scatter.reset()
-                root.manager.transition.direction = "right"
-                app.root.current = "main_menu"
-            MDIcon:
-                icon: "keyboard-return"
-                halign: "center"
-                font_size: "50sp"
+        # MDFillRoundFlatButton:
+        #     # text: "Main Menu"
+        #     # text_color: 0, 0, 0, 1
+        #     md_bg_color: 1, 1, 1, 1
+        #     size_hint: 0.2, 0.2
+        #     pos_hint: {"x": 0, "y": 0.8}
+        #     on_release: 
+        #         root.reset()
+        #         scatter.reset()
+        #         root.manager.transition.direction = "right"
+        #         app.root.current = "main_menu"
+        #     MDIcon:
+        #         icon: "keyboard-return"
+        #         halign: "center"
+        #         font_size: "50sp"
 
         MDFillRoundFlatButton:
             md_bg_color: 0.29, 0.71, 0.26, 1
             size_hint: 0.2, 0.2
-            pos_hint: {"x": 0, "y": 0.55}
+            pos_hint: {"x": 0, "y": 0.8}
             on_release: 
                 root.save(scatter)
                 Snackbar(text="Chord data saved!").show()

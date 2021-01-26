@@ -1500,6 +1500,12 @@ class MainApp(MDApp):
 
     def key_input(self, window, key, scancode, codepoint, modifier):
         if key == 27:
+            print(App.get_running_app().root.current)
+            if App.get_running_app().root.current == "spline_screen":
+                App.get_running_app().root.get_screen("spline_screen").reset()
+                App.get_running_app().root.get_screen(
+                    "spline_screen"
+                ).ids.scatter.reset()
             App.get_running_app().root.transition.direction = "right"
             App.get_running_app().root.current = "main_menu"
             return True
