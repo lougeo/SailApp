@@ -128,7 +128,7 @@ class MainScatter(Scatter):
 
     def on_transform(self, *args, **kwargs):
         print("ON TRANSFORM")
-        # super().on_transform(*args, **kwargs)
+        super().on_transform(*args, **kwargs)
         for child in self.children:
             if hasattr(child, "name") and "point" in child.name:
                 win = self.get_parent_window()
