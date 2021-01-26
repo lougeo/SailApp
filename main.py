@@ -1114,23 +1114,26 @@ class BezierPoint(Widget):
                 Color(1.0, 0.38, 0, 1.0)
             elif "btm" in self.name:
                 Color(1.0, 0.69, 0, 1.0)
-            self.outer = Rectangle(size=self.size, pos=self.pos)
+            self.outer = Rectangle(
+                size=(self.width * 0.5, self.height * 0.5),
+                pos=(self.x + self.width * 0.25, self.y + self.height * 0.25),
+            )
             Color(1.0, 1.0, 1.0)
             self.inner = Rectangle(
-                size=(self.width * 0.9, self.height * 0.9),
-                pos=(self.x + self.width * 0.05, self.y + self.height * 0.05),
+                size=(self.width * 0.4, self.height * 0.4),
+                pos=(self.x + self.width * 0.3, self.y + self.height * 0.3),
             )
         # Bind update point method to pos
         self.bind(pos=self.update_point_pos)
         self.bind(size=self.update_point_size)
 
     def update_point_size(self, *args):
-        self.outer.size = self.size
-        self.inner.size = (self.width * 0.9, self.height * 0.9)
+        self.outer.size = (self.width * 0.5, self.height * 0.5)
+        self.inner.size = (self.width * 0.4, self.height * 0.4)
 
     def update_point_pos(self, *args):
-        self.outer.pos = self.pos
-        self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
+        self.outer.pos = (self.x + self.width * 0.25, self.y + self.height * 0.25)
+        self.inner.pos = (self.x + self.width * 0.3, self.y + self.height * 0.3)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
