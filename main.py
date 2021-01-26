@@ -1493,6 +1493,8 @@ class MainApp(MDApp):
 
     def on_start(self):
         if platform == "android":
+            from android.permissions import request_permissions, Permission
+
             request_permissions(
                 [
                     Permission.CAMERA,
