@@ -48,6 +48,21 @@ if platform == "android":
     from android_camera import AndroidCamera
     from jnius import JavaException, PythonJavaClass, autoclass, java_method
 
+    def perm_callback(permission, results):
+        if all([res for res in results]):
+            print("Got all permissions")
+        else:
+            print("Did not get all permissions")
+
+    request_permissions(
+        [
+            Permission.CAMERA,
+            Permission.READ_EXTERNAL_STORAGE,
+            Permission.WRITE_EXTERNAL_STORAGE,
+        ],
+        perm_callback,
+    )
+
 
 def calculate_thickness(EP1, EP2, DP, INT):
     if len(EP1) > 0 and len(EP2) > 0 and len(DP) > 0 and len(INT) > 0:
@@ -1490,19 +1505,6 @@ class MainApp(MDApp):
             return True
         else:
             return False
-
-    def on_start(self):
-        if platform == "android":
-            print("ON START")
-            from android.permissions import request_permissions, Permission
-
-            request_permissions(
-                [
-                    Permission.CAMERA,
-                    Permission.READ_EXTERNAL_STORAGE,
-                    Permission.WRITE_EXTERNAL_STORAGE,
-                ]
-            )
 
     def on_pause(self):
         return True
