@@ -1493,6 +1493,7 @@ class MainApp(MDApp):
 
     def on_start(self):
         if platform == "android":
+            print("ON START")
             from android.permissions import request_permissions, Permission
 
             request_permissions(
