@@ -43,19 +43,10 @@ import time
 from kivymd.app import MDApp
 
 if platform == "android":
-    # from android.storage import primary_external_storage_path
     from android.permissions import request_permissions, Permission
     from android.storage import primary_external_storage_path
     from android_camera import AndroidCamera
     from jnius import JavaException, PythonJavaClass, autoclass, java_method
-
-    request_permissions(
-        [
-            Permission.CAMERA,
-            Permission.READ_EXTERNAL_STORAGE,
-            Permission.WRITE_EXTERNAL_STORAGE,
-        ]
-    )
 
 
 def calculate_thickness(EP1, EP2, DP, INT):
@@ -650,30 +641,31 @@ class EndPoint(Widget):
     def __init__(self, **kwargs):
         super(EndPoint, self).__init__(**kwargs)
         # Draw shapes
-        with self.canvas:
-            if "top" in self.name:
-                Color(0.86, 0.15, 0.5, 1.0)
-            elif "mid" in self.name:
-                Color(1.0, 0.38, 0, 1.0)
-            elif "btm" in self.name:
-                Color(1.0, 0.69, 0, 1.0)
-            self.outer = Rectangle(size=self.size, pos=self.pos)
-            Color(1.0, 1.0, 1.0)
-            self.inner = Rectangle(
-                size=(self.width * 0.9, self.height * 0.9),
-                pos=(self.x + self.width * 0.05, self.y + self.height * 0.05),
-            )
-        # Bind update point method to pos
-        self.bind(pos=self.update_point_pos)
-        self.bind(size=self.update_point_size)
 
-    def update_point_size(self, *args):
-        self.outer.size = self.size
-        self.inner.size = (self.width * 0.9, self.height * 0.9)
+    #     with self.canvas:
+    #         if "top" in self.name:
+    #             Color(0.86, 0.15, 0.5, 1.0)
+    #         elif "mid" in self.name:
+    #             Color(1.0, 0.38, 0, 1.0)
+    #         elif "btm" in self.name:
+    #             Color(1.0, 0.69, 0, 1.0)
+    #         self.outer = Rectangle(size=self.size, pos=self.pos)
+    #         Color(1.0, 1.0, 1.0)
+    #         self.inner = Rectangle(
+    #             size=(self.width * 0.9, self.height * 0.9),
+    #             pos=(self.x + self.width * 0.05, self.y + self.height * 0.05),
+    #         )
+    #     # Bind update point method to pos
+    #     self.bind(pos=self.update_point_pos)
+    #     self.bind(size=self.update_point_size)
 
-    def update_point_pos(self, *args):
-        self.outer.pos = self.pos
-        self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
+    # def update_point_size(self, *args):
+    #     self.outer.size = self.size
+    #     self.inner.size = (self.width * 0.9, self.height * 0.9)
+
+    # def update_point_pos(self, *args):
+    #     self.outer.pos = self.pos
+    #     self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -907,30 +899,31 @@ class DepthPoint(Widget):
         # Call super
         super(DepthPoint, self).__init__(**kwargs)
         # Draw shapes
-        with self.canvas:
-            if "top" in self.name:
-                Color(0.86, 0.15, 0.5, 1.0)
-            elif "mid" in self.name:
-                Color(1.0, 0.38, 0, 1.0)
-            elif "btm" in self.name:
-                Color(1.0, 0.69, 0, 1.0)
-            self.outer = Rectangle(size=self.size, pos=self.pos)
-            Color(1.0, 1.0, 1.0)
-            self.inner = Rectangle(
-                size=(self.width * 0.9, self.height * 0.9),
-                pos=(self.x + self.width * 0.05, self.y + self.height * 0.05),
-            )
-        # Bind update point method to pos
-        self.bind(pos=self.update_point_pos)
-        self.bind(size=self.update_point_size)
 
-    def update_point_size(self, *args):
-        self.outer.size = self.size
-        self.inner.size = (self.width * 0.9, self.height * 0.9)
+    #     with self.canvas:
+    #         if "top" in self.name:
+    #             Color(0.86, 0.15, 0.5, 1.0)
+    #         elif "mid" in self.name:
+    #             Color(1.0, 0.38, 0, 1.0)
+    #         elif "btm" in self.name:
+    #             Color(1.0, 0.69, 0, 1.0)
+    #         self.outer = Rectangle(size=self.size, pos=self.pos)
+    #         Color(1.0, 1.0, 1.0)
+    #         self.inner = Rectangle(
+    #             size=(self.width * 0.9, self.height * 0.9),
+    #             pos=(self.x + self.width * 0.05, self.y + self.height * 0.05),
+    #         )
+    #     # Bind update point method to pos
+    #     self.bind(pos=self.update_point_pos)
+    #     self.bind(size=self.update_point_size)
 
-    def update_point_pos(self, *args):
-        self.outer.pos = self.pos
-        self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
+    # def update_point_size(self, *args):
+    #     self.outer.size = self.size
+    #     self.inner.size = (self.width * 0.9, self.height * 0.9)
+
+    # def update_point_pos(self, *args):
+    #     self.outer.pos = self.pos
+    #     self.inner.pos = (self.x + self.width * 0.05, self.y + self.height * 0.05)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -1469,16 +1462,27 @@ class MainApp(MDApp):
     # icon = "SMlogo.jpg"
 
     def build(self):
-        Window.bind(on_keyboard=self.key_input)
         kv = Builder.load_file("SailApp.kv")
+        Window.bind(on_keyboard=self.key_input)
         return kv
 
     def key_input(self, window, key, scancode, codepoint, modifier):
         if key == 27:
-            # Makes it so it doesn't crash, but need to figure out how to change screen
+            App.get_running_app().root.transition.direction = "right"
+            App.get_running_app().root.current = "main_menu"
             return True
         else:
             return False
+
+    def on_start(self):
+        if platform == "android":
+            request_permissions(
+                [
+                    Permission.CAMERA,
+                    Permission.READ_EXTERNAL_STORAGE,
+                    Permission.WRITE_EXTERNAL_STORAGE,
+                ]
+            )
 
     def on_pause(self):
         return True
