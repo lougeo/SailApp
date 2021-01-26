@@ -112,11 +112,16 @@ class MainScatter(Scatter):
     ###########################    METHODS    ###########################
 
     def on_transform(self, *args, **kwargs):
-        super().on_transform(*args, **kwargs)
+        print("ON TRANSFORM")
+        # super().on_transform(*args, **kwargs)
         for child in self.children:
             if hasattr(child, "name") and "point" in child.name:
                 win = self.get_parent_window()
-                btn_size = (win.width * 0.1 / self.scale, win.width * 0.1 / self.scale)
+                if win.width < win.height:
+                    ref = win.width
+                else:
+                    ref = win.height
+                btn_size = (ref * 0.1 / self.scale, ref * 0.1 / self.scale)
                 # This is super hacky, but it won't update the pos unless the value has changed.
                 # Value reset to proper center after widget is touched.
                 btn_center = (child.center_x + 0.0001, child.center_y + 0.0001)
@@ -124,6 +129,7 @@ class MainScatter(Scatter):
                 child.center = btn_center
 
     def add_chord(self, btn_name, loading=False):
+        print("ADD CHORD")
         garbage = []
 
         for child in self.children:
@@ -138,7 +144,11 @@ class MainScatter(Scatter):
                 # Getting the window and setting initial size
                 win = self.get_parent_window()
                 scale = self.scale
-                point_size = (win.width * 0.1 / scale, win.width * 0.1 / scale)
+                if win.width < win.height:
+                    ref = win.width
+                else:
+                    ref = win.height
+                point_size = (ref * 0.1 / scale, ref * 0.1 / scale)
                 # Getting the respective properties
                 prop_coords = {}
                 for prop in self.properties():
@@ -309,6 +319,7 @@ class MainScatter(Scatter):
         self.reseting = False
 
     def load_initial(self, data):
+        print("LOAD INITIAL")
         top = data.get("top")
         mid = data.get("mid")
         btm = data.get("btm")
@@ -350,6 +361,7 @@ class MainScatter(Scatter):
 
     ###########################    TOP    ###########################
     def on_end_point_1_top_prop(self, instance, value):
+        print("ON END POINT 1")
         if not self.reseting:
             self.top_thickness_prop = calculate_thickness(
                 value,
@@ -370,6 +382,7 @@ class MainScatter(Scatter):
                     child.update_line(1, "ep", value)
 
     def on_end_point_2_top_prop(self, instance, value):
+        print("ON END POINT 2")
         if not self.reseting:
             self.top_thickness_prop = calculate_thickness(
                 self.end_point_1_top_prop,
@@ -390,6 +403,7 @@ class MainScatter(Scatter):
                     child.update_line(2, "ep", value)
 
     def on_depth_point_top_prop(self, instance, value):
+        print("ON DEPTH POINT")
         if not self.reseting:
             self.top_thickness_prop = calculate_thickness(
                 self.end_point_1_top_prop,
@@ -414,6 +428,7 @@ class MainScatter(Scatter):
                     child.update_line(2, "dp", value)
 
     def on_bezier_point_1_top_prop(self, instance, value):
+        print("ON BEZIER POINT 1")
         if not self.reseting:
             for child in self.children:
                 if hasattr(child, "name") and child.name == "bezier_point_1_top":
@@ -422,6 +437,7 @@ class MainScatter(Scatter):
                     child.update_line(1, "bp", value)
 
     def on_bezier_point_2_top_prop(self, instance, value):
+        print("ON BEZIER POINT 2")
         if not self.reseting:
             for child in self.children:
                 if hasattr(child, "name") and child.name == "bezier_point_2_top":
@@ -1336,6 +1352,7 @@ class SplineScreen(Screen):
     img_src = StringProperty("")
 
     def on_img_src(self, *args):
+        print("ON IMG SRC")
         if not self.reseting:
             if platform == "android":
                 main_dir = "Pictures"
