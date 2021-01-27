@@ -3,6 +3,7 @@
 #:import GridLayout kivy.uix.gridlayout
 #:import platform kivy.utils.platform
 #:import Snackbar kivymd.uix.snackbar.Snackbar
+##:import chain itertools.chain
     
 
 SM:
@@ -14,6 +15,22 @@ SM:
 <SmMenuButton@Button>:
     color: 1, 1, 1, 1
     size_hint: 0.275, 0.15
+
+<BezierLine>:
+    _points: self.points
+    
+    canvas:
+        Color:
+            rgba: self.color
+        Line:
+            bezier: self._points or []
+            width: 2.5
+            
+        Color:
+            rgba: 1, 1, 1, 1
+        Line:
+            bezier: self._points or []
+            width: 1.
 
 <ResultsCard>
     id: results_card

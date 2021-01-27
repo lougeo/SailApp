@@ -1235,37 +1235,53 @@ class DepthLine(MainLine):
 
 class BezierLine(Widget):
     name = StringProperty()
+    points = ListProperty()
+    color = ListProperty()
 
     def __init__(self, points, **kwargs):
         super(BezierLine, self).__init__(**kwargs)
+        self.points = points
         with self.canvas:
             if "top" in self.name:
-                Color(0.86, 0.15, 0.5, 1.0)
+                self.color = [0.86, 0.15, 0.5, 1.0]
             elif "mid" in self.name:
-                Color(1.0, 0.38, 0, 1.0)
+                self.color = [1.0, 0.38, 0, 1.0]
             elif "btm" in self.name:
-                Color(1.0, 0.69, 0, 1.0)
-            self.bline = Bezier(points=points)
+                self.color = [1.0, 0.69, 0, 1.0]
 
     def update_line(self, point, control, value):
         if point == 1:
             if control == "bp":
-                self.bline.points = (
-                    self.bline.points[:2] + value + self.bline.points[4:]
-                )
+                self.points = self.points[:2] + value + self.points[4:]
             elif control == "ep":
-                self.bline.points = value + self.bline.points[2:]
+                self.points = value + self.points[2:]
             elif control == "dp":
-                self.bline.points = self.bline.points[:4] + value
+                self.points = self.points[:4] + value
         elif point == 2:
             if control == "bp":
-                self.bline.points = (
-                    self.bline.points[:2] + value + self.bline.points[4:]
-                )
+                self.points = self.points[:2] + value + self.points[4:]
             elif control == "ep":
-                self.bline.points = self.bline.points[:4] + value
+                self.points = self.points[:4] + value
             elif control == "dp":
-                self.bline.points = value + self.bline.points[2:]
+                self.points = value + self.points[2:]
+        # if point == 1:
+        #     if control == "bp":
+        #         self.bline.points = (
+        #             self.bline.points[:2] + value + self.bline.points[4:]
+        #         )
+        #     elif control == "ep":
+        #         self.bline.points = value + self.bline.points[2:]
+        #     elif control == "dp":
+        #         self.bline.points = self.bline.points[:4] + value
+        # elif point == 2:
+        #     if control == "bp":
+        #         self.bline.points = (
+        #             self.bline.points[:2] + value + self.bline.points[4:]
+        #         )
+        #     elif control == "ep":
+        #         self.bline.points = self.bline.points[:4] + value
+        #     elif control == "dp":
+        #         self.bline.points = value + self.bline.points[2:]
 
 
 ######################################################################################################
