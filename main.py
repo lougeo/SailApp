@@ -126,6 +126,13 @@ class MainScatter(Scatter):
 
     ###########################    METHODS    ###########################
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        Window.bind(on_rotate=self.on_window_rotate)
+
+    def on_window_rotate(self, *args):
+        print("WINDOW ROTATE")
+
     def on_transform(self, *args, **kwargs):
         print("ON TRANSFORM")
         super().on_transform(*args, **kwargs)
