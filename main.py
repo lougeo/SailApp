@@ -132,6 +132,13 @@ class MainScatter(Scatter):
 
     def on_window_rotate(self, *args):
         print("WINDOW ROTATE")
+        if platform == "android":
+            self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
+            # 0 = landscape, 1=portrait, 4=rotate
+            print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
+            print(
+                f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}"
+            )
         # self.reseting = True
 
         # self.end_point_1_top_prop = []
