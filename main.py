@@ -132,9 +132,40 @@ class MainScatter(Scatter):
 
     def on_window_rotate(self, *args):
         print("WINDOW ROTATE")
+        # self.reseting = True
+
+        # self.end_point_1_top_prop = []
+        # self.end_point_2_top_prop = []
+        # self.depth_point_top_prop = []
+        # self.depth_point_intercept_top_prop = []
+        # self.bezier_point_1_top_prop = []
+        # self.bezier_point_2_top_prop = []
+
+        # self.end_point_1_mid_prop = []
+        # self.end_point_2_mid_prop = []
+        # self.depth_point_mid_prop = []
+        # self.depth_point_intercept_mid_prop = []
+        # self.bezier_point_1_mid_prop = []
+        # self.bezier_point_2_mid_prop = []
+
+        # self.end_point_1_btm_prop = []
+        # self.end_point_2_btm_prop = []
+        # self.depth_point_btm_prop = []
+        # self.depth_point_intercept_btm_prop = []
+        # self.bezier_point_1_btm_prop = []
+        # self.bezier_point_2_btm_prop = []
+
+        # self.top_thickness_prop = ""
+        # self.mid_thickness_prop = ""
+        # self.btm_thickness_prop = ""
+
+        # self.top_camber_prop = ""
+        # self.mid_camber_prop = ""
+        # self.btm_camber_prop = ""
+
+        # self.reseting = False
 
     def on_transform(self, *args, **kwargs):
-        print("ON TRANSFORM")
         super().on_transform(*args, **kwargs)
         for child in self.children:
             if hasattr(child, "name") and "point" in child.name:
@@ -151,7 +182,6 @@ class MainScatter(Scatter):
                 child.center = btn_center
 
     def add_chord(self, btn_name, loading=False):
-        print("ADD CHORD")
         garbage = []
 
         for child in self.children:
@@ -341,7 +371,6 @@ class MainScatter(Scatter):
         self.reseting = False
 
     def load_initial(self, data):
-        print("LOAD INITIAL")
         top = data.get("top")
         mid = data.get("mid")
         btm = data.get("btm")
@@ -383,7 +412,6 @@ class MainScatter(Scatter):
 
     ###########################    TOP    ###########################
     def on_end_point_1_top_prop(self, instance, value):
-        print("ON END POINT 1")
         if not self.reseting:
             self.top_thickness_prop = calculate_thickness(
                 value,
@@ -404,7 +432,6 @@ class MainScatter(Scatter):
                     child.update_line(1, "ep", value)
 
     def on_end_point_2_top_prop(self, instance, value):
-        print("ON END POINT 2")
         if not self.reseting:
             self.top_thickness_prop = calculate_thickness(
                 self.end_point_1_top_prop,
@@ -425,7 +452,6 @@ class MainScatter(Scatter):
                     child.update_line(2, "ep", value)
 
     def on_depth_point_top_prop(self, instance, value):
-        print("ON DEPTH POINT")
         if not self.reseting:
             self.top_thickness_prop = calculate_thickness(
                 self.end_point_1_top_prop,
@@ -450,7 +476,6 @@ class MainScatter(Scatter):
                     child.update_line(2, "dp", value)
 
     def on_bezier_point_1_top_prop(self, instance, value):
-        print("ON BEZIER POINT 1")
         if not self.reseting:
             for child in self.children:
                 if hasattr(child, "name") and child.name == "bezier_point_1_top":
@@ -459,7 +484,6 @@ class MainScatter(Scatter):
                     child.update_line(1, "bp", value)
 
     def on_bezier_point_2_top_prop(self, instance, value):
-        print("ON BEZIER POINT 2")
         if not self.reseting:
             for child in self.children:
                 if hasattr(child, "name") and child.name == "bezier_point_2_top":
