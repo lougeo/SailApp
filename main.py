@@ -128,7 +128,7 @@ class MainScatter(Scatter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        Window.bind(on_rotate=self.on_window_rotate)
+        Window.bind(width=self.on_window_rotate)
 
     def on_window_rotate(self, *args):
         print("WINDOW ROTATE")
