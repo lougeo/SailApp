@@ -1264,24 +1264,6 @@ class BezierLine(Widget):
                 self.points = self.points[:4] + value
             elif control == "dp":
                 self.points = value + self.points[2:]
-        # if point == 1:
-        #     if control == "bp":
-        #         self.bline.points = (
-        #             self.bline.points[:2] + value + self.bline.points[4:]
-        #         )
-        #     elif control == "ep":
-        #         self.bline.points = value + self.bline.points[2:]
-        #     elif control == "dp":
-        #         self.bline.points = self.bline.points[:4] + value
-        # elif point == 2:
-        #     if control == "bp":
-        #         self.bline.points = (
-        #             self.bline.points[:2] + value + self.bline.points[4:]
-        #         )
-        #     elif control == "ep":
-        #         self.bline.points = self.bline.points[:4] + value
-        #     elif control == "dp":
-        #         self.bline.points = value + self.bline.points[2:]
 
 
 ######################################################################################################
@@ -1372,10 +1354,11 @@ class FileChooserScreen(Screen):
         return rootpath
 
     def load(self, path, selection):
-        file_name = selection[0]
-        self.manager.transition.direction = "left"
-        self.manager.current = "spline_screen"
-        self.manager.get_screen("spline_screen").img_src = file_name
+        if len(selection) > 0:
+            file_name = selection[0]
+            self.manager.transition.direction = "left"
+            self.manager.current = "spline_screen"
+            self.manager.get_screen("spline_screen").img_src = file_name
 
     def update_filechooser(self):
         self.ids.filechooser._update_files()
@@ -1389,6 +1372,7 @@ class SplineScreen(Screen):
         print("ON IMG SRC")
         if not self.reseting:
             if platform == "android":
+                # Creating a dir in Pictures if not already, and moving image there.
                 main_dir = "Pictures"
                 app_dir = "SailShape"
                 main_path = join(primary_external_storage_path(), main_dir)

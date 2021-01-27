@@ -147,20 +147,6 @@ SM:
             pos_hint: {"x": 0.2, "y": 0.4}
             on_release: 
                 root.open_camera()
-            # MDIcon:
-            #     pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            #     icon: "camera"
-            #     halign: "center"
-
-            # MDLabel:
-            #     text: "Camera"
-            #     halign: "center"
-            # theme_text_color: "Custom"
-            # text_color: 1, 0, 0, 1
-            # line_color: 0, 0, 1, 1
-            # icon_color: 1, 0, 0, 1
-            # theme_text_color: 1, 1, 1, 1
-            # font_size: "64sp"
 
 
         MDIconButton: 
@@ -172,14 +158,6 @@ SM:
                 root.manager.get_screen("file_chooser").update_filechooser()
                 root.manager.transition.direction = "left"
                 app.root.current = "file_chooser"
-            
-        # SmMenuButton:
-        #     text: "Account"
-        #     pos_hint: {"x": 0.2, "y": 0.1}
-            
-        # SmMenuButton:
-        #     text: "Settings"
-        #     pos_hint: {"x": 0.525, "y": 0.1}
 
 
 <CameraScreen>:
@@ -269,22 +247,6 @@ SM:
 
     FloatLayout:
         id: spline_screen_util_btns
-
-        # MDFillRoundFlatButton:
-        #     # text: "Main Menu"
-        #     # text_color: 0, 0, 0, 1
-        #     md_bg_color: 1, 1, 1, 1
-        #     size_hint: 0.2, 0.2
-        #     pos_hint: {"x": 0, "y": 0.8}
-        #     on_release: 
-        #         root.reset()
-        #         scatter.reset()
-        #         root.manager.transition.direction = "right"
-        #         app.root.current = "main_menu"
-        #     MDIcon:
-        #         icon: "keyboard-return"
-        #         halign: "center"
-        #         font_size: "50sp"
 
         MDFillRoundFlatButton:
             md_bg_color: 0.29, 0.71, 0.26, 1
