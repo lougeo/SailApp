@@ -138,7 +138,9 @@ class MainScatter(Scatter):
             print(
                 f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}"
             )
+            print(f"SELF: {self}")
             print(f"SCATTER SIZE: {self.size}")
+            print(f"SCATTER POS: {self.pos}")
             print(f"SCATTER IMAGE SIZE: {self.children[0].size}")
             # self.reseting = True
 
