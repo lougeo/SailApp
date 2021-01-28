@@ -134,43 +134,43 @@ class MainScatter(Scatter):
         print("WINDOW ROTATE")
         if platform == "android":
             self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
-            # 0 = landscape, 1=portrait, 4=rotate
-            print(self.AndroidPythonActivity.mActivity.getRequestedOrientation())
+            # 0 = landscape, 1=portrait
             print(
                 f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}"
             )
-        # self.reseting = True
+            print(f"SCATTER SIZE: {self.size}")
+            # self.reseting = True
 
-        # self.end_point_1_top_prop = []
-        # self.end_point_2_top_prop = []
-        # self.depth_point_top_prop = []
-        # self.depth_point_intercept_top_prop = []
-        # self.bezier_point_1_top_prop = []
-        # self.bezier_point_2_top_prop = []
+            # self.end_point_1_top_prop = []
+            # self.end_point_2_top_prop = []
+            # self.depth_point_top_prop = []
+            # self.depth_point_intercept_top_prop = []
+            # self.bezier_point_1_top_prop = []
+            # self.bezier_point_2_top_prop = []
 
-        # self.end_point_1_mid_prop = []
-        # self.end_point_2_mid_prop = []
-        # self.depth_point_mid_prop = []
-        # self.depth_point_intercept_mid_prop = []
-        # self.bezier_point_1_mid_prop = []
-        # self.bezier_point_2_mid_prop = []
+            # self.end_point_1_mid_prop = []
+            # self.end_point_2_mid_prop = []
+            # self.depth_point_mid_prop = []
+            # self.depth_point_intercept_mid_prop = []
+            # self.bezier_point_1_mid_prop = []
+            # self.bezier_point_2_mid_prop = []
 
-        # self.end_point_1_btm_prop = []
-        # self.end_point_2_btm_prop = []
-        # self.depth_point_btm_prop = []
-        # self.depth_point_intercept_btm_prop = []
-        # self.bezier_point_1_btm_prop = []
-        # self.bezier_point_2_btm_prop = []
+            # self.end_point_1_btm_prop = []
+            # self.end_point_2_btm_prop = []
+            # self.depth_point_btm_prop = []
+            # self.depth_point_intercept_btm_prop = []
+            # self.bezier_point_1_btm_prop = []
+            # self.bezier_point_2_btm_prop = []
 
-        # self.top_thickness_prop = ""
-        # self.mid_thickness_prop = ""
-        # self.btm_thickness_prop = ""
+            # self.top_thickness_prop = ""
+            # self.mid_thickness_prop = ""
+            # self.btm_thickness_prop = ""
 
-        # self.top_camber_prop = ""
-        # self.mid_camber_prop = ""
-        # self.btm_camber_prop = ""
+            # self.top_camber_prop = ""
+            # self.mid_camber_prop = ""
+            # self.btm_camber_prop = ""
 
-        # self.reseting = False
+            # self.reseting = False
 
     def on_transform(self, *args, **kwargs):
         super().on_transform(*args, **kwargs)
