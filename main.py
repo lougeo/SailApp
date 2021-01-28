@@ -142,7 +142,9 @@ class MainScatter(Scatter):
             print(f"WINDOW SIZE: {self.get_parent_window().size}")
             print(f"SCATTER SIZE: {self.size}")
             print(f"SCATTER POS: {self.pos}")
-            print(f"SCATTER IMAGE SIZE: {self.children[0].size}")
+            for child in self.children:
+                print(child)
+                print(child.size)
             # self.reseting = True
 
             # self.end_point_1_top_prop = []
