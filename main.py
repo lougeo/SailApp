@@ -145,6 +145,9 @@ class MainScatter(Scatter):
             for child in self.children:
                 print(child)
                 print(child.size)
+                print(child.image_ratio)
+                print(child.norm_image_size)
+                print(child.texture_size)
             # self.reseting = True
 
             # self.end_point_1_top_prop = []
