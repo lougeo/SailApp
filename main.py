@@ -132,7 +132,7 @@ class MainScatter(Scatter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         Window.bind(width=self.on_window_rotate)
-        Clock.schedule_once(self.on_start, 5)
+        # Clock.schedule_once(self.on_start, 5)
 
     def on_start(self, *args):
         print("ON START")
@@ -1470,6 +1470,8 @@ class SplineScreen(Screen):
                         .decode("utf8")
                     )
                     self.ids.scatter.load_initial(data)
+
+            self.ids.scatter.on_start()
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
