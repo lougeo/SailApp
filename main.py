@@ -134,7 +134,7 @@ class MainScatter(Scatter):
         Window.bind(width=self.on_window_rotate)
         Clock.schedule_once(self.on_start)
 
-    def on_start(self):
+    def on_start(self, *args):
         if platform == "android":
             self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
             # 0 = landscape, 1=portrait
