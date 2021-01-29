@@ -143,11 +143,11 @@ class MainScatter(Scatter):
             print(f"SCATTER SIZE: {self.size}")
             print(f"SCATTER POS: {self.pos}")
             for child in self.children:
-                print(child)
-                print(child.size)
-                print(child.image_ratio)
-                print(child.norm_image_size)
-                print(child.texture_size)
+                print(f"CHILD: {child}")
+                print(f"CHILD SIZE: {child.size}")
+                print(f"CHILD POS: {child.pos}")
+                print(f"CHILD RATIO: {child.image_ratio}")
+                print(f"CHILD NORM SIZE: {child.norm_image_size}")
             # self.reseting = True
 
             # self.end_point_1_top_prop = []
