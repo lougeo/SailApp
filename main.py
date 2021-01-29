@@ -132,7 +132,7 @@ class MainScatter(Scatter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         Window.bind(width=self.on_window_rotate)
-        Clock.schedule_once(self.on_start)
+        Clock.schedule_once(self.on_start, 1)
 
     def on_start(self, *args):
         if platform == "android":
