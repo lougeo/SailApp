@@ -90,6 +90,8 @@ def calculate_camber(EP1, EP2, DP, INT):
 
 class MainScatter(Scatter):
     reseting = BooleanProperty(defaultvalue=False)
+    orientation = StringProperty("P")
+    scatter_size = ListProperty()
 
     ###########################    CHORD PIECES    ###########################
 
@@ -128,6 +130,19 @@ class MainScatter(Scatter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if platform == "android":
+            self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
+            # 0 = landscape, 1=portrait
+            if (
+                self.AndroidPythonActivity.mActivity.getResources()
+                .getConfiguration()
+                .orientation
+                == 0
+            ):
+                self.orientation = "L"
+            else:
+                self.orientation = "P"
+        self.scatter_size = self.size
         Window.bind(width=self.on_window_rotate)
 
     def on_window_rotate(self, *args):
@@ -138,16 +153,18 @@ class MainScatter(Scatter):
             print(
                 f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}"
             )
-            print(f"SELF: {self}")
-            print(f"WINDOW SIZE: {self.get_parent_window().size}")
-            print(f"SCATTER SIZE: {self.size}")
-            print(f"SCATTER POS: {self.pos}")
-            for child in self.children:
-                print(f"CHILD: {child}")
-                print(f"CHILD SIZE: {child.size}")
-                print(f"CHILD POS: {child.pos}")
-                print(f"CHILD RATIO: {child.image_ratio}")
-                print(f"CHILD NORM SIZE: {child.norm_image_size}")
+            # print(f"SELF: {self}")
+            # print(f"WINDOW SIZE: {self.get_parent_window().size}")
+            # print(f"SCATTER SIZE: {self.size}")
+            # print(f"SCATTER POS: {self.pos}")
+            # for child in self.children:
+            #     print(f"CHILD: {child}")
+            #     print(f"CHILD SIZE: {child.size}")
+            #     print(f"CHILD POS: {child.pos}")
+            #     print(f"CHILD RATIO: {child.image_ratio}")
+            #     print(f"CHILD NORM SIZE: {child.norm_image_size}")
+            print(self.scatter_size[0] / self.size[0])
+            print(self.scatter_size[1] / self.size[1])
             # self.reseting = True
 
             # self.end_point_1_top_prop = []
