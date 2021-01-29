@@ -3,6 +3,7 @@ import kivy
 kivy.require("2.0.0")
 
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.layout import Layout
@@ -130,6 +131,10 @@ class MainScatter(Scatter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Window.bind(width=self.on_window_rotate)
+        Clock.schedule_once(self.on_start)
+
+    def on_start(self):
         if platform == "android":
             self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
             # 0 = landscape, 1=portrait
@@ -143,7 +148,6 @@ class MainScatter(Scatter):
             else:
                 self.orientation = "P"
         self.scatter_size = self.size
-        Window.bind(width=self.on_window_rotate)
 
     def on_window_rotate(self, *args):
         print("WINDOW ROTATE")
