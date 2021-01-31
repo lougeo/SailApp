@@ -131,7 +131,7 @@ class MainScatter(Scatter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        Window.bind(width=self.on_window_rotate)
+        # Window.bind(width=self.on_window_rotate)
         # Clock.schedule_once(self.on_start, 5)
 
     def on_size(self, *args):
@@ -148,9 +148,13 @@ class MainScatter(Scatter):
                 self.orientation = "L"
             else:
                 self.orientation = "P"
-        args = locals()
-        print(args)
-        print(self.size)
+        # args = locals()
+        # print(args)
+        # print(self.size)
+        print(f"OLD SIZE: {self.scatter_size}")
+        print(f"NEW SIZE: {self.size}")
+        print(self.size[0] / self.scatter_size[0])
+        print(self.size[1] / self.scatter_size[1])
         self.scatter_size = self.size
 
     def on_window_rotate(self, *args):
@@ -162,7 +166,7 @@ class MainScatter(Scatter):
                 f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}"
             )
             # print(f"SELF: {self}")
-            # print(f"WINDOW SIZE: {self.get_parent_window().size}")
+            print(f"WINDOW SIZE: {self.get_parent_window().size}")
             # print(f"SCATTER SIZE: {self.size}")
             # print(f"SCATTER POS: {self.pos}")
             # for child in self.children:
