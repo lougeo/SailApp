@@ -151,10 +151,13 @@ class MainScatter(Scatter):
         # args = locals()
         # print(args)
         # print(self.size)
-        print(f"OLD SIZE: {self.scatter_size}")
-        print(f"NEW SIZE: {self.size}")
-        print(self.size[0] / self.scatter_size[0])
-        print(self.size[1] / self.scatter_size[1])
+        if len(self.scatter_size) > 0:
+            print(f"OLD SIZE: {self.scatter_size}")
+            print(f"NEW SIZE: {self.size}")
+            print(self.size[0] / self.scatter_size[0])
+            print(self.size[1] / self.scatter_size[1])
+        else:
+            print(self.size)
         self.scatter_size = self.size
 
     def on_window_rotate(self, *args):
