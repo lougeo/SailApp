@@ -150,6 +150,7 @@ class MainScatter(Scatter):
                 self.orientation = "P"
         # WHY SIZE NO WORK
         print(dir(self))
+        print(self.ids)
         print(self.size)
         print(self.children[0].size)
         self.scatter_size = self.size
