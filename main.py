@@ -134,6 +134,9 @@ class MainScatter(Scatter):
         Window.bind(width=self.on_window_rotate)
         # Clock.schedule_once(self.on_start, 5)
 
+    def on_size(self, *args):
+        print("SCATTER ON SIZE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
     def set_init_props(self, *args):
         print("ON START")
         if platform == "android":
@@ -149,7 +152,7 @@ class MainScatter(Scatter):
             else:
                 self.orientation = "P"
         # WHY SIZE NO WORK
-        print(dir(self))
+        # print(dir(self))
         print(self.ids)
         print(self.size)
         # print(self.children[0].size)
