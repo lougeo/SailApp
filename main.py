@@ -151,7 +151,7 @@ class MainScatter(Scatter):
         # WHY SIZE NO WORK
         print(dir(self))
         print(self.size)
-        print(self.parent.size)
+        print(self.children[0].size)
         self.scatter_size = self.size
 
     def on_window_rotate(self, *args):
