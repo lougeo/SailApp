@@ -1474,7 +1474,8 @@ class SplineScreen(Screen):
                     )
                     self.ids.scatter.load_initial(data)
 
-            self.ids.scatter.on_start()
+            print(self.ids.scatter.size)
+            # self.ids.scatter.on_start()
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
