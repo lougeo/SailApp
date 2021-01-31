@@ -135,10 +135,7 @@ class MainScatter(Scatter):
         # Clock.schedule_once(self.on_start, 5)
 
     def on_size(self, *args):
-        print("SCATTER ON SIZE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-    def set_init_props(self, *args):
-        print("ON START")
+        print("SCATTER ON SIZE")
         if platform == "android":
             self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
             # 0 = landscape, 1=portrait
@@ -151,11 +148,7 @@ class MainScatter(Scatter):
                 self.orientation = "L"
             else:
                 self.orientation = "P"
-        # WHY SIZE NO WORK
-        # print(dir(self))
-        print(self.ids)
-        print(self.size)
-        # print(self.children[0].size)
+
         self.scatter_size = self.size
 
     def on_window_rotate(self, *args):
@@ -1479,8 +1472,8 @@ class SplineScreen(Screen):
                     )
                     self.ids.scatter.load_initial(data)
 
-            print(f"SCATTER_SIZE_ON_IMG: {self.ids.scatter.size}")
-            self.ids.scatter.set_init_props()
+            # print(f"SCATTER_SIZE_ON_IMG: {self.ids.scatter.size}")
+            # self.ids.scatter.set_init_props()
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
