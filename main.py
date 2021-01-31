@@ -149,9 +149,9 @@ class MainScatter(Scatter):
             else:
                 self.orientation = "P"
         # WHY SIZE NO WORK
-        print(self)
+        print(dir(self))
         print(self.size)
-        print(self.children)
+        print(self.parent.size)
         self.scatter_size = self.size
 
     def on_window_rotate(self, *args):
