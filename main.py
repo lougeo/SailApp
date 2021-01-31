@@ -137,51 +137,15 @@ class MainScatter(Scatter):
     def on_size(self, *args):
         print("SCATTER ON SIZE")
         if platform == "android":
-            self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
-            # 0 = landscape, 1=portrait
-            if (
-                self.AndroidPythonActivity.mActivity.getResources()
-                .getConfiguration()
-                .orientation
-                == 0
-            ):
-                self.orientation = "L"
-            else:
-                self.orientation = "P"
-        # args = locals()
-        # print(args)
-        # print(self.size)
-        if len(self.scatter_size) > 0:
-            print(f"OLD SIZE: {self.scatter_size}")
-            print(f"NEW SIZE: {self.size}")
-            print(self.size[0] / self.scatter_size[0])
-            print(self.size[1] / self.scatter_size[1])
-        else:
-            print(self.size)
-        self.scatter_size = self.size
 
-    def on_window_rotate(self, *args):
-        print("WINDOW ROTATE")
-        if platform == "android":
-            self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
-            # 0 = landscape, 1=portrait
-            print(
-                f"CURRENT ORIENTATION: {self.AndroidPythonActivity.mActivity.getResources().getConfiguration().orientation}"
-            )
-            # print(f"SELF: {self}")
-            print(f"WINDOW SIZE: {self.get_parent_window().size}")
-            # print(f"SCATTER SIZE: {self.size}")
-            # print(f"SCATTER POS: {self.pos}")
-            # for child in self.children:
-            #     print(f"CHILD: {child}")
-            #     print(f"CHILD SIZE: {child.size}")
-            #     print(f"CHILD POS: {child.pos}")
-            #     print(f"CHILD RATIO: {child.image_ratio}")
-            #     print(f"CHILD NORM SIZE: {child.norm_image_size}")
-            print(f"OLD SIZE: {self.scatter_size}")
-            print(f"NEW SIZE: {self.size}")
-            print(self.size[0] / self.scatter_size[0])
-            print(self.size[1] / self.scatter_size[1])
+            if len(self.scatter_size) > 0:
+                print(f"OLD SIZE: {self.scatter_size}")
+                print(f"NEW SIZE: {self.size}")
+                print(self.size[0] / self.scatter_size[0])
+                print(self.size[1] / self.scatter_size[1])
+            else:
+                print(self.size)
+
             # self.reseting = True
 
             # self.end_point_1_top_prop = []
@@ -214,6 +178,21 @@ class MainScatter(Scatter):
             # self.btm_camber_prop = ""
 
             # self.reseting = False
+
+            # SETTING PROPS
+            self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
+            # 0 = landscape, 1=portrait
+            if (
+                self.AndroidPythonActivity.mActivity.getResources()
+                .getConfiguration()
+                .orientation
+                == 0
+            ):
+                self.orientation = "L"
+            else:
+                self.orientation = "P"
+
+            self.scatter_size = self.size
 
     def on_transform(self, *args, **kwargs):
         super().on_transform(*args, **kwargs)
