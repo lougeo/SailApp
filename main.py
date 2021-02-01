@@ -141,11 +141,6 @@ class MainScatter(Scatter):
 
     ###########################    METHODS    ###########################
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Window.bind(width=self.on_window_rotate)
-        # Clock.schedule_once(self.on_start, 5)
-
     def on_size(self, *args):
         print("SCATTER ON SIZE")
         if platform == "android":
@@ -153,6 +148,12 @@ class MainScatter(Scatter):
             if len(self.scatter_size) > 0:
                 self.reseting = True
                 btn_names = ["top", "mid", "btm"]
+
+                print(f"IDS: {self.ids}")
+                for child in self.children:
+                    print(child)
+                    print(dir(child))
+
                 # Removes any chords on the scatter
                 for btn in btn_names:
                     self.add_chord(btn)
