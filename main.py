@@ -96,8 +96,9 @@ def translate_chord(point_coords, old_size, new_size):
     if len(point_coords) > 0:
         new_x = point_coords[0] * x_ratio
         new_y = point_coords[1] * y_ratio
-
-    return [new_x, new_y]
+        return [new_x, new_y]
+    else:
+        return []
 
 
 class MainScatter(Scatter):
