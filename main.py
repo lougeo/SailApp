@@ -89,6 +89,16 @@ def calculate_camber(EP1, EP2, DP, INT):
         return "N/A"
 
 
+def translate_chord(point_coords, old_size, new_size):
+    x_ratio = new_size[0] / old_size[0]
+    y_ratio = new_size[1] / old_size[1]
+
+    new_x = point_coords[0] * x_ratio
+    new_y = point_coords[1] * y_ratio
+
+    return [new_x, new_y]
+
+
 class MainScatter(Scatter):
     reseting = BooleanProperty(defaultvalue=False)
     orientation = StringProperty("P")
@@ -146,38 +156,70 @@ class MainScatter(Scatter):
             else:
                 print(self.size)
 
-            # self.reseting = True
+            if len(self.scatter_size) > 0:
+                self.reseting = True
 
-            # self.end_point_1_top_prop = []
-            # self.end_point_2_top_prop = []
-            # self.depth_point_top_prop = []
-            # self.depth_point_intercept_top_prop = []
-            # self.bezier_point_1_top_prop = []
-            # self.bezier_point_2_top_prop = []
+                self.end_point_1_top_prop = translate_chord(
+                    self.end_point_1_top_prop, self.scatter_size, self.size
+                )
+                self.end_point_2_top_prop = translate_chord(
+                    self.end_point_2_top_prop, self.scatter_size, self.size
+                )
+                self.depth_point_top_prop = translate_chord(
+                    self.depth_point_top_prop, self.scatter_size, self.size
+                )
+                self.depth_point_intercept_top_prop = translate_chord(
+                    self.depth_point_intercept_top_prop, self.scatter_size, self.size
+                )
+                self.bezier_point_1_top_prop = translate_chord(
+                    self.bezier_point_1_top_prop, self.scatter_size, self.size
+                )
+                self.bezier_point_2_top_prop = translate_chord(
+                    self.bezier_point_2_top_prop, self.scatter_size, self.size
+                )
 
-            # self.end_point_1_mid_prop = []
-            # self.end_point_2_mid_prop = []
-            # self.depth_point_mid_prop = []
-            # self.depth_point_intercept_mid_prop = []
-            # self.bezier_point_1_mid_prop = []
-            # self.bezier_point_2_mid_prop = []
+                self.end_point_1_mid_prop = translate_chord(
+                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                )
+                self.end_point_2_mid_prop = translate_chord(
+                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                )
+                self.depth_point_mid_prop = translate_chord(
+                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                )
+                self.depth_point_intercept_mid_prop = translate_chord(
+                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                )
+                self.bezier_point_1_mid_prop = translate_chord(
+                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                )
+                self.bezier_point_2_mid_prop = translate_chord(
+                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                )
 
-            # self.end_point_1_btm_prop = []
-            # self.end_point_2_btm_prop = []
-            # self.depth_point_btm_prop = []
-            # self.depth_point_intercept_btm_prop = []
-            # self.bezier_point_1_btm_prop = []
-            # self.bezier_point_2_btm_prop = []
+                self.end_point_1_btm_prop = translate_chord(
+                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                )
+                self.end_point_2_btm_prop = translate_chord(
+                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                )
+                self.depth_point_btm_prop = translate_chord(
+                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                )
+                self.depth_point_intercept_btm_prop = translate_chord(
+                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                )
+                self.bezier_point_1_btm_prop = translate_chord(
+                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                )
+                self.bezier_point_2_btm_prop = translate_chord(
+                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                )
 
-            # self.top_thickness_prop = ""
-            # self.mid_thickness_prop = ""
-            # self.btm_thickness_prop = ""
+                self.reseting = False
 
-            # self.top_camber_prop = ""
-            # self.mid_camber_prop = ""
-            # self.btm_camber_prop = ""
-
-            # self.reseting = False
+                for chord in ["top", "mid", "btm"]:
+                    self.add_chord(chord, loading=True)
 
             # SETTING PROPS
             self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
