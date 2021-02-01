@@ -151,14 +151,6 @@ class MainScatter(Scatter):
         if platform == "android":
 
             if len(self.scatter_size) > 0:
-                print(f"OLD SIZE: {self.scatter_size}")
-                print(f"NEW SIZE: {self.size}")
-                print(self.size[0] / self.scatter_size[0])
-                print(self.size[1] / self.scatter_size[1])
-            else:
-                print(self.size)
-
-            if len(self.scatter_size) > 0:
                 self.reseting = True
 
                 self.end_point_1_top_prop = translate_chord(
@@ -221,7 +213,7 @@ class MainScatter(Scatter):
                 self.reseting = False
 
                 for chord in ["top", "mid", "btm"]:
-                    self.add_chord(chord, loading=True)
+                    self.add_chord(chord)
 
             # SETTING PROPS
             self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
