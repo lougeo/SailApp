@@ -180,38 +180,38 @@ class MainScatter(Scatter):
                     self.end_point_1_mid_prop, self.scatter_size, self.size
                 )
                 self.end_point_2_mid_prop = translate_chord(
-                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                    self.end_point_2_mid_prop, self.scatter_size, self.size
                 )
                 self.depth_point_mid_prop = translate_chord(
-                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                    self.depth_point_mid_prop, self.scatter_size, self.size
                 )
                 self.depth_point_intercept_mid_prop = translate_chord(
-                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                    self.depth_point_intercept_mid_prop, self.scatter_size, self.size
                 )
                 self.bezier_point_1_mid_prop = translate_chord(
-                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                    self.bezier_point_1_mid_prop, self.scatter_size, self.size
                 )
                 self.bezier_point_2_mid_prop = translate_chord(
-                    self.end_point_1_mid_prop, self.scatter_size, self.size
+                    self.bezier_point_2_mid_prop, self.scatter_size, self.size
                 )
 
                 self.end_point_1_btm_prop = translate_chord(
                     self.end_point_1_btm_prop, self.scatter_size, self.size
                 )
                 self.end_point_2_btm_prop = translate_chord(
-                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                    self.end_point_2_btm_prop, self.scatter_size, self.size
                 )
                 self.depth_point_btm_prop = translate_chord(
-                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                    self.depth_point_btm_prop, self.scatter_size, self.size
                 )
                 self.depth_point_intercept_btm_prop = translate_chord(
-                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                    self.depth_point_intercept_btm_prop, self.scatter_size, self.size
                 )
                 self.bezier_point_1_btm_prop = translate_chord(
-                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                    self.bezier_point_1_btm_prop, self.scatter_size, self.size
                 )
                 self.bezier_point_2_btm_prop = translate_chord(
-                    self.end_point_1_btm_prop, self.scatter_size, self.size
+                    self.bezier_point_2_btm_prop, self.scatter_size, self.size
                 )
 
                 self.reseting = False
