@@ -93,8 +93,9 @@ def translate_chord(point_coords, old_size, new_size):
     x_ratio = new_size[0] / old_size[0]
     y_ratio = new_size[1] / old_size[1]
 
-    new_x = point_coords[0] * x_ratio
-    new_y = point_coords[1] * y_ratio
+    if len(point_coords) > 0:
+        new_x = point_coords[0] * x_ratio
+        new_y = point_coords[1] * y_ratio
 
     return [new_x, new_y]
 
