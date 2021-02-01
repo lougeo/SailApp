@@ -149,9 +149,11 @@ class MainScatter(Scatter):
                 self.reseting = True
                 btn_names = ["top", "mid", "btm"]
 
-                print(f"IDS: {self.ids}")
+                print(f"IDS: {self.parent.ids}")
                 for child in self.children:
                     print(child)
+                    print(child.pos)
+                    print(child.norm_image_size)
                     print(dir(child))
 
                 # Removes any chords on the scatter
