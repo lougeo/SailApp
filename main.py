@@ -152,6 +152,10 @@ class MainScatter(Scatter):
 
             if len(self.scatter_size) > 0:
                 self.reseting = True
+                btn_names = ["top", "mid", "btm"]
+                # Removes any chords on the scatter
+                for btn in btn_names:
+                    self.add_chord(btn)
 
                 self.end_point_1_top_prop = translate_chord(
                     self.end_point_1_top_prop, self.scatter_size, self.size
@@ -212,8 +216,9 @@ class MainScatter(Scatter):
 
                 self.reseting = False
 
-                for chord in ["top", "mid", "btm"]:
-                    self.add_chord(chord)
+                # Adds chords back if not empty
+                for chord in btn_names:
+                    self.add_chord(chord, loading=True)
 
             # SETTING PROPS
             self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
