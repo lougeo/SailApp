@@ -112,8 +112,8 @@ def translate_chord(point_coords, old_size, new_size):
 
 class MainScatter(Scatter):
     reseting = BooleanProperty(defaultvalue=False)
-    orientation = StringProperty("P")
-    scatter_size = ListProperty()
+    # orientation = StringProperty("P")
+    # scatter_size = ListProperty()
 
     ###########################    CHORD PIECES    ###########################
 
@@ -150,124 +150,124 @@ class MainScatter(Scatter):
 
     ###########################    METHODS    ###########################
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.bind(pos=self.update_scatter_pos)
-        # Window.bind(width=self.on_window_rotate)
-        # Clock.schedule_once(self.on_start, 5)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    # self.bind(pos=self.update_scatter_pos)
+    # Window.bind(width=self.on_window_rotate)
+    # Clock.schedule_once(self.on_start, 5)
 
     # def update_scatter_pos(self, *args):
     #     pass
 
-    def on_size(self, *args):
-        print("SCATTER ON SIZE")
-        if platform == "win":
-            for child in self.children:
-                if hasattr(child, "image_ratio"):
-                    # print(child.__str__)
-                    # print(child.pos)
-                    # print(child.norm_image_size)
-                    # print(dir(child))
-                    full_size = child.size
-            print(self.size[1])
-            print(full_size)
-            print((full_size[1] - self.size[1]) / 2)
-            self.pos = [0, (full_size[1] - self.size[1]) / 2]
+    # def on_size(self, *args):
+    #     print("SCATTER ON SIZE")
+    #     if platform == "win":
+    #         for child in self.children:
+    #             if hasattr(child, "image_ratio"):
+    #                 # print(child.__str__)
+    #                 # print(child.pos)
+    #                 # print(child.norm_image_size)
+    #                 # print(dir(child))
+    #                 full_size = child.size
+    #         print(self.size[1])
+    #         print(full_size)
+    #         print((full_size[1] - self.size[1]) / 2)
+    #         self.pos = [0, (full_size[1] - self.size[1]) / 2]
 
-        if platform == "android":
+    #     if platform == "android":
 
-            if len(self.scatter_size) > 0:
-                self.reseting = True
-                btn_names = ["top", "mid", "btm"]
+    #         if len(self.scatter_size) > 0:
+    #             self.reseting = True
+    #             btn_names = ["top", "mid", "btm"]
 
-                print(f"IDS: {self.parent.ids}")
-                for child in self.children:
-                    print(child)
-                    print(child.pos)
-                    print(child.norm_image_size)
-                    print(dir(child))
+    #             print(f"IDS: {self.parent.ids}")
+    #             for child in self.children:
+    #                 print(child)
+    #                 print(child.pos)
+    #                 print(child.norm_image_size)
+    #                 print(dir(child))
 
-                # Removes any chords on the scatter
-                for btn in btn_names:
-                    self.add_chord(btn)
+    #             # Removes any chords on the scatter
+    #             for btn in btn_names:
+    #                 self.add_chord(btn)
 
-                self.end_point_1_top_prop = translate_chord(
-                    self.end_point_1_top_prop, self.scatter_size, self.size
-                )
-                self.end_point_2_top_prop = translate_chord(
-                    self.end_point_2_top_prop, self.scatter_size, self.size
-                )
-                self.depth_point_top_prop = translate_chord(
-                    self.depth_point_top_prop, self.scatter_size, self.size
-                )
-                self.depth_point_intercept_top_prop = translate_chord(
-                    self.depth_point_intercept_top_prop, self.scatter_size, self.size
-                )
-                self.bezier_point_1_top_prop = translate_chord(
-                    self.bezier_point_1_top_prop, self.scatter_size, self.size
-                )
-                self.bezier_point_2_top_prop = translate_chord(
-                    self.bezier_point_2_top_prop, self.scatter_size, self.size
-                )
+    #             self.end_point_1_top_prop = translate_chord(
+    #                 self.end_point_1_top_prop, self.scatter_size, self.size
+    #             )
+    #             self.end_point_2_top_prop = translate_chord(
+    #                 self.end_point_2_top_prop, self.scatter_size, self.size
+    #             )
+    #             self.depth_point_top_prop = translate_chord(
+    #                 self.depth_point_top_prop, self.scatter_size, self.size
+    #             )
+    #             self.depth_point_intercept_top_prop = translate_chord(
+    #                 self.depth_point_intercept_top_prop, self.scatter_size, self.size
+    #             )
+    #             self.bezier_point_1_top_prop = translate_chord(
+    #                 self.bezier_point_1_top_prop, self.scatter_size, self.size
+    #             )
+    #             self.bezier_point_2_top_prop = translate_chord(
+    #                 self.bezier_point_2_top_prop, self.scatter_size, self.size
+    #             )
 
-                self.end_point_1_mid_prop = translate_chord(
-                    self.end_point_1_mid_prop, self.scatter_size, self.size
-                )
-                self.end_point_2_mid_prop = translate_chord(
-                    self.end_point_2_mid_prop, self.scatter_size, self.size
-                )
-                self.depth_point_mid_prop = translate_chord(
-                    self.depth_point_mid_prop, self.scatter_size, self.size
-                )
-                self.depth_point_intercept_mid_prop = translate_chord(
-                    self.depth_point_intercept_mid_prop, self.scatter_size, self.size
-                )
-                self.bezier_point_1_mid_prop = translate_chord(
-                    self.bezier_point_1_mid_prop, self.scatter_size, self.size
-                )
-                self.bezier_point_2_mid_prop = translate_chord(
-                    self.bezier_point_2_mid_prop, self.scatter_size, self.size
-                )
+    #             self.end_point_1_mid_prop = translate_chord(
+    #                 self.end_point_1_mid_prop, self.scatter_size, self.size
+    #             )
+    #             self.end_point_2_mid_prop = translate_chord(
+    #                 self.end_point_2_mid_prop, self.scatter_size, self.size
+    #             )
+    #             self.depth_point_mid_prop = translate_chord(
+    #                 self.depth_point_mid_prop, self.scatter_size, self.size
+    #             )
+    #             self.depth_point_intercept_mid_prop = translate_chord(
+    #                 self.depth_point_intercept_mid_prop, self.scatter_size, self.size
+    #             )
+    #             self.bezier_point_1_mid_prop = translate_chord(
+    #                 self.bezier_point_1_mid_prop, self.scatter_size, self.size
+    #             )
+    #             self.bezier_point_2_mid_prop = translate_chord(
+    #                 self.bezier_point_2_mid_prop, self.scatter_size, self.size
+    #             )
 
-                self.end_point_1_btm_prop = translate_chord(
-                    self.end_point_1_btm_prop, self.scatter_size, self.size
-                )
-                self.end_point_2_btm_prop = translate_chord(
-                    self.end_point_2_btm_prop, self.scatter_size, self.size
-                )
-                self.depth_point_btm_prop = translate_chord(
-                    self.depth_point_btm_prop, self.scatter_size, self.size
-                )
-                self.depth_point_intercept_btm_prop = translate_chord(
-                    self.depth_point_intercept_btm_prop, self.scatter_size, self.size
-                )
-                self.bezier_point_1_btm_prop = translate_chord(
-                    self.bezier_point_1_btm_prop, self.scatter_size, self.size
-                )
-                self.bezier_point_2_btm_prop = translate_chord(
-                    self.bezier_point_2_btm_prop, self.scatter_size, self.size
-                )
+    #             self.end_point_1_btm_prop = translate_chord(
+    #                 self.end_point_1_btm_prop, self.scatter_size, self.size
+    #             )
+    #             self.end_point_2_btm_prop = translate_chord(
+    #                 self.end_point_2_btm_prop, self.scatter_size, self.size
+    #             )
+    #             self.depth_point_btm_prop = translate_chord(
+    #                 self.depth_point_btm_prop, self.scatter_size, self.size
+    #             )
+    #             self.depth_point_intercept_btm_prop = translate_chord(
+    #                 self.depth_point_intercept_btm_prop, self.scatter_size, self.size
+    #             )
+    #             self.bezier_point_1_btm_prop = translate_chord(
+    #                 self.bezier_point_1_btm_prop, self.scatter_size, self.size
+    #             )
+    #             self.bezier_point_2_btm_prop = translate_chord(
+    #                 self.bezier_point_2_btm_prop, self.scatter_size, self.size
+    #             )
 
-                self.reseting = False
+    #             self.reseting = False
 
-                # Adds chords back if not empty
-                for chord in btn_names:
-                    self.add_chord(chord, loading=True)
+    #             # Adds chords back if not empty
+    #             for chord in btn_names:
+    #                 self.add_chord(chord, loading=True)
 
-            # SETTING PROPS
-            self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
-            # 0 = landscape, 1=portrait
-            if (
-                self.AndroidPythonActivity.mActivity.getResources()
-                .getConfiguration()
-                .orientation
-                == 0
-            ):
-                self.orientation = "L"
-            else:
-                self.orientation = "P"
+    #         # SETTING PROPS
+    #         self.AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
+    #         # 0 = landscape, 1=portrait
+    #         if (
+    #             self.AndroidPythonActivity.mActivity.getResources()
+    #             .getConfiguration()
+    #             .orientation
+    #             == 0
+    #         ):
+    #             self.orientation = "L"
+    #         else:
+    #             self.orientation = "P"
 
-            self.scatter_size = self.size
+    #         self.scatter_size = self.size
 
     def on_transform(self, *args, **kwargs):
         super().on_transform(*args, **kwargs)
@@ -1563,8 +1563,18 @@ class SplineScreen(Screen):
                     )
                     self.ids.scatter.load_initial(data)
 
-            # print(f"SCATTER_SIZE_ON_IMG: {self.ids.scatter.size}")
-            # self.ids.scatter.set_init_props()
+            # Setting orientation based on image dimenstions
+            if im.width > im.height:
+                self.set_orientation(0)
+            else:
+                self.set_orientation(1)
+
+    def set_orientation(self, orientation):
+        if platform == "android":
+            print("IN SET ORIENTATION")
+            # 0 = landscape, 1=portrait, 4=rotate
+            AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
+            AndroidPythonActivity.mActivity.setRequestedOrientation(orientation)
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
@@ -1605,9 +1615,13 @@ class SplineScreen(Screen):
 
     def reset(self):
         self.reseting = True
+
         self.ids.scatter.pos = 0, 0
         self.img_src = ""
         self.show_results()
+        if platform == "android":
+            self.set_orientation(4)
+
         self.reseting = False
 
     def save(self, scatter):
