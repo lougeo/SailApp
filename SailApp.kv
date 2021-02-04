@@ -155,7 +155,7 @@ SM:
             size_hint: 0.6, 0.3
             pos_hint: {"x": 0.2, "y": 0.1}
             on_release:
-                root.manager.get_screen("file_chooser").update_filechooser()
+                root.manager.get_screen("file_chooser").file_manager_open()
                 root.manager.transition.direction = "left"
                 app.root.current = "file_chooser"
 
@@ -192,38 +192,13 @@ SM:
 
 <FileChooserScreen>:
     name: "file_chooser"
-    BoxLayout:
-        canvas.before:
-            Color:
-                rgb: 0,0,0
-            Rectangle:
-                size: root.size
-        orientation: "vertical"
-        FileChooserListView:
-            id: filechooser
-            color: 0,0,0,1
-            filters: ["*.png", "*.jpg", "*.jpeg"]
-            path: root.get_rootpath()
-            on_submit: root.load(filechooser.path, filechooser.selection)
+    # BoxLayout:
+    #     orientation: 'vertical'
 
-        BoxLayout:
-            size_hint_y: 0.2
-            # height: 100
-            MDFillRoundFlatButton:
-                text: "Cancel"
-                # font_size: "15sp"
-                size_hint: 0.5, 1.
-                pos_hint: {"center_x": 0.25, "y": 0}
-                on_release: 
-                    root.manager.transition.direction = "right"
-                    app.root.current = "main_menu"
-
-            MDFillRoundFlatButton:
-                text: "Load"
-                # font_size: "15sp"
-                size_hint: 0.5, 1.
-                pos_hint: {"center_x": 0.75, "y": 0}
-                on_release: root.load(filechooser.path, filechooser.selection)
+        # MDToolbar:
+        #     title: "MDFileManager"
+        #     left_action_items: [['menu', lambda x: None]]
+        #     elevation: 10
 
 <SplineScreen>:
     name: "spline_screen"
@@ -234,7 +209,8 @@ SM:
             id: scatter
             do_rotation: False
             # do_translation: False
-            size: root.size
+            # size: root.size
+            size: scatter_image.norm_image_size
             size_hint: None, None
             auto_bring_to_front: False
             scale_min: 1

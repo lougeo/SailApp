@@ -42,6 +42,15 @@ import ntpath
 import time
 
 from kivymd.app import MDApp
+from kivymd.uix.filemanager import MDFileManager
+from kivymd.toast import toast
+
+if platform == "win":
+    from kivy.config import Config
+
+    Config.set("graphics", "width", "600")
+    Config.set("graphics", "height", "800")
+    Config.write()
 
 if platform == "android":
     from android.permissions import request_permissions, Permission
@@ -141,8 +150,30 @@ class MainScatter(Scatter):
 
     ###########################    METHODS    ###########################
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.bind(pos=self.update_scatter_pos)
+        # Window.bind(width=self.on_window_rotate)
+        # Clock.schedule_once(self.on_start, 5)
+
+    # def update_scatter_pos(self, *args):
+    #     pass
+
     def on_size(self, *args):
         print("SCATTER ON SIZE")
+        if platform == "win":
+            for child in self.children:
+                if hasattr(child, "image_ratio"):
+                    # print(child.__str__)
+                    # print(child.pos)
+                    # print(child.norm_image_size)
+                    # print(dir(child))
+                    full_size = child.size
+            print(self.size[1])
+            print(full_size)
+            print((full_size[1] - self.size[1]) / 2)
+            self.pos = [0, (full_size[1] - self.size[1]) / 2]
+
         if platform == "android":
 
             if len(self.scatter_size) > 0:
@@ -1439,6 +1470,14 @@ class CameraScreen(Screen):
 
 
 class FileChooserScreen(Screen):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.manager_open = False
+        self.file_manager = MDFileManager()
+        self.file_manager.exit_manager = self.exit_manager
+        self.file_manager.select_path = self.select_path
+        self.file_manager.previous = True
+
     def get_rootpath(self, *args):
         if platform == "android":
             main_dir = "Pictures"
@@ -1457,15 +1496,35 @@ class FileChooserScreen(Screen):
             rootpath = getcwd()
         return rootpath
 
-    def load(self, path, selection):
-        if len(selection) > 0:
-            file_name = selection[0]
+    def file_manager_open(self):
+        rootpath = self.get_rootpath()
+        self.file_manager.show(rootpath)  # output manager to the screen
+        self.manager_open = True
+
+    def select_path(self, path):
+        """It will be called when you click on the file name
+        or the catalog selection button.
+
+        :type path: str;
+        :param path: path to the selected directory or file;
+        """
+        print("SELECT PATH")
+        print(path)
+        if len(path) > 0 and path.endswith((".png", ".jpg", ".jpeg")):
+            self.manager_open = False
+            self.file_manager.close()
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
-            self.manager.get_screen("spline_screen").img_src = file_name
+            self.manager.get_screen("spline_screen").img_src = path
 
-    def update_filechooser(self):
-        self.ids.filechooser._update_files()
+    def exit_manager(self, *args):
+        """Called when the user reaches the root of the directory tree."""
+
+        print("EXIT MANAGER")
+        self.manager_open = False
+        self.file_manager.close()
+        self.manager.transition.direction = "right"
+        self.manager.current = "main_menu"
 
 
 class SplineScreen(Screen):
@@ -1609,13 +1668,14 @@ class MainApp(MDApp):
         return kv
 
     def key_input(self, window, key, scancode, codepoint, modifier):
-        if key == 27:
-            print(App.get_running_app().root.current)
+        if key in (27, 1001):
             if App.get_running_app().root.current == "spline_screen":
                 App.get_running_app().root.get_screen("spline_screen").reset()
                 App.get_running_app().root.get_screen(
                     "spline_screen"
                 ).ids.scatter.reset()
+            elif App.get_running_app().root.current == "file_chooser":
+                App.get_running_app().root.get_screen("file_chooser").exit_manager()
             App.get_running_app().root.transition.direction = "right"
             App.get_running_app().root.current = "main_menu"
             return True
