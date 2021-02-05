@@ -1458,11 +1458,10 @@ class MainMenuScreen(Screen):
                 os.mkdir(main_path)
             if not exists(app_path):
                 os.mkdir(app_path)
-            filename = self.path_leaf(self.img_src)
-            full_app_path = join(app_path, filename)
-            os.replace(self.img_src, full_app_path)
-            print(f"NEW FULL PATH: {full_app_path}")
-            self.img_src = full_app_path
+            filename = self.path_leaf(filepath)
+            full_image_path = join(app_path, filename)
+            os.replace(filepath, full_image_path)
+            print(f"NEW FULL PATH: {full_image_path}"
 
             # Creating a thumbnail drive in this Pictures and putting a copy of the image there.
             size = 128, 128
@@ -1471,14 +1470,15 @@ class MainMenuScreen(Screen):
                 os.mkdir(thumb_path)
             thumb_filename = "thumb_" + filename
             thumb_full_path = join(thumb_path, thumb_filename)
-            im = Image.open(full_app_path)
+            im = Image.open(full_image_path)
             im.thumbnail(size)
             im.save(thumb_full_path)
 
             # Moving to spline screen
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
-            self.manager.get_screen("spline_screen").img_src = filepath
+            self.manager.get_screen("spline_screen").img_src = full_image_path
+
         else:
             print("PICTURE NOT SAVED")
             print(filepath)
