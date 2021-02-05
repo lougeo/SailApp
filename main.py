@@ -52,6 +52,8 @@ if platform == "win":
     Config.set("graphics", "height", "800")
     Config.write()
 
+from CustFileManager import MDFileManager as CustMDFileManager
+
 if platform == "android":
     from android.permissions import request_permissions, Permission
     from android.storage import primary_external_storage_path
@@ -1473,10 +1475,16 @@ class FileChooserScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.manager_open = False
-        self.file_manager = MDFileManager()
+        # if platform == "android":
+        self.file_manager = CustMDFileManager()
         self.file_manager.exit_manager = self.exit_manager
         self.file_manager.select_path = self.select_path
         self.file_manager.previous = True
+        # else:
+        #     self.file_manager = MDFileManager()
+        #     self.file_manager.exit_manager = self.exit_manager
+        #     self.file_manager.select_path = self.select_path
+        #     self.file_manager.previous = True
 
     def get_rootpath(self, *args):
         if platform == "android":
