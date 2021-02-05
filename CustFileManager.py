@@ -97,20 +97,6 @@ ACTIVITY_MANAGER = """
             LabelContent:
                 id: label_3
                 text: os.path.split(root.paths[2])[1].replace('thumb_', '') if len(root.paths) >= 3 else ''
-<FloatButton>
-    anchor_x: 'right'
-    anchor_y: 'bottom'
-    size_hint_y: None
-    height: dp(56)
-    padding: dp(10)
-    MDFloatingActionButton:
-        size_hint: None, None
-        size:dp(56), dp(56)
-        icon: root.icon
-        opposite_colors: True
-        elevation: 8
-        on_release: root.callback()
-        md_bg_color: root.md_bg_color
 <MDFileManager>
     md_bg_color: root.theme_cls.bg_normal
     BoxLayout:
@@ -148,12 +134,6 @@ ACTIVITY_MANAGER = """
 
 class IconButton(ButtonBehavior, AsyncImage):
     pass
-
-
-class FloatButton(AnchorLayout):
-    callback = ObjectProperty()
-    md_bg_color = ListProperty([1, 1, 1, 1])
-    icon = StringProperty()
 
 
 class ModifiedOneLineIconListItem(ContainerSupport, BaseListItem):
@@ -262,12 +242,11 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         self.app = App.get_running_app()
         if not os.path.exists(os.path.join(self.app.user_data_dir, "thumb")):
             os.mkdir(os.path.join(self.app.user_data_dir, "thumb"))
-        action_button = FloatButton(
-            callback=self.select_directory_on_press_button,
-            md_bg_color=self.theme_cls.primary_color,
-            icon=self.icon,
-        )
-        self.add_widget(action_button)
+            print("NOT EXISTS")
+            print(os.path.join(self.app.user_data_dir, "thumb"))
+        else:
+            print("EXISTS")
+            print(os.path.join(self.app.user_data_dir, "thumb"))
 
     def show(self, path):
         """Forms the body of a directory tree.
@@ -455,6 +434,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             return []
 
     def _create_previous(self, path):
+        print("IN CREATE PREVIOUS")
         if "r" not in self.get_access_string(path):
             toast("PermissionError")
             return

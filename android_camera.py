@@ -58,48 +58,6 @@ class AndroidCamera:
         timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
         image_file_name = "IMG_" + timestamp + "_"
         storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        print(f"STORAGE DIR: {storage_dir.getAbsolutePath()}")
         image = File.createTempFile(image_file_name, ".jpg", storage_dir)
         self.image_path = image.getAbsolutePath()
-        print(f"IMAGE FULL PATH: {self.image_path}")
         return image
-
-    # def take_picture(self, on_complete):
-    #     assert(on_complete is not None)
-    #     # self.on_complete = on_complete
-    #     # self.filename = filename
-    #     android.activity.unbind(on_activity_result=self.on_activity_result)
-    #     android.activity.bind(on_activity_result=self.on_activity_result)
-    #     intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-    #     # uri = Uri.parse('file:/' + filename)
-    #     # print(f"URI: {uri}")
-    #     image_file = self._create_image_file()
-
-    #     uri = FileProvider.getUriForFile(
-    #         self.currentActivity.getApplicationContext(),
-    #         # "com.sailmeter.sailapp.provider",
-    #         self.currentActivity.getApplicationContext().getPackageName() + '.provider',
-    #         image_file
-    #     )
-    #     # uri = FileProvider.getUriForFile(
-    #     #     Context.getApplicationContext(),
-    #     #     "com.sailmeter.sailapp.fileprovider",
-    #     #     image_file,
-    #     # )
-    #     # uri = "content://com.sailmeter.fileprovider" + filename
-    #     parcelable = cast('android.os.Parcelable', uri)
-    #     print(f"PARCELABLE: {parcelable}")
-    #     intent.putExtra(MediaStore.EXTRA_OUTPUT, parcelable)
-    #     PythonActivity.mActivity.startActivityForResult(intent, 0x123)
-
-    # def _create_image_file(self):
-    #     timestamp = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
-    #     image_file_name = "IMG_" + timestamp + "_"
-    #     storage_dir = Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    #     image = File.createTempFile(
-    #         image_file_name,
-    #         ".jpg",
-    #         storage_dir
-    #     )
-    #     self.image_path = image.getAbsolutePath()
-    #     return image
