@@ -1464,15 +1464,15 @@ class MainMenuScreen(Screen):
             print(f"NEW FULL PATH: {full_image_path}")
 
             # Creating a thumbnail drive in this Pictures and putting a copy of the image there.
-            size = 128, 128
-            thumb_path = join(main_path, "thumbnails")
-            if not exists(thumb_path):
-                os.mkdir(thumb_path)
-            thumb_filename = "thumb_" + filename
-            thumb_full_path = join(thumb_path, thumb_filename)
-            im = PILImage.open(full_image_path)
-            im.thumbnail(size)
-            im.save(thumb_full_path)
+            # size = 128, 128
+            # thumb_path = join(app_path, "thumbnails")
+            # if not exists(thumb_path):
+            #     os.mkdir(thumb_path)
+            # thumb_filename = "thumb_" + filename
+            # thumb_full_path = join(thumb_path, thumb_filename)
+            # im = PILImage.open(full_image_path)
+            # im.thumbnail(size)
+            # im.save(thumb_full_path)
 
             # Moving to spline screen
             self.manager.transition.direction = "left"

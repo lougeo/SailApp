@@ -10,6 +10,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.uix.image import AsyncImage
+from kivy.utils import platform
 from kivy.properties import (
     ObjectProperty,
     StringProperty,
@@ -25,6 +26,9 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
 from kivymd.theming import ThemableBehavior
 from kivymd.toast import toast
+
+if platform == "android":
+    from android.storage import primary_external_storage_path
 
 ACTIVITY_MANAGER = """
 #:import os os
@@ -104,7 +108,7 @@ ACTIVITY_MANAGER = """
         spacing: dp(5)
         MDToolbar:
             id: toolbar
-            title: '%s' % root.current_path
+            title: '%s' % root.display_path
             right_action_items: [['close-box', lambda x: root.exit_manager(1)]]
             left_action_items: [['chevron-left', lambda x: root.back()]]
             elevation: 10
@@ -213,6 +217,12 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     and defaults to `/`.
     """
 
+    display_path = StringProperty()
+    """
+    Path to display in toolbar - truncated version of current_path.
+    Gets set on_current_path.
+    """
+
     use_access = BooleanProperty(True)
     """
     Show access to files and directories.
@@ -242,11 +252,6 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         self.app = App.get_running_app()
         if not os.path.exists(os.path.join(self.app.user_data_dir, "thumb")):
             os.mkdir(os.path.join(self.app.user_data_dir, "thumb"))
-            print("NOT EXISTS")
-            print(os.path.join(self.app.user_data_dir, "thumb"))
-        else:
-            print("EXISTS")
-            print(os.path.join(self.app.user_data_dir, "thumb"))
 
     def show(self, path):
         """Forms the body of a directory tree.
@@ -449,6 +454,11 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         im = Image.open(_path)
                         im.thumbnail((200, 200))
                         im.save(path_to_thumb, "PNG")
+
+    def on_current_path(self, *args):
+        if platform == "android":
+            root = primary_external_storage_path()
+            self.display_path = self.current_path.replace(root, "home")
 
 
 Builder.load_string(ACTIVITY_MANAGER)
