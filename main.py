@@ -1470,7 +1470,7 @@ class MainMenuScreen(Screen):
                 os.mkdir(thumb_path)
             thumb_filename = "thumb_" + filename
             thumb_full_path = join(thumb_path, thumb_filename)
-            im = Image.open(full_image_path)
+            im = PILImage.open(full_image_path)
             im.thumbnail(size)
             im.save(thumb_full_path)
 
