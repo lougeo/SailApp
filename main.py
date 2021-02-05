@@ -1461,7 +1461,7 @@ class MainMenuScreen(Screen):
             filename = self.path_leaf(filepath)
             full_image_path = join(app_path, filename)
             os.replace(filepath, full_image_path)
-            print(f"NEW FULL PATH: {full_image_path}"
+            print(f"NEW FULL PATH: {full_image_path}")
 
             # Creating a thumbnail drive in this Pictures and putting a copy of the image there.
             size = 128, 128
