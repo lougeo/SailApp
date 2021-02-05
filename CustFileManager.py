@@ -458,7 +458,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def on_current_path(self, *args):
         if platform == "android":
             root = primary_external_storage_path()
-            self.display_path = self.current_path.replace(root, "home")
+            self.display_path = self.current_path.replace(root, "~")
 
 
 Builder.load_string(ACTIVITY_MANAGER)
