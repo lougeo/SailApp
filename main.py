@@ -1483,6 +1483,10 @@ class MainMenuScreen(Screen):
             print("PICTURE NOT SAVED")
             print(filepath)
 
+    def path_leaf(self, path):
+        head, tail = ntpath.split(path)
+        return tail or ntpath.basename(head)
+
 
 class CameraScreen(Screen):
     """
@@ -1595,10 +1599,6 @@ class SplineScreen(Screen):
             # 0 = landscape, 1=portrait, 4=rotate
             AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
             AndroidPythonActivity.mActivity.setRequestedOrientation(orientation)
-
-    def path_leaf(self, path):
-        head, tail = ntpath.split(path)
-        return tail or ntpath.basename(head)
 
     def show_results(self):
         garbage = []
