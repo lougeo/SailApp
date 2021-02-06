@@ -2,7 +2,6 @@ import kivy
 
 kivy.require("2.0.0")
 
-from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -11,15 +10,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scatterlayout import ScatterLayout
-from kivy.uix.stencilview import StencilView
 from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
-from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.camera import Camera
 from kivy.uix.image import Image
 from kivy.utils import platform
@@ -42,7 +37,6 @@ import ntpath
 import time
 
 from kivymd.app import MDApp
-from kivymd.uix.filemanager import MDFileManager
 from kivymd.toast import toast
 
 if platform == "win":
@@ -52,7 +46,7 @@ if platform == "win":
     Config.set("graphics", "height", "800")
     Config.write()
 
-from CustFileManager import MDFileManager as CustMDFileManager
+from CustFileManager import MDFileManager
 
 if platform == "android":
     from android.permissions import request_permissions, Permission
@@ -1507,20 +1501,11 @@ class FileChooserScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.manager_open = False
-        # if platform == "android":
-        self.file_manager = CustMDFileManager(
+        self.file_manager = MDFileManager(
             exit_manager=self.exit_manager,
             select_path=self.select_path,
             previous=True,
         )
-        # self.file_manager.exit_manager = self.exit_manager
-        # self.file_manager.select_path = self.select_path
-        # self.file_manager.previous = True
-        # else:
-        #     self.file_manager = MDFileManager()
-        #     self.file_manager.exit_manager = self.exit_manager
-        #     self.file_manager.select_path = self.select_path
-        #     self.file_manager.previous = True
 
     def get_rootpath(self, *args):
         if platform == "android":
@@ -1552,11 +1537,6 @@ class FileChooserScreen(Screen):
         :type path: str;
         :param path: path to the selected directory or file;
         """
-        print("SELECT PATH")
-        print(path)
-        print(self)
-        print(dir(self))
-        return True
         if len(path) > 0 and path.endswith((".png", ".jpg", ".jpeg")):
             self.manager_open = False
             self.file_manager.close()
@@ -1566,12 +1546,17 @@ class FileChooserScreen(Screen):
 
     def exit_manager(self, *args):
         """Called when the user reaches the root of the directory tree."""
-
-        print("EXIT MANAGER")
         self.manager_open = False
         self.file_manager.close()
         self.manager.transition.direction = "right"
         self.manager.current = "main_menu"
+
+    def events(self, instance, keyboard, keycode, text, modifiers):
+        """Called when buttons are pressed on the mobile device."""
+        if keyboard in (1001, 27):
+            if self.manager_open:
+                self.file_manager.back()
+        return True
 
 
 class SplineScreen(Screen):
@@ -1579,7 +1564,6 @@ class SplineScreen(Screen):
     img_src = StringProperty("")
 
     def on_img_src(self, *args):
-        print("ON IMG SRC")
         if not self.reseting:
             # Checking for saved chord data
             im = PILImage.open(self.img_src)
@@ -1602,7 +1586,6 @@ class SplineScreen(Screen):
 
     def set_orientation(self, orientation):
         if platform == "android":
-            print("IN SET ORIENTATION")
             # 0 = landscape, 1=portrait, 4=rotate
             AndroidPythonActivity = autoclass("org.kivy.android.PythonActivity")
             AndroidPythonActivity.mActivity.setRequestedOrientation(orientation)
