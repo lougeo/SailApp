@@ -1508,10 +1508,14 @@ class FileChooserScreen(Screen):
         super().__init__(*args, **kwargs)
         self.manager_open = False
         # if platform == "android":
-        self.file_manager = CustMDFileManager()
-        self.file_manager.exit_manager = self.exit_manager
-        self.file_manager.select_path = self.select_path
-        self.file_manager.previous = True
+        self.file_manager = CustMDFileManager(
+            exit_manager=self.exit_manager,
+            select_path=self.select_path,
+            previous=True,
+        )
+        # self.file_manager.exit_manager = self.exit_manager
+        # self.file_manager.select_path = self.select_path
+        # self.file_manager.previous = True
         # else:
         #     self.file_manager = MDFileManager()
         #     self.file_manager.exit_manager = self.exit_manager
@@ -1550,6 +1554,9 @@ class FileChooserScreen(Screen):
         """
         print("SELECT PATH")
         print(path)
+        print(self)
+        print(dir(self))
+        return True
         if len(path) > 0 and path.endswith((".png", ".jpg", ".jpeg")):
             self.manager_open = False
             self.file_manager.close()

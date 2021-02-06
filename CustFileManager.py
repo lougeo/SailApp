@@ -32,6 +32,7 @@ if platform == "android":
 
 ACTIVITY_MANAGER = """
 #:import os os
+
 <BodyManager@BoxLayout>
     icon: 'folder'
     path: ''
@@ -40,6 +41,7 @@ ACTIVITY_MANAGER = """
     dir_or_file_name: ''
     events_callback: lambda x: None
     orientation: 'vertical'
+
     ModifiedOneLineIconListItem:
         text: root.dir_or_file_name
         on_release: root.events_callback(root.path)
@@ -48,6 +50,7 @@ ACTIVITY_MANAGER = """
             theme_text_color: "Custom"
             text_color: self.theme_cls.primary_color
     MDSeparator:
+
 <LabelContent@MDLabel>
     size_hint_y: None
     height: self.texture_size[1]
@@ -55,11 +58,13 @@ ACTIVITY_MANAGER = """
     shorten_from: 'center'
     halign: 'center'
     text_size: self.width, None
+
 <BodyManagerWithPrevious>
     paths: []
     path: ''
     type: 'folder'
     events_callback: lambda x: None
+
     MDGridLayout:
         id: grid_box
         cols: 3
@@ -68,6 +73,7 @@ ACTIVITY_MANAGER = """
         adaptive_height: True
         padding: dp(4), dp(4)
         spacing: dp(4)
+
         BoxLayout:
             orientation: 'vertical'
             IconButton:
@@ -79,6 +85,7 @@ ACTIVITY_MANAGER = """
             LabelContent:
                 id: label_box_1
                 text: os.path.split(root.paths[0])[1].replace('thumb_', '') if len(root.paths) >= 1 else ''
+
         BoxLayout:
             orientation: 'vertical'
             IconButton:
@@ -90,6 +97,7 @@ ACTIVITY_MANAGER = """
             LabelContent:
                 id: label_2
                 text: os.path.split(root.paths[1])[1].replace('thumb_', '') if len(root.paths) >= 2 else ''
+
         BoxLayout:
             orientation: 'vertical'
             IconButton:
@@ -101,17 +109,21 @@ ACTIVITY_MANAGER = """
             LabelContent:
                 id: label_3
                 text: os.path.split(root.paths[2])[1].replace('thumb_', '') if len(root.paths) >= 3 else ''
+
 <MDFileManager>
     md_bg_color: root.theme_cls.bg_normal
+
     BoxLayout:
         orientation: 'vertical'
         spacing: dp(5)
+
         MDToolbar:
             id: toolbar
             title: '%s' % root.display_path
             right_action_items: [['close-box', lambda x: root.exit_manager(1)]]
             left_action_items: [['chevron-left', lambda x: root.back()]]
             elevation: 10
+
         RecycleView:
             id: rv
             key_viewclass: 'viewclass'
@@ -126,6 +138,7 @@ ACTIVITY_MANAGER = """
                 size_hint_y: None
                 height: self.minimum_height
                 orientation: 'vertical'
+                
 <ModifiedOneLineIconListItem>
     BoxLayout:
         id: _left_container
@@ -439,7 +452,6 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             return []
 
     def _create_previous(self, path):
-        print("IN CREATE PREVIOUS")
         if "r" not in self.get_access_string(path):
             toast("PermissionError")
             return
@@ -459,6 +471,8 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         if platform == "android":
             root = primary_external_storage_path()
             self.display_path = self.current_path.replace(root, "~")
+        else:
+            self.display_path = self.current_path
 
 
 Builder.load_string(ACTIVITY_MANAGER)
