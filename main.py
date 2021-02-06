@@ -1693,15 +1693,15 @@ class MainApp(MDApp):
 
     def key_input(self, window, key, scancode, codepoint, modifier):
         if key in (27, 1001):
-            if App.get_running_app().root.current == "spline_screen":
-                App.get_running_app().root.get_screen("spline_screen").reset()
-                App.get_running_app().root.get_screen(
+            if MDApp.get_running_app().root.current == "spline_screen":
+                MDApp.get_running_app().root.get_screen("spline_screen").reset()
+                MDApp.get_running_app().root.get_screen(
                     "spline_screen"
                 ).ids.scatter.reset()
-            elif App.get_running_app().root.current == "file_chooser":
-                App.get_running_app().root.get_screen("file_chooser").exit_manager()
-            App.get_running_app().root.transition.direction = "right"
-            App.get_running_app().root.current = "main_menu"
+            elif MDApp.get_running_app().root.current == "file_chooser":
+                MDApp.get_running_app().root.get_screen("file_chooser").exit_manager()
+            MDApp.get_running_app().root.transition.direction = "right"
+            MDApp.get_running_app().root.current = "main_menu"
             return True
         else:
             return False
