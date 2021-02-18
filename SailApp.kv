@@ -32,6 +32,53 @@ SM:
             bezier: self._points or []
             width: 1.
 
+<SettingsMain>
+    id: settings_main
+    auto_dismiss: False
+    background: ""
+    background_color: 1, 1, 1, 1
+    
+    BoxLayout:
+        orientation: "vertical"
+        MDToolbar:
+            id: settings_toolbar
+            title: root.toolbar_title
+            right_action_items: [['close-box', lambda x: root.hide_settings()]]
+            left_action_items: [['menu', lambda x: root.back()]]
+        
+        ScreenManager:
+            id: settings_sm
+            Screen:
+                name: "settings_main"
+                ScrollView:
+                    MDList:
+                        id: settings_list
+                        OneLineListItem:
+                            text: "Privacy Policy"
+                            on_release: 
+                                root.toolbar_title = "Privacy Policy"
+                                settings_sm.current = "privacy_screen"
+            Screen:
+                name: "privacy_screen"
+                BoxLayout:
+                    orientation: "vertical"
+                    # adaptive_height: True
+                    MDLabel:
+                        markup: True
+                        text: 
+                            """
+                            We do not collect, or store, any data.
+                            \n
+                            sailmeter.com/sailshape/privacy-and-terms-2
+                            """
+                        halign: "center"
+                    MDLabel:
+                        text: ""
+                    MDLabel:
+                        text: ""
+            
+
+
 <ResultsCard>
     id: results_card
     rows: 3
@@ -148,7 +195,6 @@ SM:
             on_release: 
                 root.open_camera()
 
-
         MDIconButton: 
             icon: "folder-multiple-image"
             user_font_size: "54sp"
@@ -158,6 +204,13 @@ SM:
                 root.manager.transition.direction = "left"
                 app.root.current = "file_chooser"
                 root.manager.get_screen("file_chooser").file_manager_open()
+
+        MDIconButton: 
+            icon: "settings"
+            user_font_size: "40sp"
+            size_hint: 0.2, 0.15
+            pos_hint: {"x": 0, "y": 0.85}
+            on_release: root.show_settings()
 
 
 <CameraScreen>:

@@ -5,7 +5,9 @@ kivy.require("2.0.0")
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.uix.modalview import ModalView
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -1390,8 +1392,19 @@ class BezierLine(Widget):
 
 
 ######################################################################################################
-#                                             RESULTS WIDGET                                         #
+#                                             AUX WIDGETS                                         #
 ######################################################################################################
+
+
+class SettingsMain(ModalView):
+    toolbar_title = StringProperty(defaultvalue="Settings")
+
+    def hide_settings(self):
+        self.dismiss()
+
+    def back(self):
+        self.toolbar_title = "Settings"
+        self.ids.settings_sm.current = "settings_main"
 
 
 class ResultsCard(GridLayout):
@@ -1417,6 +1430,10 @@ class ResultsCard(GridLayout):
 
 class MainMenuScreen(Screen):
     file_name = StringProperty("")
+
+    """
+    Camera Functions.
+    """
 
     def open_camera(self):
         if platform == "android":
@@ -1449,17 +1466,6 @@ class MainMenuScreen(Screen):
             os.replace(filepath, full_image_path)
             print(f"NEW FULL PATH: {full_image_path}")
 
-            # Creating a thumbnail drive in this Pictures and putting a copy of the image there.
-            # size = 128, 128
-            # thumb_path = join(app_path, "thumbnails")
-            # if not exists(thumb_path):
-            #     os.mkdir(thumb_path)
-            # thumb_filename = "thumb_" + filename
-            # thumb_full_path = join(thumb_path, thumb_filename)
-            # im = PILImage.open(full_image_path)
-            # im.thumbnail(size)
-            # im.save(thumb_full_path)
-
             # Moving to spline screen
             self.manager.transition.direction = "left"
             self.manager.current = "spline_screen"
@@ -1472,6 +1478,15 @@ class MainMenuScreen(Screen):
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
         return tail or ntpath.basename(head)
+
+    """
+    Settings functions.
+    """
+
+    def show_settings(self):
+
+        self.settings = SettingsMain()
+        self.settings.open()
 
 
 class CameraScreen(Screen):
